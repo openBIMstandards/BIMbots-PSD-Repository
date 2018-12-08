@@ -1,0 +1,38 @@
+# baseURI: http://www.buildingsmart-tech.org/ifcOWL/IFC-PSD/Basic_IDM
+# imports: http://www.buildingsmart-tech.org/ifcOWL/IFC-PSD/Pset_WallCommon
+# imports: http://www.buildingsmart-tech.org/ifcOWL/IFC-PSD/Pset_WindowCommon
+# imports: http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD
+
+@prefix : <http://www.buildingsmart-tech.org/ifcOWL/IFC-PSD/Basic_IDM#> .
+@prefix IFC4-PSD: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD#> .
+@prefix Pset_WallCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_WallCommon#> .
+@prefix Pset_WindowCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_WindowCommon#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://www.buildingsmart-tech.org/ifcOWL/IFC-PSD/Basic_IDM>
+  rdf:type owl:Ontology ;
+  owl:imports <http://www.buildingsmart-tech.org/ifcOWL/IFC-PSD/Pset_WallCommon> ;
+  owl:imports <http://www.buildingsmart-tech.org/ifcOWL/IFC-PSD/Pset_WindowCommon> ;
+  owl:imports <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD> ;
+  owl:versionInfo "Created with TopBraid Composer" ;
+.
+:Basic_IDM
+  rdf:type IFC4-PSD:InformationDeliverySpecification ;
+  IFC4-PSD:name "Basic information delivery manual" ;
+  IFC4-PSD:requiredPset [
+      rdf:type IFC4-PSD:RequiredPset ;
+      IFC4-PSD:propertySetDef Pset_WallCommon:Pset_WallCommon ;
+      IFC4-PSD:requiredProp Pset_WallCommon:_c93a1a80d21511e1800000215ad4efdf ;
+      IFC4-PSD:requiredProp Pset_WallCommon:_e2db6200d21511e1800000215ad4efdf ;
+      IFC4-PSD:requiredProp Pset_WallCommon:_f1c21480d21511e1800000215ad4efdf ;
+    ] ;
+  IFC4-PSD:requiredPset [
+      rdf:type IFC4-PSD:RequiredPset ;
+      IFC4-PSD:propertySetDef Pset_WindowCommon:Pset_WindowCommon ;
+      IFC4-PSD:requiredProp Pset_WindowCommon:_bffe7d00d21811e1800000215ad4efdf ;
+      IFC4-PSD:requiredProp Pset_WindowCommon:_cd1b6c00d21811e1800000215ad4efdf ;
+    ] ;
+.

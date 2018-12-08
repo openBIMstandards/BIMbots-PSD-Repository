@@ -1,0 +1,103 @@
+type LanguageTaggedString {
+	content: String
+	language: String
+}
+
+type PropertyType {
+	type: String
+	dataType: String
+	enumItems: [String]
+}
+
+type PropertyDefinition {
+	id: String
+	ifdguid: String
+	name: String
+	nameAlias(language: String!): String
+	nameAliases: [LanguageTaggedString]
+	definition: String
+	definitionAlias(language: String!): String
+	definitionAliases: [LanguageTaggedString]
+	propertyType: PropertyType
+}
+
+type PropertySetDefinition {
+	id: String
+	name: String
+	applicableTypeValue: String
+	applicableClasses: [String]
+	definition: String
+	definitionAlias(language: String!): String
+	definitionAliases: [LanguageTaggedString]
+	propertyDefs: [PropertyDefinition]
+}
+
+# Required Property Set
+type RequiredPropertySet {
+	propertySetDef: PropertySetDefinition
+	reqProps: [PropertyDefinition]
+}
+
+# Information delivery specification
+type InformationDeliverySpecification {
+	id: String
+	name: String
+	reqPsets: [RequiredPropertySet]
+}
+
+# All queries that are defined for this property set definition repository
+type Query {
+	# Get all property set definitions that are stored in the repository
+	allPSDs: [PropertySetDefinition]
+	# Get a single property set definition identified by its name (e.g. Pset_WallCommon)
+	onePSD(name: String!): PropertySetDefinition
+	# Get all property set definitions that are applicable to the specified IFC class
+	allPSDsForClass(classId: String!): [PropertySetDefinition]
+	# Get all information delivery specifications that are stored in the repository
+	allIDSs: [InformationDeliverySpecification]
+	# Get a single information delivery specification identified by its ID (URI)
+	oneIDS(id: String!): InformationDeliverySpecification
+}
+
+input LanguageTaggedStringInput {
+	content: String!
+	language: String!
+}
+
+input PropertyTypeInput {
+	type: String!
+	dataType: String
+	enumItems: [String]
+}
+
+input PropertyDefinitionInput {
+	id: String!
+	ifdguid: String
+	name: String
+	nameAliases: [LanguageTaggedStringInput]
+	definition: String
+	definitionAliases: [LanguageTaggedStringInput]
+	propertyType: PropertyTypeInput
+}
+
+input PropertySetDefinitionInput {
+	id: String!
+	name: String!
+	ifcVersion: String
+	applicableTypeValue: String
+	applicableClasses: [String]
+	definition: String
+	definitionAliases: [LanguageTaggedStringInput]
+	propertyDefs: [PropertyDefinitionInput]
+}
+
+# All mutations that are defined for this property set definition repository
+type Mutation {
+	# Create a property set definition specified by this PropertySetDefinitionInput instance
+	createPropertySetDefinition(psdInput: PropertySetDefinitionInput!): PropertySetDefinition
+}
+
+schema {
+  query: Query
+  mutation: Mutation
+}
