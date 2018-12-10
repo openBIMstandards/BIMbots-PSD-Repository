@@ -36,8 +36,10 @@ public class InformationDeliverySpecificationResolver implements GraphQLResolver
 		queryStr.append("	?ids IFC4-PSD:requiredPset ?reqPset . ");
 		queryStr.append("	?reqPset IFC4-PSD:propertySetDef ?pset . ");
 		queryStr.append("	?pset IFC4-PSD:name ?psetName . ");
-		queryStr.append("	?reqPset IFC4-PSD:requiredProp ?prop . ");
-		queryStr.append("	?prop IFC4-PSD:name ?propName . ");
+		queryStr.append("	OPTIONAL {");		
+		queryStr.append("		?reqPset IFC4-PSD:requiredProp ?prop . ");
+		queryStr.append("		?prop IFC4-PSD:name ?propName . ");
+		queryStr.append("	}");
 		queryStr.append("}");
 		queryStr.append("ORDER BY ?psetName ?propName ");
 

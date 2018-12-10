@@ -95,6 +95,10 @@ input PropertySetDefinitionInput {
 type Mutation {
 	# Create a property set definition specified by this PropertySetDefinitionInput instance
 	createPropertySetDefinition(psdInput: PropertySetDefinitionInput!): PropertySetDefinition
+	# Add a required property set to an information delivery specification
+	addPset2Ids(idsId: String!,	psetId: String!, propIds: [String]): InformationDeliverySpecification
+	# Add a mandatory property to a required property set to an information delivery specification
+	addProp2Pset2Ids(	idsId: String!,	psetId: String!, propId: String!): InformationDeliverySpecification
 }
 
 schema {
