@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-import nl.tno.willemsph.psd_repository.property_set_definition.PropertySetDefinition;
 import nl.tno.willemsph.psd_repository.property_set_definition.PropertySetDefinitionRepository;
 import nl.tno.willemsph.psd_repository.sparql.EmbeddedServer;
 
@@ -20,10 +19,7 @@ import nl.tno.willemsph.psd_repository.sparql.EmbeddedServer;
 public class InformationDeliverySpecificationRepository {
 	private final static Logger LOGGER = Logger.getLogger(InformationDeliverySpecificationRepository.class.getName());
 
-	private final PropertySetDefinitionRepository propertySetDefinitionRepository;
-
 	public InformationDeliverySpecificationRepository(PropertySetDefinitionRepository propertySetDefinitionRepository) {
-		this.propertySetDefinitionRepository = propertySetDefinitionRepository;
 	}
 
 	public List<InformationDeliverySpecification> getAllInformationDeliverySpecifications() throws IOException {
@@ -91,6 +87,25 @@ public class InformationDeliverySpecificationRepository {
 
 		return new InformationDeliverySpecification(idsId, null);
 	}
+	
+	public InformationDeliverySpecification removeProp2Pset(String idsId, String psetId, String propId) throws IOException {
+		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
+		queryStr.setIri("ids", idsId);
+		queryStr.setIri("pset", psetId);
+		queryStr.setIri("prop", propId);
+		queryStr.append("DELETE {");
+		queryStr.append("	?reqPset IFC4-PSD:requiredProp ?prop . ");
+		queryStr.append("}");
+		queryStr.append("WHERE {");
+		queryStr.append("	?ids IFC4-PSD:requiredPset ?reqPset . ");
+		queryStr.append("	?reqPset IFC4-PSD:propertySetDef ?pset . ");
+		queryStr.append("}");
+
+		EmbeddedServer.instance.update(queryStr);
+
+		return new InformationDeliverySpecification(idsId, null);
+	}
+
 
 	public InformationDeliverySpecification addPset2Ids(String idsId, String psetId, Optional<List<String>> propIds) {
 		String psetName = psetId.substring(psetId.indexOf('#') + 1);

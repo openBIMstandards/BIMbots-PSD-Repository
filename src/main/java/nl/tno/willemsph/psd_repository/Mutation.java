@@ -66,6 +66,24 @@ public class Mutation implements GraphQLMutationResolver {
 	}
 
 	/**
+	 * Remove a mandatory property from a required property set to an information
+	 * delivery specification
+	 * 
+	 * GRAPHQL: removePropPsetIds( idsId: String!, psetId: String!, propId: String!):
+	 * InformationDeliverySpecification
+	 * 
+	 * @param idsId  Id of information delivery specification
+	 * @param psetId Id of property set definition
+	 * @param propId Id of property definition
+	 * @return Mutated information delivery specification
+	 * @throws IOException
+	 */
+	public InformationDeliverySpecification removeProp2Pset2Ids(String idsId, String psetId, String propId)
+			throws IOException {
+		return informationDeliverySpecificationRepository.removeProp2Pset(idsId, psetId, propId);
+	}
+	
+	/**
 	 * Add a required property set to an information delivery specification
 	 * 
 	 * GRAPHQL: addPset2Ids(idsId: String!, psetId: String!, propIds: [String]):

@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +38,7 @@ public class InformationDeliverySpecificationResolver implements GraphQLResolver
 		queryStr.append("	?ids IFC4-PSD:requiredPset ?reqPset . ");
 		queryStr.append("	?reqPset IFC4-PSD:propertySetDef ?pset . ");
 		queryStr.append("	?pset IFC4-PSD:name ?psetName . ");
-		queryStr.append("	OPTIONAL {");		
+		queryStr.append("	OPTIONAL {");
 		queryStr.append("		?reqPset IFC4-PSD:requiredProp ?prop . ");
 		queryStr.append("		?prop IFC4-PSD:name ?propName . ");
 		queryStr.append("	}");
@@ -65,6 +67,13 @@ public class InformationDeliverySpecificationResolver implements GraphQLResolver
 			for (String psetName : reqPsets.keySet()) {
 				requiredPsets.add(new RequiredPset(psetName, reqPsets.get(psetName)));
 			}
+			Collections.sort(requiredPsets, new Comparator<RequiredPset>() {
+				@Override
+				public int compare(RequiredPset o1, RequiredPset o2) {
+					return o1.getPropertySetName().compareTo(o2.getPropertySetName());
+				}
+			});
+			;
 			return requiredPsets;
 		}
 		return null;

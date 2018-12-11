@@ -2,9 +2,11 @@
 # imports: http://www.buildingsmart-tech.org/ifcOWL/IFC-PSD/Pset_WallCommon
 # imports: http://www.buildingsmart-tech.org/ifcOWL/IFC-PSD/Pset_WindowCommon
 # imports: http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD
+# imports: http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_BeamCommon
 
 @prefix : <http://www.buildingsmart-tech.org/ifcOWL/IFC-PSD/Basic_IDM#> .
 @prefix IFC4-PSD: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD#> .
+@prefix Pset_BeamCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_BeamCommon#> .
 @prefix Pset_WallCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_WallCommon#> .
 @prefix Pset_WindowCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_WindowCommon#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
@@ -17,11 +19,16 @@
   owl:imports <http://www.buildingsmart-tech.org/ifcOWL/IFC-PSD/Pset_WallCommon> ;
   owl:imports <http://www.buildingsmart-tech.org/ifcOWL/IFC-PSD/Pset_WindowCommon> ;
   owl:imports <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD> ;
+  owl:imports <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_BeamCommon> ;
   owl:versionInfo "Created with TopBraid Composer" ;
 .
 :Basic_IDM
   rdf:type IFC4-PSD:InformationDeliverySpecification ;
   IFC4-PSD:name "Basic information delivery manual" ;
+  IFC4-PSD:requiredPset [
+      rdf:type IFC4-PSD:RequiredPset ;
+      IFC4-PSD:propertySetDef Pset_BeamCommon:Pset_BeamCommon ;
+    ] ;
   IFC4-PSD:requiredPset [
       rdf:type IFC4-PSD:RequiredPset ;
       IFC4-PSD:propertySetDef Pset_WallCommon:Pset_WallCommon ;

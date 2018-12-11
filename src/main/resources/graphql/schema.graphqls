@@ -98,7 +98,9 @@ type Mutation {
 	# Add a required property set to an information delivery specification
 	addPset2Ids(idsId: String!,	psetId: String!, propIds: [String]): InformationDeliverySpecification
 	# Add a mandatory property to a required property set to an information delivery specification
-	addProp2Pset2Ids(	idsId: String!,	psetId: String!, propId: String!): InformationDeliverySpecification
+	addProp2Pset2Ids(idsId: String!, psetId: String!, propId: String!): InformationDeliverySpecification
+	# Remove a mandatory property from a required property set to an information delivery specification
+	removeProp2Pset2Ids(idsId: String!,	psetId: String!, propId: String!): InformationDeliverySpecification
 }
 
 schema {

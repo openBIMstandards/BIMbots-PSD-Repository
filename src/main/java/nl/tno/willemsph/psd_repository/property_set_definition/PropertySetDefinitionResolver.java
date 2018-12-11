@@ -6,6 +6,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import org.apache.jena.query.ParameterizedSparqlString;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import nl.tno.willemsph.psd_repository.common.LanguageTaggedString;
 import nl.tno.willemsph.psd_repository.property_definition.PropertyDefinition;
+import nl.tno.willemsph.psd_repository.property_definition.PropertyDefinitionResolver;
 import nl.tno.willemsph.psd_repository.sparql.EmbeddedServer;
 
 @Component
@@ -50,14 +52,16 @@ public class PropertySetDefinitionResolver implements GraphQLResolver<PropertySe
 		URI predicate = new URI(EmbeddedServer.IFC4_PSD + "#definition");
 		return EmbeddedServer.getStringValue(subject, predicate);
 	}
-	
-	public String getDefinitionAlias(PropertySetDefinition propertySetDefinition, String language) throws URISyntaxException, IOException {
+
+	public String getDefinitionAlias(PropertySetDefinition propertySetDefinition, String language)
+			throws URISyntaxException, IOException {
 		URI subject = new URI(getId(propertySetDefinition));
 		URI predicate = new URI(EmbeddedServer.IFC4_PSD + "#definitionAlias");
 		return EmbeddedServer.getLanguageTaggedStringValue(subject, predicate, language);
 	}
 
-	public List<LanguageTaggedString> getDefinitionAliases(PropertySetDefinition propertySetDefinition) throws URISyntaxException, IOException {
+	public List<LanguageTaggedString> getDefinitionAliases(PropertySetDefinition propertySetDefinition)
+			throws URISyntaxException, IOException {
 		URI subject = new URI(getId(propertySetDefinition));
 		URI predicate = new URI(EmbeddedServer.IFC4_PSD + "#definitionAlias");
 		return EmbeddedServer.getLanguageTaggedStringValues(subject, predicate);
@@ -72,10 +76,21 @@ public class PropertySetDefinitionResolver implements GraphQLResolver<PropertySe
 		if (valuesString != null) {
 			String[] values = valuesString.split(" ");
 			List<String> valueList = Arrays.asList(values);
-			Collections.sort(valueList);
 			for (String value : valueList) {
 				propertyDefs.add(new PropertyDefinition(value));
 			}
+			Collections.sort(propertyDefs, new Comparator<PropertyDefinition>() {
+				@Override
+				public int compare(PropertyDefinition o1, PropertyDefinition o2) {
+					PropertyDefinitionResolver propertyDefinitionResolver = new PropertyDefinitionResolver();
+					try {
+						return propertyDefinitionResolver.getName(o1).compareTo(propertyDefinitionResolver.getName(o2));
+					} catch (IOException | URISyntaxException e) {
+						e.printStackTrace();
+					}
+					return 0;
+				}
+			});
 		}
 		return propertyDefs;
 	}
