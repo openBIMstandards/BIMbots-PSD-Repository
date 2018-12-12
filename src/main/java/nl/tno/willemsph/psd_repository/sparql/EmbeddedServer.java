@@ -38,12 +38,12 @@ public class EmbeddedServer {
 	public static final String IFC4 = "http://ifcowl.openbimstandards.org/IFC4";
 	public static final String IFC4_PSD = "http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD";
 	public static final String[] PSETS = { "Pset_BeamCommon", "Pset_BuildingCommon", "Pset_BuildingElementProxyCommon",
-			"Pset_BuildingStoreyCommon", "Pset_ColumnCommon", "Pset_ConcreteElementGeneral", "Pset_CoveringCommon",
-			"Pset_DoorCommon", "Pset_DoorWindowGlazingType", "Pset_EnvironmentalImpactIndicators",
-			"Pset_EnvironmentalImpactValues", "Pset_MaterialCommon", "Pset_MaterialConcrete", "Pset_MemberCommon",
-			"Pset_OpeningElementCommon", "Pset_PileCommon", "Pset_PlateCommon", "Pset_PrecastConcreteElementGeneral",
-			"Pset_PrecastSlab", "Pset_RoofCommon", "Pset_SlabCommon", "Pset_SpaceCommon", "Pset_StairCommon",
-			"Pset_WallCommon", "Pset_WindowCommon" };
+			"Pset_BuildingStoreyCommon", "Pset_ChimneyCommon", "Pset_ColumnCommon", "Pset_ConcreteElementGeneral",
+			"Pset_CoveringCommon", "Pset_DoorCommon", "Pset_DoorWindowGlazingType",
+			"Pset_EnvironmentalImpactIndicators", "Pset_EnvironmentalImpactValues", "Pset_MaterialCommon",
+			"Pset_MaterialConcrete", "Pset_MemberCommon", "Pset_OpeningElementCommon", "Pset_PileCommon",
+			"Pset_PlateCommon", "Pset_PrecastConcreteElementGeneral", "Pset_PrecastSlab", "Pset_RoofCommon",
+			"Pset_SlabCommon", "Pset_SpaceCommon", "Pset_StairCommon", "Pset_WallCommon", "Pset_WindowCommon" };
 	public static final String[] IDSS = { "Basic_IDM" };
 	private static Dataset ds;
 	private ClassPathResource ifc4Resource, ifc4PsdResource;
@@ -57,9 +57,6 @@ public class EmbeddedServer {
 		ifc4Resource = new ClassPathResource("IFC4.ttl");
 		ifc4PsdResource = new ClassPathResource("psetdef.ttl");
 
-//		File psetsFolder = new ClassPathResource("psets/Pset_BeamCommon.ttl").getFile().getParentFile();
-//		Files.walk(Paths.get(psetsFolder.getPath())).filter(Files::isRegularFile)
-//				.forEach((pset) -> psetResources.add(new ClassPathResource("psets/" + pset.getFileName().toString())));
 		psetResources = new ArrayList<>();
 		for (String pset : PSETS) {
 			psetResources.add(new ClassPathResource("psets/" + pset + ".ttl"));
