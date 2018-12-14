@@ -2,9 +2,12 @@ package nl.tno.willemsph.psd_repository.property_set_definition;
 
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import nl.tno.willemsph.psd_repository.common.LanguageTaggedStringInput;
 import nl.tno.willemsph.psd_repository.property_definition.PropertyDefinitionInput;
 
+@Component
 public class PropertySetDefinitionInput {
 
 	public PropertySetDefinitionInput() {
@@ -35,7 +38,7 @@ public class PropertySetDefinitionInput {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	//
 	// Definition
 	//

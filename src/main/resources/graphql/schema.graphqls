@@ -81,7 +81,7 @@ input PropertyDefinitionInput {
 }
 
 input PropertySetDefinitionInput {
-	id: String!
+	id: ID!
 	name: String!
 	ifcVersion: String
 	applicableTypeValue: String

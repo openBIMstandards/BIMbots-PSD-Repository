@@ -91,7 +91,7 @@ public class PropertySetDefinitionRepository {
 		queryStr.append("  ?psd rdf:type IFC4-PSD:PropertySetDef . ");
 		queryStr.append("  ?psd IFC4-PSD:name ?name . ");
 		if (propertySetDefinitionInput.getDefinition() != null) {
-			queryStr.setLiteral("definition", propertySetDefinitionInput.getDefinition());
+			queryStr.setLiteral("definition", propertySetDefinitionInput.getDefinition().toString());
 			queryStr.append("	?psd IFC4-PSD:definition ?definition . ");
 		}
 		if (propertySetDefinitionInput.getIfcVersion() != null) {
