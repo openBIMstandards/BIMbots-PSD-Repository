@@ -87,8 +87,9 @@ public class InformationDeliverySpecificationRepository {
 
 		return new InformationDeliverySpecification(idsId, null);
 	}
-	
-	public InformationDeliverySpecification removeProp2Pset(String idsId, String psetId, String propId) throws IOException {
+
+	public InformationDeliverySpecification removeProp2Pset(String idsId, String psetId, String propId)
+			throws IOException {
 		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
 		queryStr.setIri("ids", idsId);
 		queryStr.setIri("pset", psetId);
@@ -106,42 +107,56 @@ public class InformationDeliverySpecificationRepository {
 		return new InformationDeliverySpecification(idsId, null);
 	}
 
-
-	public InformationDeliverySpecification addPset2Ids(String idsId, String psetId, Optional<List<String>> propIds) {
+	public InformationDeliverySpecification addPset2Ids(String idsId, String psetId, Optional<List<String>> propIds)
+			throws IOException, URISyntaxException {
 		String psetName = psetId.substring(psetId.indexOf('#') + 1);
 		InformationDeliverySpecification ids = getOneInformationDeliverySpecification(idsId);
 		InformationDeliverySpecificationResolver idsResolver = new InformationDeliverySpecificationResolver();
-		try {
-			List<RequiredPset> reqPsets = idsResolver.getReqPsets(ids);
-			boolean psetFound = false;
-			for (RequiredPset reqPset : reqPsets) {
-				if (reqPset.getPropertySetName().equals(psetName)) {
-					psetFound = true;
-					break;
-				}
+		List<RequiredPset> reqPsets = idsResolver.getReqPsets(ids);
+		boolean psetFound = false;
+		for (RequiredPset reqPset : reqPsets) {
+			if (reqPset.getPropertySetName().equals(psetName)) {
+				psetFound = true;
+				break;
 			}
-			if (!psetFound) {
-				ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
-				queryStr.setIri("ids", idsId);
-				queryStr.setIri("pset", psetId);
-				queryStr.append("INSERT {");
-				queryStr.append("	?ids IFC4-PSD:requiredPset [IFC4-PSD:propertySetDef ?pset] . ");
-				queryStr.append("}");
-				queryStr.append("WHERE {");
-				queryStr.append("}");
-
-				EmbeddedServer.instance.update(queryStr);
-			}
-			if (propIds.isPresent()) {
-				for (String propId : propIds.get()) {
-					addProp2Pset(idsId, psetId, propId);
-				}
-			}
-			return ids;
-		} catch (URISyntaxException | IOException e) {
-			e.printStackTrace();
 		}
-		return null;
+		if (!psetFound) {
+			ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
+			queryStr.setIri("ids", idsId);
+			queryStr.setIri("pset", psetId);
+			queryStr.append("INSERT {");
+			queryStr.append("	?ids IFC4-PSD:requiredPset [IFC4-PSD:propertySetDef ?pset] . ");
+			queryStr.append("}");
+			queryStr.append("WHERE {");
+			queryStr.append("}");
+
+			EmbeddedServer.instance.update(queryStr);
+		}
+		if (propIds.isPresent()) {
+			for (String propId : propIds.get()) {
+				addProp2Pset(idsId, psetId, propId);
+			}
+		}
+		return ids;
+	}
+
+	public InformationDeliverySpecification removePset2Ids(String idsId, String psetId) throws IOException {
+		InformationDeliverySpecification ids = getOneInformationDeliverySpecification(idsId);
+		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
+		queryStr.setIri("ids", idsId);
+		queryStr.setIri("pset", psetId);
+		queryStr.append("DELETE {");
+		queryStr.append("	?reqPset IFC4-PSD:propertySetDef ?pset . ");
+		queryStr.append("	?reqPset IFC4-PSD:requiredProp ?prop . ");
+		queryStr.append("	?ids IFC4-PSD:requiredPset ?reqPset . ");
+		queryStr.append("}");
+		queryStr.append("WHERE {");
+		queryStr.append("	?ids IFC4-PSD:requiredPset ?reqPset . ");
+		queryStr.append("	?reqPset IFC4-PSD:propertySetDef ?pset . ");
+		queryStr.append("}");
+
+		EmbeddedServer.instance.update(queryStr);
+		return ids;
 	}
 
 }

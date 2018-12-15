@@ -1,6 +1,7 @@
 package nl.tno.willemsph.psd_repository;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,7 +52,7 @@ public class Mutation implements GraphQLMutationResolver {
 	 * Add a mandatory property to a required property set to an information
 	 * delivery specification
 	 * 
-	 * GRAPHQL: addPropPsetIds( idsId: String!, psetId: String!, propId: String!):
+	 * GRAPHQL: addPropPsetIds( idsId: ID!, psetId: ID!, propId: ID!):
 	 * InformationDeliverySpecification
 	 * 
 	 * @param idsId  Id of information delivery specification
@@ -69,7 +70,7 @@ public class Mutation implements GraphQLMutationResolver {
 	 * Remove a mandatory property from a required property set to an information
 	 * delivery specification
 	 * 
-	 * GRAPHQL: removePropPsetIds( idsId: String!, psetId: String!, propId: String!):
+	 * GRAPHQL: removePropPsetIds( idsId: ID!, psetId: ID!, propId: ID!):
 	 * InformationDeliverySpecification
 	 * 
 	 * @param idsId  Id of information delivery specification
@@ -82,20 +83,37 @@ public class Mutation implements GraphQLMutationResolver {
 			throws IOException {
 		return informationDeliverySpecificationRepository.removeProp2Pset(idsId, psetId, propId);
 	}
-	
+
 	/**
 	 * Add a required property set to an information delivery specification
 	 * 
-	 * GRAPHQL: addPset2Ids(idsId: String!, psetId: String!, propIds: [String]):
+	 * GRAPHQL: addPset2Ids(idsId: ID!, psetId: ID!, propIds: [ID]):
 	 * InformationDeliverySpecification
 	 * 
 	 * @param idsId   Id of information delivery specification
 	 * @param psetId  Id of property set definition
 	 * @param propIds Ids of property definition
 	 * @return Mutated information delivery specification
+	 * @throws URISyntaxException 
+	 * @throws IOException 
 	 */
-	public InformationDeliverySpecification addPset2Ids(String idsId, String psetId, Optional<List<String>> propIds) {
+	public InformationDeliverySpecification addPset2Ids(String idsId, String psetId, Optional<List<String>> propIds) throws IOException, URISyntaxException {
 		return informationDeliverySpecificationRepository.addPset2Ids(idsId, psetId, propIds);
+	}
+
+	/**
+	 * Remove a required property set from an information delivery specification
+	 * 
+	 * GRAPHQL: removePset2Ids(idsId: ID!, psetId: ID!):
+	 * InformationDeliverySpecification
+	 * 
+	 * @param idsId  Id of information delivery specification
+	 * @param psetId Id of property set definition
+	 * @return Mutated information delivery specification
+	 * @throws IOException 
+	 */
+	public InformationDeliverySpecification removePset2Ids(String idsId, String psetId) throws IOException {
+		return informationDeliverySpecificationRepository.removePset2Ids(idsId, psetId);
 	}
 
 }

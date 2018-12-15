@@ -96,11 +96,13 @@ type Mutation {
 	# Create a property set definition specified by this PropertySetDefinitionInput instance
 	createPropertySetDefinition(psdInput: PropertySetDefinitionInput!): PropertySetDefinition
 	# Add a required property set to an information delivery specification
-	addPset2Ids(idsId: String!,	psetId: String!, propIds: [String]): InformationDeliverySpecification
+	addPset2Ids(idsId: ID!,	psetId: ID!, propIds: [ID]): InformationDeliverySpecification
+	# Remove a required property set from an information delivery specification
+	removePset2Ids(idsId: ID!,	psetId: ID!): InformationDeliverySpecification
 	# Add a mandatory property to a required property set to an information delivery specification
-	addProp2Pset2Ids(idsId: String!, psetId: String!, propId: String!): InformationDeliverySpecification
-	# Remove a mandatory property from a required property set to an information delivery specification
-	removeProp2Pset2Ids(idsId: String!,	psetId: String!, propId: String!): InformationDeliverySpecification
+	addProp2Pset2Ids(idsId: ID!, psetId: ID!, propId: ID!): InformationDeliverySpecification
+	# Remove a mandatory property from a required property set from an information delivery specification
+	removeProp2Pset2Ids(idsId: ID!,	psetId: ID!, propId: ID!): InformationDeliverySpecification
 }
 
 schema {
