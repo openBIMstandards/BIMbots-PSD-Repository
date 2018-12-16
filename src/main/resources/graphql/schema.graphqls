@@ -52,11 +52,11 @@ type Query {
 	# Get a single property set definition identified by its name (e.g. Pset_WallCommon)
 	onePSD(name: String!): PropertySetDefinition
 	# Get all property set definitions that are applicable to the specified IFC class
-	allPSDsForClass(classId: String!): [PropertySetDefinition]
+	allPSDsForClass(classId: ID!): [PropertySetDefinition]
 	# Get all information delivery specifications that are stored in the repository
 	allIDSs: [InformationDeliverySpecification]
 	# Get a single information delivery specification identified by its ID (URI)
-	oneIDS(id: String!): InformationDeliverySpecification
+	oneIDS(id: ID!): InformationDeliverySpecification
 }
 
 input LanguageTaggedStringInput {
