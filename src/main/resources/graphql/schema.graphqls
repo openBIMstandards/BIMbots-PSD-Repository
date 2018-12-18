@@ -40,8 +40,9 @@ type RequiredPropertySet {
 
 # Information delivery specification
 type InformationDeliverySpecification {
-	id: String
+	id: ID
 	name: String
+	parent: InformationDeliverySpecification
 	reqPsets: [RequiredPropertySet]
 }
 
@@ -93,6 +94,8 @@ input PropertySetDefinitionInput {
 
 # All mutations that are defined for this property set definition repository
 type Mutation {
+	# Create an information delivery specification
+	createInformationDeliverySpecification(idsId: ID!, name: String!, parentId: ID): InformationDeliverySpecification
 	# Create a property set definition specified by this PropertySetDefinitionInput instance
 	createPropertySetDefinition(psdInput: PropertySetDefinitionInput!): PropertySetDefinition
 	# Add a required property set to an information delivery specification

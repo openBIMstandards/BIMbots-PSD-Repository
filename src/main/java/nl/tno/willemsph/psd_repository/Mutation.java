@@ -49,6 +49,23 @@ public class Mutation implements GraphQLMutationResolver {
 	}
 
 	/**
+	 * Create an information delivery specification
+	 * 
+	 * GRAPHQL: createInformationDeliverySpecification(idsId: ID!, name: String!, parentId: ID):
+	 * InformationDeliverySpecification
+	 * 
+	 * @param idsId    Id of information delivery specification
+	 * @param name     Name of information delivery specification
+	 * @param parentId (Optional) parent ID
+	 * @return Created information delivery specification
+	 * @throws IOException 
+	 */
+	public InformationDeliverySpecification createInformationDeliverySpecification(String idsId, String name,
+			Optional<String> parentId) throws IOException {
+		return informationDeliverySpecificationRepository.createInformationDeliverySpecification(idsId, name, parentId);
+	}
+
+	/**
 	 * Add a mandatory property to a required property set to an information
 	 * delivery specification
 	 * 
@@ -94,10 +111,11 @@ public class Mutation implements GraphQLMutationResolver {
 	 * @param psetId  Id of property set definition
 	 * @param propIds Ids of property definition
 	 * @return Mutated information delivery specification
-	 * @throws URISyntaxException 
-	 * @throws IOException 
+	 * @throws URISyntaxException
+	 * @throws IOException
 	 */
-	public InformationDeliverySpecification addPset2Ids(String idsId, String psetId, Optional<List<String>> propIds) throws IOException, URISyntaxException {
+	public InformationDeliverySpecification addPset2Ids(String idsId, String psetId, Optional<List<String>> propIds)
+			throws IOException, URISyntaxException {
 		return informationDeliverySpecificationRepository.addPset2Ids(idsId, psetId, propIds);
 	}
 
@@ -110,7 +128,7 @@ public class Mutation implements GraphQLMutationResolver {
 	 * @param idsId  Id of information delivery specification
 	 * @param psetId Id of property set definition
 	 * @return Mutated information delivery specification
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public InformationDeliverySpecification removePset2Ids(String idsId, String psetId) throws IOException {
 		return informationDeliverySpecificationRepository.removePset2Ids(idsId, psetId);

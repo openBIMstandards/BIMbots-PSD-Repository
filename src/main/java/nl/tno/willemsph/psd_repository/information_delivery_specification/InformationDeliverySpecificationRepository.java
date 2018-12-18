@@ -111,13 +111,16 @@ public class InformationDeliverySpecificationRepository {
 			throws IOException, URISyntaxException {
 		String psetName = psetId.substring(psetId.indexOf('#') + 1);
 		InformationDeliverySpecification ids = getOneInformationDeliverySpecification(idsId);
+		boolean psetFound = false;
+		
 		InformationDeliverySpecificationResolver idsResolver = new InformationDeliverySpecificationResolver();
 		List<RequiredPset> reqPsets = idsResolver.getReqPsets(ids);
-		boolean psetFound = false;
-		for (RequiredPset reqPset : reqPsets) {
-			if (reqPset.getPropertySetName().equals(psetName)) {
-				psetFound = true;
-				break;
+		if (reqPsets != null) {
+			for (RequiredPset reqPset : reqPsets) {
+				if (reqPset.getPropertySetName().equals(psetName)) {
+					psetFound = true;
+					break;
+				}
 			}
 		}
 		if (!psetFound) {
@@ -157,6 +160,26 @@ public class InformationDeliverySpecificationRepository {
 
 		EmbeddedServer.instance.update(queryStr);
 		return ids;
+	}
+
+	public InformationDeliverySpecification createInformationDeliverySpecification(String idsId, String name,
+			Optional<String> parentId) throws IOException {
+		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
+		queryStr.append("INSERT {");
+		queryStr.setIri("ids", idsId);
+		queryStr.setLiteral("name", name);
+		queryStr.append("	?ids rdf:type IFC4-PSD:InformationDeliverySpecification ; ");
+		queryStr.append("	   IFC4-PSD:name ?name . ");
+		if (parentId.isPresent()) {
+			queryStr.setIri("parent", parentId.get());
+		}
+		queryStr.append("}");
+		queryStr.append("WHERE {");
+		queryStr.append("}");
+
+		EmbeddedServer.instance.update(queryStr);
+
+		return getOneInformationDeliverySpecification(idsId);
 	}
 
 }

@@ -44,7 +44,7 @@ public class EmbeddedServer {
 			"Pset_MaterialConcrete", "Pset_MemberCommon", "Pset_OpeningElementCommon", "Pset_PileCommon",
 			"Pset_PlateCommon", "Pset_PrecastConcreteElementGeneral", "Pset_PrecastSlab", "Pset_RoofCommon",
 			"Pset_SlabCommon", "Pset_SpaceCommon", "Pset_StairCommon", "Pset_WallCommon", "Pset_WindowCommon" };
-	public static final String[] IDSS = { "Basic_IDM" };
+	public static final String[] IDSS = { "Basic_IDM", "Kalkzandsteen_IDS" };
 	private static Dataset ds;
 	private ClassPathResource ifc4Resource, ifc4PsdResource;
 	private List<ClassPathResource> psetResources, idsResources;

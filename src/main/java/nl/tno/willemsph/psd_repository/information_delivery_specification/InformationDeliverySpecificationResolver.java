@@ -30,6 +30,25 @@ public class InformationDeliverySpecificationResolver implements GraphQLResolver
 		return ids.getName();
 	}
 
+	public InformationDeliverySpecification getParent(InformationDeliverySpecification ids) throws IOException {
+		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
+		queryStr.setIri("ids", ids.getId());
+		queryStr.append("SELECT ?parent ");
+		queryStr.append("WHERE {");
+		queryStr.append("	?ids IFC4-PSD:parent ?parent . ");
+		queryStr.append("}");
+		JsonNode responseNodes = EmbeddedServer.instance.query(queryStr);
+		if (responseNodes.size() > 0) {
+			for (JsonNode node : responseNodes) {
+				JsonNode parentNode = node.get("parent");
+				if (parentNode != null) {
+					return new InformationDeliverySpecification(parentNode.get("value").asText(), null);
+				}
+			}
+		}
+		return null;
+	}
+
 	public List<RequiredPset> getReqPsets(InformationDeliverySpecification ids) throws URISyntaxException, IOException {
 		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
 		queryStr.setIri("ids", ids.getId());
