@@ -49,16 +49,27 @@ public class Mutation implements GraphQLMutationResolver {
 	}
 
 	/**
+	 * Delete a property set definition
+	 * 
+	 * GRAPHQL: deletePropertySetDefinition(psetId: ID!)
+	 * 
+	 * @param psetId Id of property set definition
+	 */
+	public boolean deletePropertySetDefinition(String psetId) {
+		return false;
+	}
+
+	/**
 	 * Create an information delivery specification
 	 * 
-	 * GRAPHQL: createInformationDeliverySpecification(idsId: ID!, name: String!, parentId: ID):
-	 * InformationDeliverySpecification
+	 * GRAPHQL: createInformationDeliverySpecification(idsId: ID!, name: String!,
+	 * parentId: ID): InformationDeliverySpecification
 	 * 
 	 * @param idsId    Id of information delivery specification
 	 * @param name     Name of information delivery specification
 	 * @param parentId (Optional) parent ID
 	 * @return Created information delivery specification
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public InformationDeliverySpecification createInformationDeliverySpecification(String idsId, String name,
 			Optional<String> parentId) throws IOException {
