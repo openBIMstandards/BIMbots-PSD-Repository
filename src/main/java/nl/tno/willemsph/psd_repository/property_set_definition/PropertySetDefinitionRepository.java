@@ -117,8 +117,23 @@ public class PropertySetDefinitionRepository {
 		return getOnePropertySetDefinition(propertySetDefinitionInput.getName());
 	}
 
-	public boolean deletePropertySetDefinition(String psetId) {
-		return false;
+	public boolean deletePropertySetDefinition(String psetId) throws IOException {
+		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
+		queryStr.setIri("psd", psetId);
+		queryStr.append("DELETE { ");
+		queryStr.append("  ?psd ?pred ?obj . ");
+		queryStr.append("  ?obj rdf:type IFC4-PSD:PropertyDef ; IFC4-PSD:name ?pdName . ");
+		queryStr.append("  ?sub ?inv ?psd . ");		
+		queryStr.append("} ");
+		queryStr.append("WHERE { ");
+		queryStr.append("  ?psd ?pred ?obj . ");
+		queryStr.append("  OPTIONAL { ?obj rdf:type IFC4-PSD:PropertyDef ; IFC4-PSD:name ?pdName . } ");
+		queryStr.append("  OPTIONAL { ?sub ?inv ?psd . } ");		
+		queryStr.append("} ");
+
+		EmbeddedServer.instance.update(queryStr);
+
+		return true;
 	}
 
 	public PropertyDefinition getPropertyDef(URI reqPropertyId) {
