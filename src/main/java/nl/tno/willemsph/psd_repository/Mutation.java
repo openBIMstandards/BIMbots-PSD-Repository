@@ -56,7 +56,7 @@ public class Mutation implements GraphQLMutationResolver {
 	 * @param psetId Id of property set definition
 	 */
 	public boolean deletePropertySetDefinition(String psetId) {
-		return false;
+		return propertySetDefinitionRepository.deletePropertySetDefinition(psetId);
 	}
 
 	/**

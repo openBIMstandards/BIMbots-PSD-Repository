@@ -117,6 +117,10 @@ public class PropertySetDefinitionRepository {
 		return getOnePropertySetDefinition(propertySetDefinitionInput.getName());
 	}
 
+	public boolean deletePropertySetDefinition(String psetId) {
+		return false;
+	}
+
 	public PropertyDefinition getPropertyDef(URI reqPropertyId) {
 		return new PropertyDefinition(reqPropertyId.toString());
 	}
