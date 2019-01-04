@@ -34,6 +34,23 @@ public class PropertySetDefinitionRepository {
 		return propertySetDefinition;
 	}
 
+	private String getPropertySetDefinitionName(String psetId) throws IOException {
+		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
+		queryStr.setIri("pset", psetId);
+		queryStr.append("SELECT ?name ");
+		queryStr.append("WHERE {");
+		queryStr.append("  ?pset IFC4-PSD:name ?name . ");
+		queryStr.append("} ");
+		JsonNode responseNodes = EmbeddedServer.instance.query(queryStr);
+		if (responseNodes.size() > 0) {
+			for (JsonNode node : responseNodes) {
+				JsonNode nameNode = node.get("name");
+				if (nameNode != null) {return nameNode.get("value").textValue();}
+			}
+		}
+		return null;
+	}
+
 	public List<PropertySetDefinition> getAllPropertySetDefsForClass(String classId) throws IOException {
 		List<PropertySetDefinition> allPropertySetDefinitions = new ArrayList<>();
 		List<String> allPropertySetDefinitionNames = getAllPropertySetDefinitionNames(classId);
@@ -117,18 +134,50 @@ public class PropertySetDefinitionRepository {
 		return getOnePropertySetDefinition(propertySetDefinitionInput.getName());
 	}
 
+	public PropertySetDefinition updatePropertySetDefinition(PropertySetDefinitionInput propertySetDefinitionInput)
+			throws IOException {
+		String psetName = getPropertySetDefinitionName(propertySetDefinitionInput.getId());
+		if (psetName != null) {
+			PropertySetDefinition psd = getOnePropertySetDefinition(psetName);
+			psd.setId(propertySetDefinitionInput.getId());
+			if (!psd.getName().equals(propertySetDefinitionInput.getName())
+					&& propertySetDefinitionInput.getName() != null
+					&& propertySetDefinitionInput.getName().length() > 0) {
+				updateName(psd, propertySetDefinitionInput);
+			}
+			return psd;
+		}
+		return null;
+	}
+
+	private void updateName(PropertySetDefinition psd, PropertySetDefinitionInput psdInput) throws IOException {
+		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
+		queryStr.setIri("psd", psd.getId());
+		queryStr.setLiteral("origName", psd.getName());
+		queryStr.setLiteral("newName", psdInput.getName());
+		queryStr.append("DELETE { ");
+		queryStr.append("  ?psd IFC4-PSD:name ?origName .");
+		queryStr.append("} ");
+		queryStr.append("INSERT { ");
+		queryStr.append("  ?psd IFC4-PSD:name ?newName .");
+		queryStr.append("} ");
+		queryStr.append("WHERE { ?psd IFC4-PSD:name ?origName . } ");
+
+		EmbeddedServer.instance.update(queryStr);
+	}
+
 	public boolean deletePropertySetDefinition(String psetId) throws IOException {
 		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
 		queryStr.setIri("psd", psetId);
 		queryStr.append("DELETE { ");
 		queryStr.append("  ?psd ?pred ?obj . ");
 		queryStr.append("  ?obj rdf:type IFC4-PSD:PropertyDef ; IFC4-PSD:name ?pdName . ");
-		queryStr.append("  ?sub ?inv ?psd . ");		
+		queryStr.append("  ?sub ?inv ?psd . ");
 		queryStr.append("} ");
 		queryStr.append("WHERE { ");
 		queryStr.append("  ?psd ?pred ?obj . ");
 		queryStr.append("  OPTIONAL { ?obj rdf:type IFC4-PSD:PropertyDef ; IFC4-PSD:name ?pdName . } ");
-		queryStr.append("  OPTIONAL { ?sub ?inv ?psd . } ");		
+		queryStr.append("  OPTIONAL { ?sub ?inv ?psd . } ");
 		queryStr.append("} ");
 
 		EmbeddedServer.instance.update(queryStr);

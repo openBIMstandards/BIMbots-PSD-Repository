@@ -47,6 +47,22 @@ public class Mutation implements GraphQLMutationResolver {
 			throws IOException {
 		return propertySetDefinitionRepository.createPropertySetDefinition(propertySetDefinitionInput);
 	}
+	
+	/**
+	 * Update a property set definition specified by this PropertySetDefinitionInput
+	 * instance
+	 * 
+	 * GRAPHQL: updatePropertySetDefinition(psdInput: PropertySetDefinitionInput!):
+	 * PropertySetDefinition
+	 * 
+	 * @param propertySetDefinitionInput Property set definition property values
+	 * @return Updated Property set definition
+	 * @throws IOException
+	 */
+	public PropertySetDefinition updatePropertySetDefinition(PropertySetDefinitionInput propertySetDefinitionInput)
+			throws IOException {
+		return propertySetDefinitionRepository.updatePropertySetDefinition(propertySetDefinitionInput);
+	}
 
 	/**
 	 * Delete a property set definition

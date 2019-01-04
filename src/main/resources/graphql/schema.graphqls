@@ -98,6 +98,8 @@ type Mutation {
 	createInformationDeliverySpecification(idsId: ID!, name: String!, parentId: ID): InformationDeliverySpecification
 	# Create a property set definition specified by this PropertySetDefinitionInput instance
 	createPropertySetDefinition(psdInput: PropertySetDefinitionInput!): PropertySetDefinition
+	# Update a property set definition specified by this PropertySetDefinitionInput instance
+	updatePropertySetDefinition(psdInput: PropertySetDefinitionInput!): PropertySetDefinition
 	# Delete a property set definition
 	deletePropertySetDefinition(psetId: ID!): Boolean
 	# Add a required property set to an information delivery specification
