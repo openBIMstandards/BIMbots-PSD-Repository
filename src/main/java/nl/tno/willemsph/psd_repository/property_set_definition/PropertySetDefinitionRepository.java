@@ -2,6 +2,7 @@ package nl.tno.willemsph.psd_repository.property_set_definition;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -45,7 +46,9 @@ public class PropertySetDefinitionRepository {
 		if (responseNodes.size() > 0) {
 			for (JsonNode node : responseNodes) {
 				JsonNode nameNode = node.get("name");
-				if (nameNode != null) {return nameNode.get("value").textValue();}
+				if (nameNode != null) {
+					return nameNode.get("value").textValue();
+				}
 			}
 		}
 		return null;
@@ -134,17 +137,25 @@ public class PropertySetDefinitionRepository {
 		return getOnePropertySetDefinition(propertySetDefinitionInput.getName());
 	}
 
-	public PropertySetDefinition updatePropertySetDefinition(PropertySetDefinitionInput propertySetDefinitionInput)
-			throws IOException {
-		String psetName = getPropertySetDefinitionName(propertySetDefinitionInput.getId());
+	public PropertySetDefinition updatePropertySetDefinition(PropertySetDefinitionInput psetInput)
+			throws IOException, URISyntaxException {
+		String psetName = getPropertySetDefinitionName(psetInput.getId());
 		if (psetName != null) {
 			PropertySetDefinition psd = getOnePropertySetDefinition(psetName);
-			psd.setId(propertySetDefinitionInput.getId());
-			if (!psd.getName().equals(propertySetDefinitionInput.getName())
-					&& propertySetDefinitionInput.getName() != null
-					&& propertySetDefinitionInput.getName().length() > 0) {
-				updateName(psd, propertySetDefinitionInput);
+			psd.setId(psetInput.getId());
+			if (!psd.getName().equals(psetInput.getName()) && psetInput.getName() != null
+					&& psetInput.getName().length() > 0) {
+				updateName(psd, psetInput);
 			}
+
+			PropertySetDefinitionResolver psdResolver = new PropertySetDefinitionResolver();
+			psd.setDefinition(psdResolver.getDefinition(psd));
+			if (psd.getDefinition() != null && !psd.getDefinition().equals(psetInput.getDefinition())) {
+				updateDefinition(psd, psetInput);
+			} else if (psd.getDefinition() == null && psetInput.getDefinition() != null) {
+				updateDefinition(psd, psetInput);
+			}
+
 			return psd;
 		}
 		return null;
@@ -162,6 +173,30 @@ public class PropertySetDefinitionRepository {
 		queryStr.append("  ?psd IFC4-PSD:name ?newName .");
 		queryStr.append("} ");
 		queryStr.append("WHERE { ?psd IFC4-PSD:name ?origName . } ");
+
+		EmbeddedServer.instance.update(queryStr);
+	}
+
+	private void updateDefinition(PropertySetDefinition psd, PropertySetDefinitionInput psdInput) throws IOException {
+		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
+		queryStr.setIri("psd", psd.getId());
+		if (psd.getDefinition() != null) {
+			queryStr.setLiteral("origDefinition", psd.getDefinition());
+			queryStr.append("DELETE { ");
+			queryStr.append("  ?psd IFC4-PSD:definition ?origDefinition .");
+			queryStr.append("} ");
+		}
+		if (psdInput.getDefinition() != null) {
+			queryStr.setLiteral("newDefinition", psdInput.getDefinition());
+			queryStr.append("INSERT { ");
+			queryStr.append("  ?psd IFC4-PSD:definition ?newDefinition .");
+			queryStr.append("} ");
+		}
+		queryStr.append("WHERE { ");
+		if (psd.getDefinition() != null) {
+			queryStr.append(" ?psd IFC4-PSD:definition ?origDefinition . ");
+		}
+		queryStr.append("} ");
 
 		EmbeddedServer.instance.update(queryStr);
 	}

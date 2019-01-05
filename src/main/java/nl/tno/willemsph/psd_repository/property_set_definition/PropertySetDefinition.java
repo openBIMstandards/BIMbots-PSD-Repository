@@ -29,4 +29,14 @@ public class PropertySetDefinition {
 		this.name = name;
 	}
 
+	private String definition;
+
+	String getDefinition() {
+		return this.definition;
+	}
+
+	void setDefinition(String definition) {
+		this.definition = definition;
+	}
+
 }

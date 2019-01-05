@@ -58,9 +58,10 @@ public class Mutation implements GraphQLMutationResolver {
 	 * @param propertySetDefinitionInput Property set definition property values
 	 * @return Updated Property set definition
 	 * @throws IOException
+	 * @throws URISyntaxException 
 	 */
 	public PropertySetDefinition updatePropertySetDefinition(PropertySetDefinitionInput propertySetDefinitionInput)
-			throws IOException {
+			throws IOException, URISyntaxException {
 		return propertySetDefinitionRepository.updatePropertySetDefinition(propertySetDefinitionInput);
 	}
 
