@@ -119,6 +119,14 @@ public class PropertySetDefinitionRepository {
 			queryStr.append(
 					"	?psd IFC4-PSD:ifcVersion [ rdf:type IFC4-PSD:IfcVersion ; IFC4-PSD:version ?ifcVersion ] . ");
 		}
+		if (propertySetDefinitionInput.getApplicableClasses() != null) {
+			int index = 0;
+			for (String applicableClass : propertySetDefinitionInput.getApplicableClasses()) {
+				queryStr.setIri("applicableClass" + index, applicableClass);
+				queryStr.append("  ?psd IFC4-PSD:applicableClass ?applicableClass" + index + " . ");
+				index++;
+			}
+		}
 		if (propertySetDefinitionInput.getPropertyDefs() != null
 				&& propertySetDefinitionInput.getPropertyDefs().size() > 0) {
 			for (PropertyDefinitionInput pDefInput : propertySetDefinitionInput.getPropertyDefs()) {
@@ -155,6 +163,9 @@ public class PropertySetDefinitionRepository {
 			} else if (psd.getDefinition() == null && psetInput.getDefinition() != null) {
 				updateDefinition(psd, psetInput);
 			}
+
+			psd.setApplicableClasses(psdResolver.getApplicableClasses(psd));
+			updateApplicableClasses(psd, psetInput);
 
 			return psd;
 		}
@@ -196,6 +207,33 @@ public class PropertySetDefinitionRepository {
 		if (psd.getDefinition() != null) {
 			queryStr.append(" ?psd IFC4-PSD:definition ?origDefinition . ");
 		}
+		queryStr.append("} ");
+
+		EmbeddedServer.instance.update(queryStr);
+	}
+
+	private void updateApplicableClasses(PropertySetDefinition psd, PropertySetDefinitionInput psdInput)
+			throws IOException {
+		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
+		queryStr.setIri("psd", psd.getId());
+		if (psd.getApplicableClasses() != null) {
+			queryStr.append("DELETE { ");
+			for (int index = 0; index < psd.getApplicableClasses().size(); index++) {
+				queryStr.setIri("origClass" + index, psd.getApplicableClasses().get(index));
+				queryStr.append("  ?psd IFC4-PSD:applicableClass ?origClass" + index + " .");
+			}
+			queryStr.append("} ");
+		}
+		if (psdInput.getApplicableClasses() != null) {
+			queryStr.append("INSERT { ");
+			for (int index = 0; index < psdInput.getApplicableClasses().size(); index++) {
+				queryStr.setIri("newClass" + index, psdInput.getApplicableClasses().get(index));
+				queryStr.append("  ?psd IFC4-PSD:applicableClass ?newClass" + index + " .");
+			}
+			queryStr.append("} ");
+		}
+		queryStr.append("WHERE { ");
+		queryStr.append(" ?psd IFC4-PSD:applicableClass ?applicableClass . ");
 		queryStr.append("} ");
 
 		EmbeddedServer.instance.update(queryStr);

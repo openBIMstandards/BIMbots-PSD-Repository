@@ -1,5 +1,7 @@
 package nl.tno.willemsph.psd_repository.property_set_definition;
 
+import java.util.List;
+
 public class PropertySetDefinition {
 
 	public PropertySetDefinition() {
@@ -39,4 +41,13 @@ public class PropertySetDefinition {
 		this.definition = definition;
 	}
 
+	List<String> applicableClasses;
+
+	List<String> getApplicableClasses() {
+		return this.applicableClasses;
+	}
+
+	void setApplicableClasses(List<String> applicableClasses) {
+		this.applicableClasses = applicableClasses;
+	}
 }

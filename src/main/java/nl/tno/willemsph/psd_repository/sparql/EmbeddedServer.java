@@ -201,6 +201,7 @@ public class EmbeddedServer {
 		queryStr.append("WHERE {");
 		queryStr.append("	?subject ?predicate ?value .");
 		queryStr.append("}");
+		queryStr.append("ORDER BY ?value");
 
 		JsonNode responseNodes = EmbeddedServer.instance.query(queryStr);
 		if (responseNodes.size() > 0) {

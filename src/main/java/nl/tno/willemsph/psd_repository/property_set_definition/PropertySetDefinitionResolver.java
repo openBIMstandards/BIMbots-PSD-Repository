@@ -42,15 +42,23 @@ public class PropertySetDefinitionResolver implements GraphQLResolver<PropertySe
 
 	public List<String> getApplicableClasses(PropertySetDefinition propertySetDefinition)
 			throws IOException, URISyntaxException {
-		URI subject = new URI(getId(propertySetDefinition));
-		URI predicate = new URI(EmbeddedServer.IFC4_PSD + "#applicableClass");
-		return EmbeddedServer.getStringValues(subject, predicate);
+		String id = getId(propertySetDefinition);
+		if (id != null) {
+			URI subject = new URI(id);
+			URI predicate = new URI(EmbeddedServer.IFC4_PSD + "#applicableClass");
+			return EmbeddedServer.getStringValues(subject, predicate);
+		}
+		return null;
 	}
 
 	public String getDefinition(PropertySetDefinition propertySetDefinition) throws IOException, URISyntaxException {
-		URI subject = new URI(getId(propertySetDefinition));
-		URI predicate = new URI(EmbeddedServer.IFC4_PSD + "#definition");
-		return EmbeddedServer.getStringValue(subject, predicate);
+		String id = getId(propertySetDefinition);
+		if (id != null) {
+			URI subject = new URI(id);
+			URI predicate = new URI(EmbeddedServer.IFC4_PSD + "#definition");
+			return EmbeddedServer.getStringValue(subject, predicate);
+		}
+		return null;
 	}
 
 	public String getDefinitionAlias(PropertySetDefinition propertySetDefinition, String language)
@@ -70,27 +78,31 @@ public class PropertySetDefinitionResolver implements GraphQLResolver<PropertySe
 	public List<PropertyDefinition> getPropertyDefs(PropertySetDefinition propertySetDefinition)
 			throws URISyntaxException, IOException {
 		List<PropertyDefinition> propertyDefs = new ArrayList<>();
-		URI subject = new URI(getId(propertySetDefinition));
-		URI predicate = new URI(EmbeddedServer.IFC4_PSD + "#propertyDef");
-		String valuesString = EmbeddedServer.getStringValue(subject, predicate);
-		if (valuesString != null) {
-			String[] values = valuesString.split(" ");
-			List<String> valueList = Arrays.asList(values);
-			for (String value : valueList) {
-				propertyDefs.add(new PropertyDefinition(value));
-			}
-			Collections.sort(propertyDefs, new Comparator<PropertyDefinition>() {
-				@Override
-				public int compare(PropertyDefinition o1, PropertyDefinition o2) {
-					PropertyDefinitionResolver propertyDefinitionResolver = new PropertyDefinitionResolver();
-					try {
-						return propertyDefinitionResolver.getName(o1).compareTo(propertyDefinitionResolver.getName(o2));
-					} catch (IOException | URISyntaxException e) {
-						e.printStackTrace();
-					}
-					return 0;
+		String id = getId(propertySetDefinition);
+		if (id != null) {
+			URI subject = new URI(id);
+			URI predicate = new URI(EmbeddedServer.IFC4_PSD + "#propertyDef");
+			String valuesString = EmbeddedServer.getStringValue(subject, predicate);
+			if (valuesString != null) {
+				String[] values = valuesString.split(" ");
+				List<String> valueList = Arrays.asList(values);
+				for (String value : valueList) {
+					propertyDefs.add(new PropertyDefinition(value));
 				}
-			});
+				Collections.sort(propertyDefs, new Comparator<PropertyDefinition>() {
+					@Override
+					public int compare(PropertyDefinition o1, PropertyDefinition o2) {
+						PropertyDefinitionResolver propertyDefinitionResolver = new PropertyDefinitionResolver();
+						try {
+							return propertyDefinitionResolver.getName(o1)
+									.compareTo(propertyDefinitionResolver.getName(o2));
+						} catch (IOException | URISyntaxException e) {
+							e.printStackTrace();
+						}
+						return 0;
+					}
+				});
+			}
 		}
 		return propertyDefs;
 	}
