@@ -72,7 +72,7 @@ input PropertyTypeInput {
 }
 
 input PropertyDefinitionInput {
-	id: String!
+	id: String
 	ifdguid: String
 	name: String
 	nameAliases: [LanguageTaggedStringInput]

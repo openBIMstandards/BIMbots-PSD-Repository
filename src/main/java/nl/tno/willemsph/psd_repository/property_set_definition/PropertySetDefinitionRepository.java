@@ -5,6 +5,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 import org.apache.jena.query.ParameterizedSparqlString;
@@ -129,12 +130,20 @@ public class PropertySetDefinitionRepository {
 		}
 		if (propertySetDefinitionInput.getPropertyDefs() != null
 				&& propertySetDefinitionInput.getPropertyDefs().size() > 0) {
+			int index = 0;
 			for (PropertyDefinitionInput pDefInput : propertySetDefinitionInput.getPropertyDefs()) {
-				queryStr.setIri("pd", pDefInput.getId());
-				queryStr.setLiteral("pdName", pDefInput.getName());
-				queryStr.append("  ?pd rdf:type IFC4-PSD:PropertyDef . ");
-				queryStr.append("  ?pd IFC4-PSD:name ?pdName . ");
-				queryStr.append("  ?psd IFC4-PSD:propertyDef ?pd; ");
+				String id = pDefInput.getId();
+				if (id == null) {
+					id = "http://openbimstandards.org/pset_repository#PropertyDef_" + UUID.randomUUID().toString();
+				}
+				queryStr.setIri("pd" + index, id);
+				queryStr.setLiteral("pdName" + index, pDefInput.getName());
+				queryStr.append("  ?pd" + index + " rdf:type IFC4-PSD:PropertyDef . ");
+				queryStr.append("  ?pd" + index + " IFC4-PSD:name ?pdName" + index + " . ");
+				queryStr.append("  ?psd IFC4-PSD:propertyDef ?pd" + index + ". ");
+//				queryStr.setLiteral("pdName", pDefInput.getName());
+//				queryStr.append("  ?psd IFC4-PSD:propertyDef [rdf:type IFC4-PSD:PropertyDef ; IFC4-PSD:name ?pdName] . ");
+				index++;
 			}
 		}
 		queryStr.append("} ");
