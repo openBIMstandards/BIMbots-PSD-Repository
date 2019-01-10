@@ -50,6 +50,8 @@ type InformationDeliverySpecification {
 type Query {
 	# Get all property set definitions that are stored in the repository
 	allPSDs: [PropertySetDefinition]
+	# Get all property definitions that are store in the repository
+	allPDs: [PropertyDefinition]
 	# Get a single property set definition identified by its name (e.g. Pset_WallCommon)
 	onePSD(name: String!): PropertySetDefinition
 	# Get all property set definitions that are applicable to the specified IFC class

@@ -9,6 +9,7 @@ import com.coxautodev.graphql.tools.GraphQLQueryResolver;
 
 import nl.tno.willemsph.psd_repository.information_delivery_specification.InformationDeliverySpecification;
 import nl.tno.willemsph.psd_repository.information_delivery_specification.InformationDeliverySpecificationRepository;
+import nl.tno.willemsph.psd_repository.property_definition.PropertyDefinition;
 import nl.tno.willemsph.psd_repository.property_set_definition.PropertySetDefinition;
 import nl.tno.willemsph.psd_repository.property_set_definition.PropertySetDefinitionRepository;
 
@@ -23,6 +24,10 @@ public class Query implements GraphQLQueryResolver {
 		this.propertySetDefinitionRepository = propertySetDefinitionRepository;
 		this.informationDeliverySpecificationRepository = informationDeliverySpecificationRepository;
 	}
+	
+	//
+	// Property Set Definition
+	//
 
 	public List<PropertySetDefinition> allPSDs() throws IOException {
 		return this.propertySetDefinitionRepository.getAllPropertySetDefinitions();
@@ -48,7 +53,20 @@ public class Query implements GraphQLQueryResolver {
 	public List<PropertySetDefinition> allPSDsForClass(String classId) throws IOException {
 		return this.propertySetDefinitionRepository.getAllPropertySetDefsForClass(classId);
 	}
+	
+	//
+	// Property Definition
+	//
+	
+	public List<PropertyDefinition> allPDs() throws IOException {
+		return this.propertySetDefinitionRepository.getAllPropertyDefinitions();
+	}
+	
 
+	//
+	// Information Delivery Specification
+	//
+	
 	/**
 	 * GRAPHQL query: allIDSs: [InformationDeliverySpecification]
 	 * 
