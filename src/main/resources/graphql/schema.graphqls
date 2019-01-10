@@ -19,6 +19,8 @@ type PropertyDefinition {
 	definitionAlias(language: String!): String
 	definitionAliases: [LanguageTaggedString]
 	propertyType: PropertyType
+	# Inverse relation to Property Set Definition
+	invPropertySetDefinitions: [PropertySetDefinition]
 }
 
 type PropertySetDefinition {

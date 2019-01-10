@@ -300,7 +300,7 @@ public class PropertySetDefinitionRepository {
 		queryStr.append("SELECT ?propDef ?name ");
 		queryStr.append("WHERE {");
 		queryStr.append("	?propDef rdf:type IFC4-PSD:PropertyDef ; ");
-		queryStr.append("	   IFC4-PSD:name ?name . ");
+		queryStr.append("	 IFC4-PSD:name ?name . ");
 		queryStr.append("}");
 		queryStr.append("ORDER BY ?name ");
 
@@ -312,10 +312,6 @@ public class PropertySetDefinitionRepository {
 				if (propDefNode != null) {
 					propDef = new PropertyDefinition(propDefNode.get("value").asText());
 					allPropertyDefinitions.add(propDef);
-				}
-				JsonNode nameNode = node.get("name");
-				if (nameNode != null) {
-					String name = nameNode.get("value").asText();
 				}
 			}
 		}

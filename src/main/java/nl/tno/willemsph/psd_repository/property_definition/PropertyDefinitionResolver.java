@@ -13,6 +13,7 @@ import com.coxautodev.graphql.tools.GraphQLResolver;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import nl.tno.willemsph.psd_repository.common.LanguageTaggedString;
+import nl.tno.willemsph.psd_repository.property_set_definition.PropertySetDefinition;
 import nl.tno.willemsph.psd_repository.property_type.PropertyType;
 import nl.tno.willemsph.psd_repository.sparql.EmbeddedServer;
 
@@ -26,13 +27,15 @@ public class PropertyDefinitionResolver implements GraphQLResolver<PropertyDefin
 		return EmbeddedServer.getStringValue(subject, predicate);
 	}
 
-	public String getNameAlias(PropertyDefinition propertyDefinition, String language) throws URISyntaxException, IOException {
+	public String getNameAlias(PropertyDefinition propertyDefinition, String language)
+			throws URISyntaxException, IOException {
 		URI subject = new URI(propertyDefinition.getId());
 		URI predicate = new URI(EmbeddedServer.IFC4_PSD + "#nameAlias");
 		return EmbeddedServer.getLanguageTaggedStringValue(subject, predicate, language);
 	}
-	
-	public List<LanguageTaggedString> getNameAliases(PropertyDefinition propertyDefinition) throws URISyntaxException, IOException {
+
+	public List<LanguageTaggedString> getNameAliases(PropertyDefinition propertyDefinition)
+			throws URISyntaxException, IOException {
 		URI subject = new URI(propertyDefinition.getId());
 		URI predicate = new URI(EmbeddedServer.IFC4_PSD + "#nameAlias");
 		return EmbeddedServer.getLanguageTaggedStringValues(subject, predicate);
@@ -43,26 +46,26 @@ public class PropertyDefinitionResolver implements GraphQLResolver<PropertyDefin
 		URI predicate = new URI(EmbeddedServer.IFC4_PSD + "#ifdguid");
 		return EmbeddedServer.getStringValue(subject, predicate);
 	}
-	
+
 	public String getDefinition(PropertyDefinition propertyDefinition) throws IOException, URISyntaxException {
 		URI subject = new URI(propertyDefinition.getId());
 		URI predicate = new URI(EmbeddedServer.IFC4_PSD + "#definition");
 		return EmbeddedServer.getStringValue(subject, predicate);
 	}
-	
-	public String getDefinitionAlias(PropertyDefinition propertyDefinition, String language) throws URISyntaxException, IOException {
+
+	public String getDefinitionAlias(PropertyDefinition propertyDefinition, String language)
+			throws URISyntaxException, IOException {
 		URI subject = new URI(propertyDefinition.getId());
 		URI predicate = new URI(EmbeddedServer.IFC4_PSD + "#definitionAlias");
 		return EmbeddedServer.getLanguageTaggedStringValue(subject, predicate, language);
 	}
 
-	public List<LanguageTaggedString> getDefinitionAliases(PropertyDefinition propertyDefinition) throws URISyntaxException, IOException {
+	public List<LanguageTaggedString> getDefinitionAliases(PropertyDefinition propertyDefinition)
+			throws URISyntaxException, IOException {
 		URI subject = new URI(propertyDefinition.getId());
 		URI predicate = new URI(EmbeddedServer.IFC4_PSD + "#definitionAlias");
 		return EmbeddedServer.getLanguageTaggedStringValues(subject, predicate);
 	}
-
-	
 
 	public PropertyType getPropertyType(PropertyDefinition propertyDefinition) throws IOException {
 		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
@@ -104,6 +107,30 @@ public class PropertyDefinitionResolver implements GraphQLResolver<PropertyDefin
 				propertyType.setEnumItems(enumItems);
 			}
 			return propertyType;
+		}
+		return null;
+	}
+
+	public List<PropertySetDefinition> getInvPropertySetDefinitions(PropertyDefinition propertyDefinition) throws IOException {
+		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
+		queryStr.setIri("propDef", propertyDefinition.getId());
+		queryStr.append("SELECT ?name ");
+		queryStr.append("WHERE { ");
+		queryStr.append("	?pset  IFC4-PSD:propertyDef ?propDef . ");
+		queryStr.append("	?pset IFC4-PSD:name ?name . ");
+		queryStr.append("} ");
+		queryStr.append("ORDER BY ?name ");
+
+		JsonNode responseNodes = EmbeddedServer.instance.query(queryStr);
+		if (responseNodes.size() > 0) {
+			List<PropertySetDefinition> psets = new ArrayList<>();
+			for (JsonNode node : responseNodes) {
+				JsonNode nameNode = node.get("name");
+				if (nameNode != null) {
+					psets.add(new PropertySetDefinition(nameNode.get("value").asText()));
+				}
+			}
+			return psets;
 		}
 		return null;
 	}
