@@ -136,34 +136,36 @@ public class PropertySetDefinitionRepository {
 				String id = pDefInput.getId();
 				if (id == null) {
 					id = "http://openbimstandards.org/pset_repository#PropertyDef_" + UUID.randomUUID().toString();
-				}
-				queryStr.setIri("pd" + index, id);
-				queryStr.setLiteral("pdName" + index, pDefInput.getName());
-				queryStr.append("  ?pd" + index + " rdf:type IFC4-PSD:PropertyDef ; ");
-				queryStr.append("    IFC4-PSD:name ?pdName" + index + " . ");
-				String definition = pDefInput.getDefinition();
-				if (definition != null) {
-					queryStr.setLiteral("pdDefinition" + index, pDefInput.getDefinition());
-					queryStr.append("  ?pd" + index + " IFC4-PSD:definition ?pdDefinition" + index + " . ");
-				}
-				PropertyTypeInput propertyType = pDefInput.getPropertyType();
-				if (propertyType != null) {
-					queryStr.setIri("propertyType" + index, propertyType.getType());
-					if (propertyType.getDataType() != null) {
-						queryStr.setIri("dataType" + index, propertyType.getDataType());
-						queryStr.setIri("dataTypePred", EmbeddedServer.IFC4_PSD + "#dataType");
-						queryStr.append("  ?pd" + index + " IFC4-PSD:propertyType  [ rdf:type  ?propertyType" + index
-								+ " ; ?dataTypePred ?dataType" + index + "] . ");
-					} else {
-						queryStr.append(
-								"  ?pd" + index + " IFC4-PSD:propertyType  [ rdf:type  ?propertyType" + index + " ; ");
-						queryStr.setIri("enumItemPred", EmbeddedServer.IFC4_PSD + "#enumItem");
-						for (int itemIndex = 0; itemIndex < propertyType.getEnumItems().size(); itemIndex++) {
-							queryStr.setLiteral("item" + itemIndex, propertyType.getEnumItems().get(itemIndex));
-							queryStr.append(" ?enumItemPred ?item" + itemIndex + " ; ");
-						}
-						queryStr.append(" ] . ");
+					queryStr.setIri("pd" + index, id);
+					queryStr.setLiteral("pdName" + index, pDefInput.getName());
+					queryStr.append("  ?pd" + index + " rdf:type IFC4-PSD:PropertyDef ; ");
+					queryStr.append("    IFC4-PSD:name ?pdName" + index + " . ");
+					String definition = pDefInput.getDefinition();
+					if (definition != null) {
+						queryStr.setLiteral("pdDefinition" + index, pDefInput.getDefinition());
+						queryStr.append("  ?pd" + index + " IFC4-PSD:definition ?pdDefinition" + index + " . ");
 					}
+					PropertyTypeInput propertyType = pDefInput.getPropertyType();
+					if (propertyType != null) {
+						queryStr.setIri("propertyType" + index, propertyType.getType());
+						if (propertyType.getDataType() != null) {
+							queryStr.setIri("dataType" + index, propertyType.getDataType());
+							queryStr.setIri("dataTypePred", EmbeddedServer.IFC4_PSD + "#dataType");
+							queryStr.append("  ?pd" + index + " IFC4-PSD:propertyType  [ rdf:type  ?propertyType"
+									+ index + " ; ?dataTypePred ?dataType" + index + "] . ");
+						} else {
+							queryStr.append("  ?pd" + index + " IFC4-PSD:propertyType  [ rdf:type  ?propertyType"
+									+ index + " ; ");
+							queryStr.setIri("enumItemPred", EmbeddedServer.IFC4_PSD + "#enumItem");
+							for (int itemIndex = 0; itemIndex < propertyType.getEnumItems().size(); itemIndex++) {
+								queryStr.setLiteral("item" + itemIndex, propertyType.getEnumItems().get(itemIndex));
+								queryStr.append(" ?enumItemPred ?item" + itemIndex + " ; ");
+							}
+							queryStr.append(" ] . ");
+						}
+					}
+				} else {
+					queryStr.setIri("pd" + index, id);
 				}
 				queryStr.append("  ?psd IFC4-PSD:propertyDef ?pd" + index + ". ");
 				index++;
