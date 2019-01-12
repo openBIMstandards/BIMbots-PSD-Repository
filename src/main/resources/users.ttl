@@ -1,0 +1,40 @@
+# baseURI: http://www.infrabim.nl/bimbots-psd-repository/users
+
+@prefix : <http://www.infrabim.nl/bimbots-psd-repository/users#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://www.infrabim.nl/bimbots-psd-repository/users>
+  rdf:type owl:Ontology ;
+  owl:versionInfo "Created with TopBraid Composer" ;
+.
+:User
+  rdf:type owl:Class ;
+  rdfs:subClassOf owl:Thing ;
+.
+:email
+  rdf:type owl:DatatypeProperty ;
+  rdf:type owl:FunctionalProperty ;
+  rdfs:domain :User ;
+  rdfs:range xsd:string ;
+.
+:name
+  rdf:type owl:DatatypeProperty ;
+  rdf:type owl:FunctionalProperty ;
+  rdfs:domain :User ;
+  rdfs:range xsd:string ;
+.
+:password
+  rdf:type owl:DatatypeProperty ;
+  rdf:type owl:FunctionalProperty ;
+  rdfs:domain :User ;
+  rdfs:range xsd:string ;
+.
+:salt
+  rdf:type owl:DatatypeProperty ;
+  rdf:type owl:FunctionalProperty ;
+  rdfs:domain :User ;
+  rdfs:range xsd:string ;
+.

@@ -64,6 +64,19 @@ type Query {
 	oneIDS(id: ID!): InformationDeliverySpecification
 }
 
+type User {
+	id: ID!
+	name: String!
+	email: String
+	salt: String
+	password: String
+}
+    
+input AuthData {
+	email: String!
+	password: String!
+}
+
 input LanguageTaggedStringInput {
 	content: String!
 	language: String!
@@ -98,22 +111,24 @@ input PropertySetDefinitionInput {
 
 # All mutations that are defined for this property set definition repository
 type Mutation {
-	# Create an information delivery specification
+		# Create an information delivery specification.
 	createInformationDeliverySpecification(idsId: ID!, name: String!, parentId: ID): InformationDeliverySpecification
-	# Create a property set definition specified by this PropertySetDefinitionInput instance
+		# Create a property set definition specified by this PropertySetDefinitionInput instance.
 	createPropertySetDefinition(psdInput: PropertySetDefinitionInput!): PropertySetDefinition
-	# Update a property set definition specified by this PropertySetDefinitionInput instance
+		# Update a property set definition specified by this PropertySetDefinitionInput instance.
 	updatePropertySetDefinition(psdInput: PropertySetDefinitionInput!): PropertySetDefinition
-	# Delete a property set definition
+		# Delete a property set definition.
 	deletePropertySetDefinition(psetId: ID!): Boolean
-	# Add a required property set to an information delivery specification
+		# Add a required property set to an information delivery specification.
 	addPset2Ids(idsId: ID!,	psetId: ID!, propIds: [ID]): InformationDeliverySpecification
-	# Remove a required property set from an information delivery specification
+		# Remove a required property set from an information delivery specification.
 	removePset2Ids(idsId: ID!,	psetId: ID!): InformationDeliverySpecification
-	# Add a mandatory property to a required property set to an information delivery specification
+		# Add a mandatory property to a required property set to an information delivery specification.
 	addProp2Pset2Ids(idsId: ID!, psetId: ID!, propId: ID!): InformationDeliverySpecification
-	# Remove a mandatory property from a required property set from an information delivery specification
+		# Remove a mandatory property from a required property set from an information delivery specification.
 	removeProp2Pset2Ids(idsId: ID!,	psetId: ID!, propId: ID!): InformationDeliverySpecification
+		# Create a user by name and authorization data.
+	createUser(name: String!, authProvider: AuthData!): User
 }
 
 schema {

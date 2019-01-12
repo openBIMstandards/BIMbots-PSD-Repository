@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 
 import com.coxautodev.graphql.tools.GraphQLMutationResolver;
 
+import nl.tno.willemsph.psd_repository.common.AuthData;
+import nl.tno.willemsph.psd_repository.common.User;
+import nl.tno.willemsph.psd_repository.common.UserRepository;
 import nl.tno.willemsph.psd_repository.information_delivery_specification.InformationDeliverySpecification;
 import nl.tno.willemsph.psd_repository.information_delivery_specification.InformationDeliverySpecificationRepository;
 import nl.tno.willemsph.psd_repository.property_set_definition.PropertySetDefinition;
@@ -17,6 +20,7 @@ import nl.tno.willemsph.psd_repository.property_set_definition.PropertySetDefini
 
 @Component
 public class Mutation implements GraphQLMutationResolver {
+	private final UserRepository userRepository;
 	private final PropertySetDefinitionRepository propertySetDefinitionRepository;
 	private final InformationDeliverySpecificationRepository informationDeliverySpecificationRepository;
 
@@ -26,10 +30,24 @@ public class Mutation implements GraphQLMutationResolver {
 	 * @param propertySetDefinitionRepository
 	 * @param informationDeliverySpecificationRepository
 	 */
-	public Mutation(PropertySetDefinitionRepository propertySetDefinitionRepository,
+	public Mutation(UserRepository userRepository, PropertySetDefinitionRepository propertySetDefinitionRepository,
 			InformationDeliverySpecificationRepository informationDeliverySpecificationRepository) {
+		this.userRepository = userRepository;
 		this.propertySetDefinitionRepository = propertySetDefinitionRepository;
 		this.informationDeliverySpecificationRepository = informationDeliverySpecificationRepository;
+	}
+
+	/**
+	 * Create a user by name and authorization data.
+	 * 
+	 * @param name User name
+	 * @param auth User authorization data
+	 * @return User object.
+	 * @throws IOException 
+	 */
+	public User createUser(String name, AuthData auth) throws IOException {
+		User newUser = new User(name, auth.getEmail(), auth.getPassword());
+		return userRepository.saveUser(newUser);
 	}
 
 	/**
@@ -47,7 +65,7 @@ public class Mutation implements GraphQLMutationResolver {
 			throws IOException {
 		return propertySetDefinitionRepository.createPropertySetDefinition(propertySetDefinitionInput);
 	}
-	
+
 	/**
 	 * Update a property set definition specified by this PropertySetDefinitionInput
 	 * instance
@@ -58,7 +76,7 @@ public class Mutation implements GraphQLMutationResolver {
 	 * @param propertySetDefinitionInput Property set definition property values
 	 * @return Updated Property set definition
 	 * @throws IOException
-	 * @throws URISyntaxException 
+	 * @throws URISyntaxException
 	 */
 	public PropertySetDefinition updatePropertySetDefinition(PropertySetDefinitionInput propertySetDefinitionInput)
 			throws IOException, URISyntaxException {
@@ -71,7 +89,7 @@ public class Mutation implements GraphQLMutationResolver {
 	 * GRAPHQL: deletePropertySetDefinition(psetId: ID!)
 	 * 
 	 * @param psetId Id of property set definition
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public boolean deletePropertySetDefinition(String psetId) throws IOException {
 		return propertySetDefinitionRepository.deletePropertySetDefinition(psetId);

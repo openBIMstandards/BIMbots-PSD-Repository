@@ -37,6 +37,7 @@ public class EmbeddedServer {
 	public static final String UPDATE_URL = "http://localhost:3330/rdf/update";
 	public static final String IFC4 = "http://ifcowl.openbimstandards.org/IFC4";
 	public static final String IFC4_PSD = "http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD";
+	public static final String USERS = "http://www.infrabim.nl/bimbots-psd-repository/users";
 	public static final String[] PSETS = { "Pset_BeamCommon", "Pset_BuildingCommon", "Pset_BuildingElementProxyCommon",
 			"Pset_BuildingStoreyCommon", "Pset_ChimneyCommon", "Pset_ColumnCommon", "Pset_ConcreteElementGeneral",
 			"Pset_CoveringCommon", "Pset_DoorCommon", "Pset_DoorWindowGlazingType",
@@ -46,7 +47,7 @@ public class EmbeddedServer {
 			"Pset_SlabCommon", "Pset_SpaceCommon", "Pset_StairCommon", "Pset_WallCommon", "Pset_WindowCommon" };
 	public static final String[] IDSS = { "Basic_IDM", "Kalkzandsteen_IDS" };
 	private static Dataset ds;
-	private ClassPathResource ifc4Resource, ifc4PsdResource;
+	private ClassPathResource ifc4Resource, ifc4PsdResource, usersResource;
 	private List<ClassPathResource> psetResources, idsResources;
 	public static FusekiServer sparql;
 	public static EmbeddedServer instance;
@@ -56,6 +57,7 @@ public class EmbeddedServer {
 		instance = this;
 		ifc4Resource = new ClassPathResource("IFC4.ttl");
 		ifc4PsdResource = new ClassPathResource("psetdef.ttl");
+		usersResource = new ClassPathResource("users.ttl");
 
 		psetResources = new ArrayList<>();
 		for (String pset : PSETS) {
@@ -73,6 +75,7 @@ public class EmbeddedServer {
 		Model defaultModel = ModelFactory.createDefaultModel();
 		defaultModel.read(ifc4Resource.getInputStream(), null, "TURTLE");
 		defaultModel.read(ifc4PsdResource.getInputStream(), null, "TURTLE");
+		defaultModel.read(usersResource.getInputStream(), null, "TURTLE");
 		for (ClassPathResource psetResource : psetResources) {
 			LOGGER.info("Reading " + psetResource.getFilename());
 			defaultModel.read(psetResource.getInputStream(), null, "TURTLE");
