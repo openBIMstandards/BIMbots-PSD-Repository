@@ -16,10 +16,11 @@ public class UserRepository {
 	public User findByEmail(String email) throws IOException {
 		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
 		queryStr.setNsPrefix("usr", EmbeddedServer.USERS + '#');
-		queryStr.setIri("email", email);
+		queryStr.setLiteral("email", email);
 		queryStr.append("SELECT ?user ?name ?salt ?password ");
 		queryStr.append("WHERE {");
-		queryStr.append("  ?user rdf:type usr:User ; usr:name ?name ; usr:email ?email ; usr:salt ?salt ; usr:password ?password . ");
+		queryStr.append(
+				"  ?user rdf:type usr:User ; usr:name ?name ; usr:email ?email ; usr:salt ?salt ; usr:password ?password . ");
 		queryStr.append("}");
 
 		JsonNode responseNodes = EmbeddedServer.instance.query(queryStr);
@@ -90,6 +91,10 @@ public class UserRepository {
 		}
 
 		return null;
+	}
+
+	public boolean verify(User user, String providedPassword) {
+		return PasswordUtils.verifyUserPassword(providedPassword, user.getPassword(), user.getSalt());
 	}
 
 	public User saveUser(User user) throws IOException {
