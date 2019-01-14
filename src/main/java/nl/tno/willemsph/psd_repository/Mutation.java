@@ -11,7 +11,6 @@ import com.coxautodev.graphql.tools.GraphQLMutationResolver;
 
 import graphql.GraphQLException;
 import nl.tno.willemsph.psd_repository.common.AuthData;
-import nl.tno.willemsph.psd_repository.common.PasswordUtils;
 import nl.tno.willemsph.psd_repository.common.SigninPayLoad;
 import nl.tno.willemsph.psd_repository.common.User;
 import nl.tno.willemsph.psd_repository.common.UserRepository;
@@ -63,10 +62,11 @@ public class Mutation implements GraphQLMutationResolver {
 	 */
 	public SigninPayLoad signinUser(AuthData auth) throws IllegalAccessException, IOException {
 		User user = userRepository.findByEmail(auth.getEmail());
-		if (userRepository.verify(user, auth.getPassword())) {
+		if (user != null && userRepository.verify(user, auth.getPassword())) {
 			return new SigninPayLoad(user.getId(), user);
 		}
-		throw new GraphQLException("Invalid credentials");
+		return new SigninPayLoad("Invalid credentials", (User) null);
+		// throw new GraphQLException("Invalid credentials");
 	}
 
 	/**
