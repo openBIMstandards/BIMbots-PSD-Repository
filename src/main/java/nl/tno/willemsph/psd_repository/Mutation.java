@@ -4,12 +4,14 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 import org.springframework.stereotype.Component;
 
 import com.coxautodev.graphql.tools.GraphQLMutationResolver;
 
-import graphql.GraphQLException;
+import graphql.schema.DataFetchingEnvironment;
+import graphql.servlet.GraphQLContext;
 import nl.tno.willemsph.psd_repository.common.AuthData;
 import nl.tno.willemsph.psd_repository.common.SigninPayLoad;
 import nl.tno.willemsph.psd_repository.common.User;
@@ -22,6 +24,8 @@ import nl.tno.willemsph.psd_repository.property_set_definition.PropertySetDefini
 
 @Component
 public class Mutation implements GraphQLMutationResolver {
+	private final static Logger LOGGER = Logger.getLogger(Mutation.class.getName());
+
 	private final UserRepository userRepository;
 	private final PropertySetDefinitionRepository propertySetDefinitionRepository;
 	private final InformationDeliverySpecificationRepository informationDeliverySpecificationRepository;
@@ -80,8 +84,11 @@ public class Mutation implements GraphQLMutationResolver {
 	 * @return Created Property set definition
 	 * @throws IOException
 	 */
-	public PropertySetDefinition createPropertySetDefinition(PropertySetDefinitionInput propertySetDefinitionInput)
-			throws IOException {
+	public PropertySetDefinition createPropertySetDefinition(PropertySetDefinitionInput propertySetDefinitionInput,
+			DataFetchingEnvironment env) throws IOException {
+		GraphQLContext context = env.getContext();
+		String header = context.getHttpServletRequest().get().getHeader("Authorization");
+		LOGGER.info("Authorization: " + header);
 		return propertySetDefinitionRepository.createPropertySetDefinition(propertySetDefinitionInput);
 	}
 
