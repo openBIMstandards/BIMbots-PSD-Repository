@@ -4,15 +4,15 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Logger;
 
 import org.springframework.stereotype.Component;
 
 import com.coxautodev.graphql.tools.GraphQLMutationResolver;
 
+import graphql.GraphQLException;
 import graphql.schema.DataFetchingEnvironment;
-import graphql.servlet.GraphQLContext;
 import nl.tno.willemsph.psd_repository.common.AuthData;
+import nl.tno.willemsph.psd_repository.common.SessionTimeOutException;
 import nl.tno.willemsph.psd_repository.common.SigninPayLoad;
 import nl.tno.willemsph.psd_repository.common.User;
 import nl.tno.willemsph.psd_repository.common.UserRepository;
@@ -24,7 +24,7 @@ import nl.tno.willemsph.psd_repository.property_set_definition.PropertySetDefini
 
 @Component
 public class Mutation implements GraphQLMutationResolver {
-	private final static Logger LOGGER = Logger.getLogger(Mutation.class.getName());
+//	private final static Logger LOGGER = Logger.getLogger(Mutation.class.getName());
 
 	private final UserRepository userRepository;
 	private final PropertySetDefinitionRepository propertySetDefinitionRepository;
@@ -67,7 +67,7 @@ public class Mutation implements GraphQLMutationResolver {
 	public SigninPayLoad signinUser(AuthData auth) throws IllegalAccessException, IOException {
 		User user = userRepository.findByEmail(auth.getEmail());
 		if (user != null && userRepository.verify(user, auth.getPassword())) {
-			return new SigninPayLoad(user.getId(), user);
+			return userRepository.signinUser(user);
 		}
 		return new SigninPayLoad("Invalid credentials", (User) null);
 		// throw new GraphQLException("Invalid credentials");
@@ -86,9 +86,10 @@ public class Mutation implements GraphQLMutationResolver {
 	 */
 	public PropertySetDefinition createPropertySetDefinition(PropertySetDefinitionInput propertySetDefinitionInput,
 			DataFetchingEnvironment env) throws IOException {
-		GraphQLContext context = env.getContext();
-		String header = context.getHttpServletRequest().get().getHeader("Authorization");
-		LOGGER.info("Authorization: " + header);
+		boolean activeSession = userRepository.sessionActive(env.getContext());
+		if (!activeSession) {
+			throw new SessionTimeOutException("Session timed out", null);
+		}
 		return propertySetDefinitionRepository.createPropertySetDefinition(propertySetDefinitionInput);
 	}
 
