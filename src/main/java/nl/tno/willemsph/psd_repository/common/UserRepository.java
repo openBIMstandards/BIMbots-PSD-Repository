@@ -163,6 +163,8 @@ public class UserRepository {
 		queryStr.append("}");
 
 		EmbeddedServer.instance.update(queryStr);
+		
+		EmbeddedServer.instance.saveUsersModel();
 
 		return findById(userId);
 	}

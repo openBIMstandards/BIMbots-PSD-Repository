@@ -2,6 +2,7 @@ package nl.tno.willemsph.psd_repository.sparql;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -275,6 +276,11 @@ public class EmbeddedServer {
 			}
 		}
 		return null;
+	}
+
+	public void saveUsersModel() throws IOException {
+		Model usersModel = ds.getNamedModel(USERS);
+		usersModel.write(new FileOutputStream(usersResource.getFile()), "TURTLE");
 	}
 
 }
