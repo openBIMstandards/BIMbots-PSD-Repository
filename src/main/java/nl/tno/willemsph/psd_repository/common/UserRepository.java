@@ -187,4 +187,13 @@ public class UserRepository {
 		return false;
 	}
 
+	public boolean signoutUser(String token) {
+		SignedIn session = signedIn.get(token);
+		if (session != null) {
+			signedIn.remove(token);
+			return true;
+		}
+		return false;
+	}
+
 }

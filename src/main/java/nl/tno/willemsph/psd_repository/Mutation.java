@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 
 import com.coxautodev.graphql.tools.GraphQLMutationResolver;
 
-import graphql.GraphQLException;
 import graphql.schema.DataFetchingEnvironment;
 import nl.tno.willemsph.psd_repository.common.AuthData;
+import nl.tno.willemsph.psd_repository.common.InvalidCredentialsException;
 import nl.tno.willemsph.psd_repository.common.SessionTimeOutException;
 import nl.tno.willemsph.psd_repository.common.SigninPayLoad;
 import nl.tno.willemsph.psd_repository.common.User;
@@ -69,8 +69,11 @@ public class Mutation implements GraphQLMutationResolver {
 		if (user != null && userRepository.verify(user, auth.getPassword())) {
 			return userRepository.signinUser(user);
 		}
-		return new SigninPayLoad("Invalid credentials", (User) null);
-		// throw new GraphQLException("Invalid credentials");
+		throw new InvalidCredentialsException("Invalid credentials", null);
+	}
+
+	public boolean signoutUser(String token) {
+		return userRepository.signoutUser(token);
 	}
 
 	/**

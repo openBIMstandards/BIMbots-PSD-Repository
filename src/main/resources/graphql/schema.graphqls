@@ -135,7 +135,9 @@ type Mutation {
 		# Create a user by name and authorization data.
 	createUser(name: String!, authProvider: AuthData!): User
 		# Sign in a user.
-	signinUser(auth: AuthData): SigninPayload
+	signinUser(auth: AuthData!): SigninPayload
+		# Sign out a user.
+	signoutUser(token: String!): Boolean!
 }
 
 schema {
