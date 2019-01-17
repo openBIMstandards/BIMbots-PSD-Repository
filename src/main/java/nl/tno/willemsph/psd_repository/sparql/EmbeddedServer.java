@@ -75,7 +75,7 @@ public class EmbeddedServer {
 		Model defaultModel = ModelFactory.createDefaultModel();
 		defaultModel.read(ifc4Resource.getInputStream(), null, "TURTLE");
 		defaultModel.read(ifc4PsdResource.getInputStream(), null, "TURTLE");
-		defaultModel.read(usersResource.getInputStream(), null, "TURTLE");
+//		defaultModel.read(usersResource.getInputStream(), null, "TURTLE");
 		for (ClassPathResource psetResource : psetResources) {
 			LOGGER.info("Reading " + psetResource.getFilename());
 			defaultModel.read(psetResource.getInputStream(), null, "TURTLE");
@@ -84,7 +84,13 @@ public class EmbeddedServer {
 			LOGGER.info("Reading " + idsResource.getFilename());
 			defaultModel.read(idsResource.getInputStream(), null, "TURTLE");
 		}
+		
+		// users model graph
 		ds = DatasetFactory.create(defaultModel);
+		Model usersModel = ModelFactory.createDefaultModel();
+		usersModel.read(usersResource.getInputStream(), null, "TURTLE");
+		ds.addNamedModel(USERS, usersModel);
+		
 		sparql = FusekiServer.create().add("/rdf", ds, true).build();
 		sparql.start();
 	}

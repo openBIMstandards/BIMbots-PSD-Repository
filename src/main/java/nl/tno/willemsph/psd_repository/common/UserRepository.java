@@ -52,11 +52,14 @@ public class UserRepository {
 	public User findByEmail(String email) throws IOException {
 		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
 		queryStr.setNsPrefix("usr", EmbeddedServer.USERS + '#');
+		queryStr.setIri("graph", EmbeddedServer.USERS);
 		queryStr.setLiteral("email", email);
 		queryStr.append("SELECT ?user ?name ?salt ?password ");
 		queryStr.append("WHERE {");
+		queryStr.append("  GRAPH ?graph { ");
 		queryStr.append(
 				"  ?user rdf:type usr:User ; usr:name ?name ; usr:email ?email ; usr:salt ?salt ; usr:password ?password . ");
+		queryStr.append("  }");
 		queryStr.append("}");
 
 		JsonNode responseNodes = EmbeddedServer.instance.query(queryStr);
@@ -92,11 +95,14 @@ public class UserRepository {
 	public User findById(String userId) throws IOException {
 		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
 		queryStr.setNsPrefix("usr", EmbeddedServer.USERS + '#');
+		queryStr.setIri("graph", EmbeddedServer.USERS);
 		queryStr.setIri("user", userId);
 		queryStr.append("SELECT ?name ?email ?salt ?password ");
 		queryStr.append("WHERE {");
+		queryStr.append("  GRAPH ?graph { ");
 		queryStr.append(
 				"  ?user rdf:type usr:User ; usr:name ?name ; usr:email ?email ; usr:salt ?salt ; usr:password ?password . ");
+		queryStr.append("  }");
 		queryStr.append("}");
 
 		JsonNode responseNodes = EmbeddedServer.instance.query(queryStr);
@@ -141,14 +147,17 @@ public class UserRepository {
 
 		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
 		queryStr.setNsPrefix("usr", EmbeddedServer.USERS + '#');
+		queryStr.setIri("graph", EmbeddedServer.USERS);
 		queryStr.setIri("user", userId);
 		queryStr.setLiteral("name", user.getName());
 		queryStr.setLiteral("email", user.getEmail());
 		queryStr.setLiteral("salt", salt);
 		queryStr.setLiteral("password", password);
 		queryStr.append("INSERT {");
+		queryStr.append("  GRAPH ?graph { ");
 		queryStr.append(
 				"  ?user rdf:type usr:User ; usr:name ?name ; usr:email ?email ; usr:salt ?salt ; usr:password ?password . ");
+		queryStr.append("  }");
 		queryStr.append("}");
 		queryStr.append("WHERE {");
 		queryStr.append("}");
