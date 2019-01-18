@@ -201,6 +201,9 @@ public class PropertySetDefinitionRepository {
 			psd.setApplicableClasses(psdResolver.getApplicableClasses(psd));
 			updateApplicableClasses(psd, psetInput);
 
+			psd.setPropertyDefs(psdResolver.getPropertyDefs(psd));
+			updatePropertyDefs(psd, psetInput);
+
 			return psd;
 		}
 		return null;
@@ -270,6 +273,32 @@ public class PropertySetDefinitionRepository {
 		queryStr.append(" ?psd IFC4-PSD:applicableClass ?applicableClass . ");
 		queryStr.append("} ");
 
+		EmbeddedServer.instance.update(queryStr);
+	}
+
+	private void updatePropertyDefs(PropertySetDefinition psd, PropertySetDefinitionInput psdInput) throws IOException {
+		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
+		queryStr.setIri("psd", psd.getId());
+		if (psd.getPropertyDefs() != null) {
+			queryStr.append("DELETE { ");
+			for (int index = 0; index < psd.getPropertyDefs().size(); index++) {
+				queryStr.setIri("origClass" + index, psd.getPropertyDefs().get(index).getId());
+				queryStr.append("  ?psd IFC4-PSD:propertyDef ?origClass" + index + " .");
+			}
+			queryStr.append("} ");
+		}
+		if (psdInput.getPropertyDefs() != null) {
+			queryStr.append("INSERT { ");
+			for (int index = 0; index < psdInput.getPropertyDefs().size(); index++) {
+				queryStr.setIri("newClass" + index, psdInput.getPropertyDefs().get(index).getId());
+				queryStr.append("  ?psd IFC4-PSD:propertyDef ?newClass" + index + " .");
+			}
+			queryStr.append("} ");
+		}
+		queryStr.append("WHERE { ");
+		queryStr.append(" ?psd IFC4-PSD:propertyDef ?propertyDef . ");
+		queryStr.append("} ");
+		
 		EmbeddedServer.instance.update(queryStr);
 	}
 

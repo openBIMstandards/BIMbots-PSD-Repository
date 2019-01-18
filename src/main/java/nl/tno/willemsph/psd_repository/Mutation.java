@@ -121,7 +121,11 @@ public class Mutation implements GraphQLMutationResolver {
 	 * @param psetId Id of property set definition
 	 * @throws IOException
 	 */
-	public boolean deletePropertySetDefinition(String psetId) throws IOException {
+	public boolean deletePropertySetDefinition(String psetId, DataFetchingEnvironment env) throws IOException {
+		boolean activeSession = userRepository.sessionActive(env.getContext());
+		if (!activeSession) {
+			throw new SessionTimeOutException("Session timed out", null);
+		}
 		return propertySetDefinitionRepository.deletePropertySetDefinition(psetId);
 	}
 
