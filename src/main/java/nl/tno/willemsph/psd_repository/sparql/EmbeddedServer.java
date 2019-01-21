@@ -23,6 +23,7 @@ import org.apache.jena.vocabulary.OWL;
 import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.RDFS;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -48,7 +49,8 @@ public class EmbeddedServer {
 			"Pset_SlabCommon", "Pset_SpaceCommon", "Pset_StairCommon", "Pset_WallCommon", "Pset_WindowCommon" };
 	public static final String[] IDSS = { "Basic_IDM", "Kalkzandsteen_IDS" };
 	private static Dataset ds;
-	private ClassPathResource ifc4Resource, ifc4PsdResource, usersResource;
+	private ClassPathResource ifc4Resource, ifc4PsdResource;
+	private FileSystemResource usersResource;
 	private List<ClassPathResource> psetResources, idsResources;
 	public static FusekiServer sparql;
 	public static EmbeddedServer instance;
@@ -58,7 +60,8 @@ public class EmbeddedServer {
 		instance = this;
 		ifc4Resource = new ClassPathResource("IFC4.ttl");
 		ifc4PsdResource = new ClassPathResource("psetdef.ttl");
-		usersResource = new ClassPathResource("users.ttl");
+		// usersResource = new ClassPathResource("users.ttl");
+		usersResource = new FileSystemResource("src/main/resources/users.ttl");
 
 		psetResources = new ArrayList<>();
 		for (String pset : PSETS) {
