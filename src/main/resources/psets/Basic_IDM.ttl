@@ -1,10 +1,10 @@
-# baseURI: http://www.buildingsmart-tech.org/ifcOWL/IFC-PSD/Basic_IDM
+# baseURI: http://openbimstandards.org/information-delivery-specification/Basic_IDM
 # imports: http://www.buildingsmart-tech.org/ifcOWL/IFC-PSD/Pset_WallCommon
 # imports: http://www.buildingsmart-tech.org/ifcOWL/IFC-PSD/Pset_WindowCommon
 # imports: http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD
 # imports: http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_BeamCommon
 
-@prefix : <http://www.buildingsmart-tech.org/ifcOWL/IFC-PSD/Basic_IDM#> .
+@prefix : <http://openbimstandards.org/information-delivery-specification/Basic_IDM#> .
 @prefix IFC4-PSD: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD#> .
 @prefix Pset_BeamCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_BeamCommon#> .
 @prefix Pset_WallCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_WallCommon#> .
@@ -14,7 +14,7 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-<http://www.buildingsmart-tech.org/ifcOWL/IFC-PSD/Basic_IDM>
+<http://openbimstandards.org/information-delivery-specification/Basic_IDM>
   rdf:type owl:Ontology ;
   owl:imports <http://www.buildingsmart-tech.org/ifcOWL/IFC-PSD/Pset_WallCommon> ;
   owl:imports <http://www.buildingsmart-tech.org/ifcOWL/IFC-PSD/Pset_WindowCommon> ;

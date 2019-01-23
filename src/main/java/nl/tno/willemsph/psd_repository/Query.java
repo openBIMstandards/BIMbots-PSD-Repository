@@ -1,17 +1,23 @@
 package nl.tno.willemsph.psd_repository;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 
+import org.apache.jena.query.ParameterizedSparqlString;
 import org.springframework.stereotype.Component;
 
 import com.coxautodev.graphql.tools.GraphQLQueryResolver;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.itextpdf.text.DocumentException;
 
+import nl.tno.willemsph.psd_repository.information_delivery_specification.ExportFormat;
 import nl.tno.willemsph.psd_repository.information_delivery_specification.InformationDeliverySpecification;
 import nl.tno.willemsph.psd_repository.information_delivery_specification.InformationDeliverySpecificationRepository;
 import nl.tno.willemsph.psd_repository.property_definition.PropertyDefinition;
 import nl.tno.willemsph.psd_repository.property_set_definition.PropertySetDefinition;
 import nl.tno.willemsph.psd_repository.property_set_definition.PropertySetDefinitionRepository;
+import nl.tno.willemsph.psd_repository.sparql.EmbeddedServer;
 
 @Component
 public class Query implements GraphQLQueryResolver {
@@ -24,7 +30,7 @@ public class Query implements GraphQLQueryResolver {
 		this.propertySetDefinitionRepository = propertySetDefinitionRepository;
 		this.informationDeliverySpecificationRepository = informationDeliverySpecificationRepository;
 	}
-	
+
 	//
 	// Property Set Definition
 	//
@@ -53,20 +59,19 @@ public class Query implements GraphQLQueryResolver {
 	public List<PropertySetDefinition> allPSDsForClass(String classId) throws IOException {
 		return this.propertySetDefinitionRepository.getAllPropertySetDefsForClass(classId);
 	}
-	
+
 	//
 	// Property Definition
 	//
-	
+
 	public List<PropertyDefinition> allPDs() throws IOException {
 		return this.propertySetDefinitionRepository.getAllPropertyDefinitions();
 	}
-	
 
 	//
 	// Information Delivery Specification
 	//
-	
+
 	/**
 	 * GRAPHQL query: allIDSs: [InformationDeliverySpecification]
 	 * 
@@ -76,7 +81,7 @@ public class Query implements GraphQLQueryResolver {
 	public List<InformationDeliverySpecification> allIDSs() throws IOException {
 		return this.informationDeliverySpecificationRepository.getAllInformationDeliverySpecifications();
 	}
-	
+
 	/**
 	 * GRAPHQL query: oneIDS(id: String!): InformationDeliverySpecification
 	 * 
@@ -87,5 +92,32 @@ public class Query implements GraphQLQueryResolver {
 		return this.informationDeliverySpecificationRepository.getOneInformationDeliverySpecification(id);
 	}
 
+	/**
+	 * Export IDS, a link to the result is the return value
+	 * 
+	 * GRAPHQL exportIDS(id: ID!, format: ExportFormat!): String
+	 * 
+	 * @param id
+	 * @param format
+	 * @return
+	 * @throws IOException 
+	 * @throws DocumentException 
+	 * @throws URISyntaxException 
+	 */
+	public String exportIDS(String id, ExportFormat format) throws IOException, DocumentException, URISyntaxException {
+		return this.informationDeliverySpecificationRepository.exportIDS(id, format);
+	}
+
+	//
+	// SPARQL Query
+	//
+
+	public Object sparql(String query) throws IOException {
+		ParameterizedSparqlString parameterizedSparqlString = new ParameterizedSparqlString(
+				EmbeddedServer.getPrefixMapping());
+		parameterizedSparqlString.append(query);
+		JsonNode responseNode = EmbeddedServer.instance.query(parameterizedSparqlString);
+		return responseNode;
+	}
 
 }

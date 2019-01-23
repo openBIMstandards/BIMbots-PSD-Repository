@@ -11,6 +11,7 @@ import org.apache.jena.query.ParameterizedSparqlString;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.itextpdf.text.DocumentException;
 
 import nl.tno.willemsph.psd_repository.property_set_definition.PropertySetDefinitionRepository;
 import nl.tno.willemsph.psd_repository.sparql.EmbeddedServer;
@@ -19,7 +20,10 @@ import nl.tno.willemsph.psd_repository.sparql.EmbeddedServer;
 public class InformationDeliverySpecificationRepository {
 	private final static Logger LOGGER = Logger.getLogger(InformationDeliverySpecificationRepository.class.getName());
 
+	private final PropertySetDefinitionRepository propertySetDefinitionRepository;
+	
 	public InformationDeliverySpecificationRepository(PropertySetDefinitionRepository propertySetDefinitionRepository) {
+		this.propertySetDefinitionRepository = propertySetDefinitionRepository;
 	}
 
 	public List<InformationDeliverySpecification> getAllInformationDeliverySpecifications() throws IOException {
@@ -112,7 +116,7 @@ public class InformationDeliverySpecificationRepository {
 		String psetName = psetId.substring(psetId.indexOf('#') + 1);
 		InformationDeliverySpecification ids = getOneInformationDeliverySpecification(idsId);
 		boolean psetFound = false;
-		
+
 		InformationDeliverySpecificationResolver idsResolver = new InformationDeliverySpecificationResolver();
 		List<RequiredPset> reqPsets = idsResolver.getReqPsets(ids);
 		if (reqPsets != null) {
@@ -182,4 +186,14 @@ public class InformationDeliverySpecificationRepository {
 		return getOneInformationDeliverySpecification(idsId);
 	}
 
+	public String exportIDS(String id, ExportFormat format) throws IOException, DocumentException, URISyntaxException {
+		switch (format) {
+		case PDF:
+			return PdfGenerator.generate(getOneInformationDeliverySpecification(id), propertySetDefinitionRepository);
+		case JSON:
+			return null;
+		default:
+			return null;
+		}
+	}
 }

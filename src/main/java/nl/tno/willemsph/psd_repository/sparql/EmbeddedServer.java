@@ -88,13 +88,13 @@ public class EmbeddedServer {
 			LOGGER.info("Reading " + idsResource.getFilename());
 			defaultModel.read(idsResource.getInputStream(), null, "TURTLE");
 		}
-		
+
 		// users model graph
 		ds = DatasetFactory.create(defaultModel);
 		Model usersModel = ModelFactory.createDefaultModel();
 		usersModel.read(usersResource.getInputStream(), null, "TURTLE");
 		ds.addNamedModel(USERS, usersModel);
-		
+
 		sparql = FusekiServer.create().add("/rdf", ds, true).build();
 		sparql.start();
 	}
@@ -109,6 +109,7 @@ public class EmbeddedServer {
 			prefixMapping.setNsPrefix("IFC4", IFC4 + '#');
 			prefixMapping.setNsPrefix("IFC4-PSD", IFC4_PSD + '#');
 			prefixMapping.setNsPrefix("expr", "https://w3id.org/express#");
+			prefixMapping.setNsPrefix("usr", "http://www.infrabim.nl/bimbots-psd-repository/users#");
 		}
 		return prefixMapping;
 	}

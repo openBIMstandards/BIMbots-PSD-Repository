@@ -25,14 +25,11 @@ public class PsdRepositoryApp {
 		return new GraphQLErrorHandler() {
 			@Override
 			public List<GraphQLError> processErrors(List<GraphQLError> errors) {
-				List<GraphQLError> clientErrors = errors.stream()
-						.filter(this::isClientError)
+				List<GraphQLError> clientErrors = errors.stream().filter(this::isClientError)
 						.collect(Collectors.toList());
 
-				List<GraphQLError> serverErrors = errors.stream()
-						.filter(e -> !isClientError(e))
-						.map(GraphQLErrorAdapter::new)
-						.collect(Collectors.toList());
+				List<GraphQLError> serverErrors = errors.stream().filter(e -> !isClientError(e))
+						.map(GraphQLErrorAdapter::new).collect(Collectors.toList());
 
 				List<GraphQLError> e = new ArrayList<>();
 				e.addAll(clientErrors);

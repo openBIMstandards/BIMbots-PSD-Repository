@@ -1,6 +1,6 @@
 @prefix :      <http://www.infrabim.nl/bimbots-psd-repository/users#> .
-@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
 
@@ -11,18 +11,25 @@
         a                owl:Ontology ;
         owl:versionInfo  "Created with TopBraid Composer" .
 
-:salt   a            owl:FunctionalProperty , owl:DatatypeProperty ;
+:_7844105c-081e-4101-b3e8-6cf6cb971537
+        a          :User ;
+        :email     "laura.vermeulen@infrabim.nl" ;
+        :name      "Laura Vermeulen" ;
+        :password  "NaTuvhSwnG9brOMh2/dOoEIeC/hdRQacO6Dqq5nNOec=" ;
+        :salt      "rQPXE3R0f022OKlTmsYYOkCluVG1LJ" .
+
+:salt   a            owl:DatatypeProperty , owl:FunctionalProperty ;
         rdfs:domain  :User ;
         rdfs:range   xsd:string .
 
-:email  a            owl:FunctionalProperty , owl:DatatypeProperty ;
+:email  a            owl:DatatypeProperty , owl:FunctionalProperty ;
         rdfs:domain  :User ;
         rdfs:range   xsd:string .
 
-:password  a         owl:FunctionalProperty , owl:DatatypeProperty ;
+:password  a         owl:DatatypeProperty , owl:FunctionalProperty ;
         rdfs:domain  :User ;
         rdfs:range   xsd:string .
 
-:name   a            owl:FunctionalProperty , owl:DatatypeProperty ;
+:name   a            owl:DatatypeProperty , owl:FunctionalProperty ;
         rdfs:domain  :User ;
         rdfs:range   xsd:string .

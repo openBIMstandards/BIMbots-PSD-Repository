@@ -48,20 +48,30 @@ type InformationDeliverySpecification {
 	reqPsets: [RequiredPropertySet]
 }
 
+# Supported export formats
+enum ExportFormat {
+	PDF
+	JSON
+}
+
 # All queries that are defined for this property set definition repository
 type Query {
-	# Get all property set definitions that are stored in the repository
+		# Get all property set definitions that are stored in the repository
 	allPSDs: [PropertySetDefinition]
-	# Get all property definitions that are store in the repository
+		# Get all property definitions that are store in the repository
 	allPDs: [PropertyDefinition]
-	# Get a single property set definition identified by its name (e.g. Pset_WallCommon)
+		# Get a single property set definition identified by its name (e.g. Pset_WallCommon)
 	onePSD(name: String!): PropertySetDefinition
-	# Get all property set definitions that are applicable to the specified IFC class
+		# Get all property set definitions that are applicable to the specified IFC class
 	allPSDsForClass(classId: ID!): [PropertySetDefinition]
-	# Get all information delivery specifications that are stored in the repository
+		# Get all information delivery specifications that are stored in the repository
 	allIDSs: [InformationDeliverySpecification]
-	# Get a single information delivery specification identified by its ID (URI)
+		# Get a single information delivery specification identified by its ID (URI)
 	oneIDS(id: ID!): InformationDeliverySpecification
+		# Export IDS, a link to the result is the return value
+	exportIDS(id: ID!, format: ExportFormat!): String
+		# SPARQL query
+	sparql(query: String!): String
 }
 
 type User {
