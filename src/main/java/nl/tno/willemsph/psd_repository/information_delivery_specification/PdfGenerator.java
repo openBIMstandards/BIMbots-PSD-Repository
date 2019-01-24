@@ -88,7 +88,7 @@ public class PdfGenerator {
 		document.add(chapter1);
 		document.close();
 
-		return "http://localhost:8080/" + idsName + ".pdf";
+		return idsName + ".pdf";
 	}
 
 	public PdfGenerator() {
