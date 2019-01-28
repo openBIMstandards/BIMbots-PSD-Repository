@@ -68,8 +68,6 @@ type Query {
 	allIDSs: [InformationDeliverySpecification]
 		# Get a single information delivery specification identified by its ID (URI)
 	oneIDS(id: ID!): InformationDeliverySpecification
-		# Export IDS, a link to the result is the return value
-	exportIDS(id: ID!, format: ExportFormat!): String
 		# SPARQL query
 	sparql(query: String!): String
 }
@@ -148,6 +146,8 @@ type Mutation {
 	signinUser(auth: AuthData!): SigninPayload
 		# Sign out a user.
 	signoutUser(token: String!): Boolean!
+		# Export IDS, a link to the result is the return value
+	exportIDS(id: ID!, format: ExportFormat!): String
 }
 
 schema {

@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Component;
 
 import com.coxautodev.graphql.tools.GraphQLMutationResolver;
+import com.itextpdf.text.DocumentException;
 
 import graphql.schema.DataFetchingEnvironment;
 import nl.tno.willemsph.psd_repository.common.AuthData;
@@ -16,6 +17,7 @@ import nl.tno.willemsph.psd_repository.common.SessionTimeOutException;
 import nl.tno.willemsph.psd_repository.common.SigninPayLoad;
 import nl.tno.willemsph.psd_repository.common.User;
 import nl.tno.willemsph.psd_repository.common.UserRepository;
+import nl.tno.willemsph.psd_repository.information_delivery_specification.ExportFormat;
 import nl.tno.willemsph.psd_repository.information_delivery_specification.InformationDeliverySpecification;
 import nl.tno.willemsph.psd_repository.information_delivery_specification.InformationDeliverySpecificationRepository;
 import nl.tno.willemsph.psd_repository.property_set_definition.PropertySetDefinition;
@@ -213,6 +215,22 @@ public class Mutation implements GraphQLMutationResolver {
 	 */
 	public InformationDeliverySpecification removePset2Ids(String idsId, String psetId) throws IOException {
 		return informationDeliverySpecificationRepository.removePset2Ids(idsId, psetId);
+	}
+	
+	/**
+	 * Export IDS, a link to the result is the return value
+	 * 
+	 * GRAPHQL exportIDS(id: ID!, format: ExportFormat!): String
+	 * 
+	 * @param id
+	 * @param format
+	 * @return
+	 * @throws IOException 
+	 * @throws DocumentException 
+	 * @throws URISyntaxException 
+	 */
+	public String exportIDS(String id, ExportFormat format) throws IOException, DocumentException, URISyntaxException {
+		return this.informationDeliverySpecificationRepository.exportIDS(id, format);
 	}
 
 }

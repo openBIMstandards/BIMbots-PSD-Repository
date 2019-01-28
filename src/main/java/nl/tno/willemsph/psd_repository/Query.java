@@ -92,22 +92,6 @@ public class Query implements GraphQLQueryResolver {
 		return this.informationDeliverySpecificationRepository.getOneInformationDeliverySpecification(id);
 	}
 
-	/**
-	 * Export IDS, a link to the result is the return value
-	 * 
-	 * GRAPHQL exportIDS(id: ID!, format: ExportFormat!): String
-	 * 
-	 * @param id
-	 * @param format
-	 * @return
-	 * @throws IOException 
-	 * @throws DocumentException 
-	 * @throws URISyntaxException 
-	 */
-	public String exportIDS(String id, ExportFormat format) throws IOException, DocumentException, URISyntaxException {
-		return this.informationDeliverySpecificationRepository.exportIDS(id, format);
-	}
-
 	//
 	// SPARQL Query
 	//

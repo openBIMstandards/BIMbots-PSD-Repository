@@ -37,7 +37,14 @@ public class PdfGenerator {
 	public static String generate(InformationDeliverySpecification ids,
 			PropertySetDefinitionRepository propertySetDefinitionRepository)
 			throws IOException, DocumentException, URISyntaxException {
-		String idsName = ids.getId().substring(ids.getId().lastIndexOf('#') + 1);
+		String idsName = null;
+		int lastIndexOfHashMark = ids.getId().lastIndexOf('#');
+		if (lastIndexOfHashMark >= 0) {
+			idsName = ids.getId().substring(lastIndexOfHashMark + 1);
+		} else {
+			int lastIndexOfSlash = ids.getId().lastIndexOf('/');
+			idsName = ids.getId().substring(lastIndexOfSlash + 1);
+		}
 		InformationDeliverySpecificationResolver idsRslver = new InformationDeliverySpecificationResolver();
 		String title = idsRslver.getName(ids);
 
@@ -55,7 +62,6 @@ public class PdfGenerator {
 		Paragraph tableParagraph = new Paragraph();
 		tableParagraph.setSpacingBefore(10f);
 
-		List<RequiredPset> reqPsets = idsRslver.getReqPsets(ids);
 		PdfPTable table = new PdfPTable(2);
 		Stream.of("PSET", "mandatory properties").forEach(columnTitle -> {
 			PdfPCell header = new PdfPCell();
@@ -66,21 +72,24 @@ public class PdfGenerator {
 			table.addCell(header);
 		});
 
-		for (RequiredPset reqPset : reqPsets) {
-			table.addCell(reqPset.getPropertySetName());
-			String reqPropertiesStr = "";
-			PropertyDefinitionResolver propRslvr = new PropertyDefinitionResolver();
-			List<URI> reqPropertyIds = reqPset.getReqPropertyIds();
-			for (int index = 0; index < reqPropertyIds.size(); index++) {
-				URI reqPropertyId = reqPropertyIds.get(index);
-				PropertyDefinition propertyDef = propertySetDefinitionRepository.getPropertyDef(reqPropertyId);
-				String propname = propRslvr.getName(propertyDef);
-				reqPropertiesStr += propname;
-				if (index < reqPropertyIds.size() - 1) {
-					reqPropertiesStr += ", ";
+		List<RequiredPset> reqPsets = idsRslver.getReqPsets(ids);
+		if (reqPsets != null) {
+			for (RequiredPset reqPset : reqPsets) {
+				table.addCell(reqPset.getPropertySetName());
+				String reqPropertiesStr = "";
+				PropertyDefinitionResolver propRslvr = new PropertyDefinitionResolver();
+				List<URI> reqPropertyIds = reqPset.getReqPropertyIds();
+				for (int index = 0; index < reqPropertyIds.size(); index++) {
+					URI reqPropertyId = reqPropertyIds.get(index);
+					PropertyDefinition propertyDef = propertySetDefinitionRepository.getPropertyDef(reqPropertyId);
+					String propname = propRslvr.getName(propertyDef);
+					reqPropertiesStr += propname;
+					if (index < reqPropertyIds.size() - 1) {
+						reqPropertiesStr += ", ";
+					}
 				}
+				table.addCell(reqPropertiesStr);
 			}
-			table.addCell(reqPropertiesStr);
 		}
 
 		tableParagraph.add(table);
