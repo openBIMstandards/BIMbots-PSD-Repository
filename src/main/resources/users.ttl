@@ -1,6 +1,6 @@
 @prefix :      <http://www.infrabim.nl/bimbots-psd-repository/users#> .
-@prefix owl:   <http://www.w3.org/2002/07/owl#> .
 @prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
 @prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
 
@@ -18,18 +18,25 @@
         :password  "NaTuvhSwnG9brOMh2/dOoEIeC/hdRQacO6Dqq5nNOec=" ;
         :salt      "rQPXE3R0f022OKlTmsYYOkCluVG1LJ" .
 
-:salt   a            owl:DatatypeProperty , owl:FunctionalProperty ;
+:salt   a            owl:FunctionalProperty , owl:DatatypeProperty ;
         rdfs:domain  :User ;
         rdfs:range   xsd:string .
 
-:email  a            owl:DatatypeProperty , owl:FunctionalProperty ;
+:_ded4f8bc-ab44-4198-8fdc-f804a20089e4
+        a          :User ;
+        :email     "leon.vanberlo@tno.nl" ;
+        :name      "Leon van Berlo" ;
+        :password  "NC8sOOh9jfYtxTMQWjdIODRbJy39QIOPGB91wbrcwuA=" ;
+        :salt      "wJm8JUodkidVLueymk0xnxnavadwg0" .
+
+:email  a            owl:FunctionalProperty , owl:DatatypeProperty ;
         rdfs:domain  :User ;
         rdfs:range   xsd:string .
 
-:password  a         owl:DatatypeProperty , owl:FunctionalProperty ;
+:password  a         owl:FunctionalProperty , owl:DatatypeProperty ;
         rdfs:domain  :User ;
         rdfs:range   xsd:string .
 
-:name   a            owl:DatatypeProperty , owl:FunctionalProperty ;
+:name   a            owl:FunctionalProperty , owl:DatatypeProperty ;
         rdfs:domain  :User ;
         rdfs:range   xsd:string .
