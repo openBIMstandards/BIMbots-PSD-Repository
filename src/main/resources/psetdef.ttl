@@ -1,5 +1,6 @@
 # baseURI: http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD
-# imports: http://ifcowl.openbimstandards.org/IFC4.ttl
+# imports: http://www.buildingsmart-tech.org/ifcOWL/IFC4
+# prefix: PSD
 
 @prefix : <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD#> .
 @prefix IFC4: <http://www.buildingsmart-tech.org/ifcOWL/IFC4#> .
@@ -11,7 +12,7 @@
 
 <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD>
   rdf:type owl:Ontology ;
-  owl:imports <http://ifcowl.openbimstandards.org/IFC4.ttl> ;
+  owl:imports <http://www.buildingsmart-tech.org/ifcOWL/IFC4> ;
   owl:versionInfo "Created with TopBraid Composer" ;
 .
 PSD:IfcVersion
@@ -19,6 +20,16 @@ PSD:IfcVersion
   rdfs:comment "Version information of IFC release and sub schema."@en ;
   rdfs:label "IFC version"@en ;
   rdfs:subClassOf owl:Thing ;
+.
+PSD:InformationDeliverySpecification
+  rdf:type owl:Class ;
+  rdfs:label "Information delivery specification"@en ;
+  rdfs:subClassOf owl:Thing ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty PSD:name ;
+    ] ;
 .
 PSD:PropertyDef
   rdf:type owl:Class ;
@@ -61,6 +72,16 @@ PSD:PropertyType
   rdf:type owl:Class ;
   rdfs:label "Property type"@en ;
   rdfs:subClassOf owl:Thing ;
+.
+PSD:RequiredPset
+  rdf:type owl:Class ;
+  rdfs:label "Required property set" ;
+  rdfs:subClassOf owl:Thing ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty PSD:propertySetDef ;
+    ] ;
 .
 PSD:TypeComplexProperty
   rdf:type owl:Class ;
@@ -327,6 +348,13 @@ PSD:nameAlias
   rdfs:label "Name alias"@en ;
   rdfs:range xsd:string ;
 .
+PSD:parent
+  rdf:type owl:FunctionalProperty ;
+  rdf:type owl:TransitiveProperty ;
+  rdfs:domain PSD:InformationDeliverySpecification ;
+  rdfs:label "Parent information delivery specification"@en ;
+  rdfs:range PSD:InformationDeliverySpecification ;
+.
 PSD:propertyDef
   rdf:type owl:ObjectProperty ;
   rdfs:domain [
@@ -339,12 +367,27 @@ PSD:propertyDef
   rdfs:label "Property definition"@en ;
   rdfs:range PSD:PropertyDef ;
 .
+PSD:propertySetDef
+  rdf:type owl:ObjectProperty ;
+  rdfs:domain PSD:RequiredPset ;
+  rdfs:range PSD:PropertySetDef ;
+.
 PSD:propertyType
   rdf:type owl:FunctionalProperty ;
   rdf:type owl:ObjectProperty ;
   rdfs:domain PSD:PropertyDef ;
   rdfs:label "Property type"@en ;
   rdfs:range PSD:PropertyType ;
+.
+PSD:requiredProp
+  rdf:type owl:ObjectProperty ;
+  rdfs:domain PSD:RequiredPset ;
+  rdfs:range PSD:PropertyDef ;
+.
+PSD:requiredPset
+  rdf:type owl:ObjectProperty ;
+  rdfs:domain PSD:InformationDeliverySpecification ;
+  rdfs:range PSD:RequiredPset ;
 .
 PSD:schema
   rdf:type owl:DatatypeProperty ;

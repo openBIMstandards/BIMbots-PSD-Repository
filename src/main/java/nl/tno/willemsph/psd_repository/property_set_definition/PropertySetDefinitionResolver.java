@@ -15,6 +15,8 @@ import com.coxautodev.graphql.tools.GraphQLResolver;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import nl.tno.willemsph.psd_repository.common.LanguageTaggedString;
+import nl.tno.willemsph.psd_repository.common.User;
+import nl.tno.willemsph.psd_repository.common.UserRepository;
 import nl.tno.willemsph.psd_repository.property_definition.PropertyDefinition;
 import nl.tno.willemsph.psd_repository.property_definition.PropertyDefinitionResolver;
 import nl.tno.willemsph.psd_repository.sparql.EmbeddedServer;
@@ -23,6 +25,12 @@ import nl.tno.willemsph.psd_repository.sparql.EmbeddedServer;
 public class PropertySetDefinitionResolver implements GraphQLResolver<PropertySetDefinition> {
 	// private final static Logger LOGGER =
 	// Logger.getLogger(PropertySetDefinitionResolver.class.getName());
+
+	private UserRepository userRepository;
+
+	public PropertySetDefinitionResolver(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
 
 	public String getId(PropertySetDefinition propertySetDefinition) throws URISyntaxException, IOException {
 		String id = propertySetDefinition.getId();
@@ -123,6 +131,30 @@ public class PropertySetDefinitionResolver implements GraphQLResolver<PropertySe
 				JsonNode idNode = node.get("id");
 				if (idNode != null) {
 					return idNode.get("value").asText();
+				}
+			}
+		}
+		return null;
+	}
+	
+	public User getOwner(PropertySetDefinition propertySetDefinition) throws IOException, URISyntaxException {
+		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
+		queryStr.setNsPrefix("owners", EmbeddedServer.OWNERS + "#");
+		queryStr.append("SELECT ?user ");
+		queryStr.append("WHERE {");
+		queryStr.setIri("pset", getId(propertySetDefinition));
+		queryStr.setIri("graph", EmbeddedServer.OWNERS);
+		queryStr.append("  GRAPH ?graph { ");
+		queryStr.append("    ?pset owners:owner ?user .");
+		queryStr.append("  }");
+		queryStr.append("}");
+		
+		JsonNode responseNodes = EmbeddedServer.instance.query(queryStr);
+		if (responseNodes.size() > 0) {
+			for (JsonNode node : responseNodes) {
+				JsonNode userNode = node.get("user");
+				if (userNode != null) {
+					return userRepository.findById(userNode.get("value").asText());
 				}
 			}
 		}

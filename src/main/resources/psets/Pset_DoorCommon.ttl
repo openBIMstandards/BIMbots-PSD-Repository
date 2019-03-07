@@ -1,21 +1,21 @@
 # baseURI: http://www.buildingsmart-tech.org/ifcOWL/IFC-PSD/Pset_DoorCommon
+# imports: http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD
 
 @prefix : <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_DoorCommon#> .
-@prefix IFC4: <http://ifcowl.openbimstandards.org/IFC4#> .
+@prefix IFC4: <http://www.buildingsmart-tech.org/ifcOWL/IFC4#> .
 @prefix IFC4-PSD: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-<http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_DoorCommon>
+<http://www.buildingsmart-tech.org/ifcOWL/IFC-PSD/Pset_DoorCommon>
   rdf:type owl:Ontology ;
   owl:imports <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD> ;
-  owl:versionInfo "Created with BIM-Bots PSD Repository" ;
 .
 :Pset_DoorCommon
   rdf:type IFC4-PSD:PropertySetDef ;
-  IFC4-PSD:applicableClass IFC4:IfcDoor ;
+  IFC4-PSD:applicableClass <http://ifcowl.openbimstandards.org/IFC4#IfcDoor> ;
   IFC4-PSD:applicableTypeValue "IfcDoor" ;
   IFC4-PSD:definition "Properties common to the definition of all occurrences of IfcDoor." ;
   IFC4-PSD:definitionAlias "Définition de l'IAI : propriétés communes à la définition de toutes les instances de la classe IfcDoor"@fr-FR ;
@@ -58,7 +58,7 @@
   IFC4-PSD:nameAlias "是否外部构件"@zh-CN ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType IFC4:IfcBoolean ;
+      IFC4-PSD:dataType <http://ifcowl.openbimstandards.org/IFC4#IfcBoolean> ;
     ] ;
 .
 :_23b68500d1dc11e1800000215ad4efdf
@@ -72,7 +72,7 @@
   IFC4-PSD:nameAlias "TauxInfiltration"@fr-FR ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType IFC4:IfcVolumetricFlowRateMeasure ;
+      IFC4-PSD:dataType <http://ifcowl.openbimstandards.org/IFC4#IfcVolumetricFlowRateMeasure> ;
     ] ;
 .
 :_2795d780d1db11e1800000215ad4efdf
@@ -90,7 +90,7 @@
   IFC4-PSD:nameAlias "参考号"@zh-CN ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType IFC4:IfcIdentifier ;
+      IFC4-PSD:dataType <http://ifcowl.openbimstandards.org/IFC4#IfcIdentifier> ;
     ] ;
 .
 :_32e90300d1db11e1800000215ad4efdf
@@ -133,7 +133,7 @@ Hier der Gesamtwärmedurchgangskoeffizient der Tür."""@de-DE ;
   IFC4-PSD:nameAlias "熱貫流率"@ja-JP ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType IFC4:IfcThermalTransmittanceMeasure ;
+      IFC4-PSD:dataType <http://ifcowl.openbimstandards.org/IFC4#IfcThermalTransmittanceMeasure> ;
     ] ;
 .
 :_5d878b80d1dc11e1800000215ad4efdf
@@ -148,7 +148,7 @@ It shall be used, if the glazing area is not given separately for all panels wit
   IFC4-PSD:nameAlias "Glasflächenanteil"@de-DE ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType IFC4:IfcPositiveRatioMeasure ;
+      IFC4-PSD:dataType <http://ifcowl.openbimstandards.org/IFC4#IfcPositiveRatioMeasure> ;
     ] ;
 .
 :_76903c80d1dc11e1800000215ad4efdf
@@ -163,7 +163,7 @@ It is giving according to the requirements of the national building code.""" ;
   IFC4-PSD:nameAlias "Behindertengerecht"@de-DE ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType IFC4:IfcBoolean ;
+      IFC4-PSD:dataType <http://ifcowl.openbimstandards.org/IFC4#IfcBoolean> ;
     ] ;
 .
 :_7ba0bc00d1db11e1800000215ad4efdf
@@ -182,7 +182,7 @@ It is giving according to the requirements of the national building code.""" ;
   IFC4-PSD:nameAlias "防火等级"@zh-CN ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType IFC4:IfcLabel ;
+      IFC4-PSD:dataType <http://ifcowl.openbimstandards.org/IFC4#IfcLabel> ;
     ] ;
 .
 :_8f98ed80d1dc11e1800000215ad4efdf
@@ -202,7 +202,7 @@ Here it defines an exit door in accordance to the national building code.""" ;
   IFC4-PSD:nameAlias "非常口区分"@ja-JP ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType IFC4:IfcBoolean ;
+      IFC4-PSD:dataType <http://ifcowl.openbimstandards.org/IFC4#IfcBoolean> ;
     ] ;
 .
 :_95420380d1db11e1800000215ad4efdf
@@ -222,7 +222,7 @@ It is provided according to the national building code. It indicates the sound t
   IFC4-PSD:nameAlias "隔音等级"@zh-CN ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType IFC4:IfcLabel ;
+      IFC4-PSD:dataType <http://ifcowl.openbimstandards.org/IFC4#IfcLabel> ;
     ] ;
 .
 :_aa6b6200d1dc11e1800000215ad4efdf
@@ -234,7 +234,7 @@ It is provided according to the national building code. It indicates the sound t
   IFC4-PSD:nameAlias "Antrieb"@de-DE ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType IFC4:IfcBoolean ;
+      IFC4-PSD:dataType <http://ifcowl.openbimstandards.org/IFC4#IfcBoolean> ;
     ] ;
 .
 :_b4409580d1db11e1800000215ad4efdf
@@ -254,7 +254,7 @@ It is giving according to the national building code.""" ;
   IFC4-PSD:nameAlias "防犯等級"@ja-JP ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType IFC4:IfcLabel ;
+      IFC4-PSD:dataType <http://ifcowl.openbimstandards.org/IFC4#IfcLabel> ;
     ] ;
 .
 :_beaf5f00d1dc11e1800000215ad4efdf
@@ -272,7 +272,7 @@ It is giving according to the national building code.""" ;
   IFC4-PSD:nameAlias "自動ドア閉機能区分"@ja-JP ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType IFC4:IfcBoolean ;
+      IFC4-PSD:dataType <http://ifcowl.openbimstandards.org/IFC4#IfcBoolean> ;
     ] ;
 .
 :_cde1dd00d1db11e1800000215ad4efdf
@@ -286,7 +286,7 @@ It is giving according to the national building code.""" ;
   IFC4-PSD:nameAlias "Durabilité"@fr-FR ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType IFC4:IfcLabel ;
+      IFC4-PSD:dataType <http://ifcowl.openbimstandards.org/IFC4#IfcLabel> ;
     ] ;
 .
 :_cec73e80d1dc11e1800000215ad4efdf
@@ -304,7 +304,7 @@ It is giving according to the national building code.""" ;
   IFC4-PSD:nameAlias "煙止め機能区分"@ja-JP ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType IFC4:IfcBoolean ;
+      IFC4-PSD:dataType <http://ifcowl.openbimstandards.org/IFC4#IfcBoolean> ;
     ] ;
 .
 :_ec47d880d1db11e1800000215ad4efdf
@@ -318,6 +318,6 @@ It is giving according to the national building code.""" ;
   IFC4-PSD:nameAlias "Résistance hygrothermique"@fr-FR ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType IFC4:IfcLabel ;
+      IFC4-PSD:dataType <http://ifcowl.openbimstandards.org/IFC4#IfcLabel> ;
     ] ;
 .

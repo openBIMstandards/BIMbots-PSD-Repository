@@ -1,19 +1,20 @@
-# baseURI: http://www.buildingsmart-tech.org/ifcOWL/IFC-PSD/Pset_DoorWindowGlazingType
+# baseURI: http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_DoorWindowGlazingType
+# imports: http://www.buildingsmart-tech.org/ifcOWL/IFC4
 # imports: http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD
 
-@prefix : <http://www.buildingsmart-tech.org/ifcOWL/IFC-PSD/Pset_DoorWindowGlazingType#> .
-@prefix IFC4: <http://ifcowl.openbimstandards.org/IFC4#> .
+@prefix : <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_DoorWindowGlazingType#> .
+@prefix IFC4: <http://www.buildingsmart-tech.org/ifcOWL/IFC4#> .
 @prefix IFC4-PSD: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-<http://www.buildingsmart-tech.org/ifcOWL/IFC-PSD/Pset_DoorWindowGlazingType>
+<http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_DoorWindowGlazingType>
   rdf:type owl:Ontology ;
+  owl:imports <http://www.buildingsmart-tech.org/ifcOWL/IFC4> ;
   owl:imports <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD> ;
   owl:versionInfo "Created with BIM-Bots PSD Repository" ;
-  owl:versionInfo "Created with TopBraid Composer" ;
 .
 :Pset_DoorWindowGlazingType
   rdf:type IFC4-PSD:PropertySetDef ;

@@ -1,6 +1,7 @@
 # baseURI: http://openbimstandards.org/information-delivery-specification/Basic_IDM
 # imports: http://www.buildingsmart-tech.org/ifcOWL/IFC-PSD/Pset_WallCommon
 # imports: http://www.buildingsmart-tech.org/ifcOWL/IFC-PSD/Pset_WindowCommon
+# imports: http://www.buildingsmart-tech.org/ifcOWL/IFC4
 # imports: http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD
 # imports: http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_BeamCommon
 
@@ -18,6 +19,7 @@
   rdf:type owl:Ontology ;
   owl:imports <http://www.buildingsmart-tech.org/ifcOWL/IFC-PSD/Pset_WallCommon> ;
   owl:imports <http://www.buildingsmart-tech.org/ifcOWL/IFC-PSD/Pset_WindowCommon> ;
+  owl:imports <http://www.buildingsmart-tech.org/ifcOWL/IFC4> ;
   owl:imports <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD> ;
   owl:imports <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_BeamCommon> ;
   owl:versionInfo "Created with TopBraid Composer" ;

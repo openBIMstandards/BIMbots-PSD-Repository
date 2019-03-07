@@ -126,8 +126,11 @@ public class PsetXmlResourceImporter {
 					model.createResource(applicableClass)));
 		}
 		// Applicable type value
-		model.add(model.createStatement(pSetDefResrc, model.createProperty(PSD_PROP_APPLICABLE_TYPE_VALUE),
-				pSetDefInput.getApplicableTypeValue()));
+		String applicableTypeValue = pSetDefInput.getApplicableTypeValue();
+		if (applicableTypeValue != null) {
+			model.add(model.createStatement(pSetDefResrc, model.createProperty(PSD_PROP_APPLICABLE_TYPE_VALUE),
+					applicableTypeValue));
+		}
 		// Definition
 		model.add(model.createStatement(pSetDefResrc, model.createProperty(PSD_PROP_DEFINITION),
 				pSetDefInput.getDefinition()));
@@ -158,8 +161,10 @@ public class PsetXmlResourceImporter {
 		Resource pDefResrc = model.createResource(pDefInput.getId());
 		model.add(model.createStatement(pDefResrc, RDF.type, model.createResource(PSD_CLASS_PROPERTY_DEF)));
 		// Definition
-		model.add(
-				model.createStatement(pDefResrc, model.createProperty(PSD_PROP_DEFINITION), pDefInput.getDefinition()));
+		String definition = pDefInput.getDefinition();
+		if (definition != null) {
+			model.add(model.createStatement(pDefResrc, model.createProperty(PSD_PROP_DEFINITION), definition));
+		}
 		// Definition alias
 		List<LanguageTaggedStringInput> definitionAliases = pDefInput.getDefinitionAliases();
 		if (definitionAliases != null) {
@@ -344,6 +349,15 @@ public class PsetXmlResourceImporter {
 								}
 								propertyType.setEnumItems(enumItems);
 								break;
+							case "ConstantList":
+								List<String> constantDefs = new ArrayList<>();
+								List<Element> constantDefElements = getChildElements(typeElement);
+								for (Element constantDefElement : constantDefElements) {
+									NodeList nameElements = constantDefElement.getElementsByTagName("Name");
+									constantDefs.add(nameElements.item(0).getTextContent());
+								}
+								propertyType.setEnumItems(constantDefs);
+								break;
 							}
 						}
 						break;
@@ -352,7 +366,10 @@ public class PsetXmlResourceImporter {
 						for (Element typeElement : typePropertySingleValueElements) {
 							switch (typeElement.getTagName()) {
 							case "DataType":
-								propertyType.setDataType(EmbeddedServer.IFC4 + '#' + typeElement.getAttribute("type"));
+								String typeAttribute = typeElement.getAttribute("type");
+								if (typeAttribute != null && !typeAttribute.isEmpty()) {
+									propertyType.setDataType(EmbeddedServer.IFC4 + '#' + typeAttribute);
+								}
 								break;
 							}
 						}

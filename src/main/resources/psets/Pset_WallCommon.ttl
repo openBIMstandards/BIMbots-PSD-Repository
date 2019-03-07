@@ -1,13 +1,18 @@
 # baseURI: http://www.buildingsmart-tech.org/ifcOWL/IFC-PSD/Pset_WallCommon
+# imports: http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD
 
 @prefix : <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_WallCommon#> .
-@prefix IFC4: <http://ifcowl.openbimstandards.org/IFC4#> .
+@prefix IFC4: <http://www.buildingsmart-tech.org/ifcOWL/IFC4#> .
 @prefix IFC4-PSD: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
+<http://www.buildingsmart-tech.org/ifcOWL/IFC-PSD/Pset_WallCommon>
+  rdf:type owl:Ontology ;
+  owl:imports <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD> ;
+.
 :Pset_WallCommon
   rdf:type IFC4-PSD:PropertySetDef ;
   IFC4-PSD:applicableClass IFC4:IfcWall ;

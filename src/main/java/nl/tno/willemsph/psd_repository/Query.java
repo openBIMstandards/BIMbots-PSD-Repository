@@ -1,7 +1,6 @@
 package nl.tno.willemsph.psd_repository;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.List;
 
 import org.apache.jena.query.ParameterizedSparqlString;
@@ -9,9 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.coxautodev.graphql.tools.GraphQLQueryResolver;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.itextpdf.text.DocumentException;
 
-import nl.tno.willemsph.psd_repository.information_delivery_specification.ExportFormat;
 import nl.tno.willemsph.psd_repository.information_delivery_specification.InformationDeliverySpecification;
 import nl.tno.willemsph.psd_repository.information_delivery_specification.InformationDeliverySpecificationRepository;
 import nl.tno.willemsph.psd_repository.property_definition.PropertyDefinition;

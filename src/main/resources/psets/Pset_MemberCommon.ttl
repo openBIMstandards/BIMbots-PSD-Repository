@@ -1,21 +1,21 @@
 # baseURI: http://www.buildingsmart-tech.org/ifcOWL/IFC-PSD/Pset_MemberCommon
+# imports: http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD
 
 @prefix : <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_MemberCommon#> .
-@prefix IFC4: <http://ifcowl.openbimstandards.org/IFC4#> .
+@prefix IFC4: <http://www.buildingsmart-tech.org/ifcOWL/IFC4#> .
 @prefix IFC4-PSD: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-<http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_MemberCommon>
+<http://www.buildingsmart-tech.org/ifcOWL/IFC-PSD/Pset_MemberCommon>
   rdf:type owl:Ontology ;
   owl:imports <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD> ;
-  owl:versionInfo "Created with BIM-Bots PSD Repository" ;
 .
 :Pset_MemberCommon
   rdf:type IFC4-PSD:PropertySetDef ;
-  IFC4-PSD:applicableClass IFC4:IfcMember ;
+  IFC4-PSD:applicableClass <http://ifcowl.openbimstandards.org/IFC4#IfcMember> ;
   IFC4-PSD:applicableTypeValue "IfcMember" ;
   IFC4-PSD:definition "Properties common to the definition of all occurrences of IfcMember." ;
   IFC4-PSD:definitionAlias "Définition de l'IAI : propriétés communes à la définition de toutes les instances de la classe IfcMember"@fr-FR ;
@@ -51,7 +51,7 @@
   IFC4-PSD:nameAlias "参考号"@zh-CN ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType IFC4:IfcIdentifier ;
+      IFC4-PSD:dataType <http://ifcowl.openbimstandards.org/IFC4#IfcIdentifier> ;
     ] ;
 .
 :_4f903580d1f111e1800000215ad4efdf
@@ -93,7 +93,7 @@ The shape information is provided in addition to the shape representation and th
   IFC4-PSD:nameAlias "跨度"@zh-CN ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType IFC4:IfcPositiveLengthMeasure ;
+      IFC4-PSD:dataType <http://ifcowl.openbimstandards.org/IFC4#IfcPositiveLengthMeasure> ;
     ] ;
 .
 :_646cc900d1f111e1800000215ad4efdf
@@ -113,7 +113,7 @@ The shape information is provided in addition to the shape representation and th
   IFC4-PSD:nameAlias "坡度"@zh-CN ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType IFC4:IfcPlaneAngleMeasure ;
+      IFC4-PSD:dataType <http://ifcowl.openbimstandards.org/IFC4#IfcPlaneAngleMeasure> ;
     ] ;
 .
 :_69317d00d1f111e1800000215ad4efdf
@@ -135,7 +135,7 @@ Note: new property in IFC4.""" ;
   IFC4-PSD:nameAlias "转角"@zh-CN ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType IFC4:IfcPlaneAngleMeasure ;
+      IFC4-PSD:dataType <http://ifcowl.openbimstandards.org/IFC4#IfcPlaneAngleMeasure> ;
     ] ;
 .
 :_6e8ec780d1f111e1800000215ad4efdf
@@ -153,7 +153,7 @@ Note: new property in IFC4.""" ;
   IFC4-PSD:nameAlias "是否外部构件"@zh-CN ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType IFC4:IfcBoolean ;
+      IFC4-PSD:dataType <http://ifcowl.openbimstandards.org/IFC4#IfcBoolean> ;
     ] ;
 .
 :_7484a880d1f111e1800000215ad4efdf
@@ -176,7 +176,7 @@ Hier der Gesamtwärmedurchgangskoeffizient des Balkens (in Richtung des Wärmefl
   IFC4-PSD:nameAlias "熱貫流率"@ja-JP ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType IFC4:IfcThermalTransmittanceMeasure ;
+      IFC4-PSD:dataType <http://ifcowl.openbimstandards.org/IFC4#IfcThermalTransmittanceMeasure> ;
     ] ;
 .
 :_7a7a8980d1f111e1800000215ad4efdf
@@ -194,7 +194,7 @@ Hier der Gesamtwärmedurchgangskoeffizient des Balkens (in Richtung des Wärmefl
   IFC4-PSD:nameAlias "耐力部材"@ja-JP ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType IFC4:IfcBoolean ;
+      IFC4-PSD:dataType <http://ifcowl.openbimstandards.org/IFC4#IfcBoolean> ;
     ] ;
 .
 :_80706a80d1f111e1800000215ad4efdf
@@ -214,6 +214,6 @@ It is given according to the national fire safety classification.""" ;
   IFC4-PSD:nameAlias "防火等级"@zh-CN ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType IFC4:IfcLabel ;
+      IFC4-PSD:dataType <http://ifcowl.openbimstandards.org/IFC4#IfcLabel> ;
     ] ;
 .

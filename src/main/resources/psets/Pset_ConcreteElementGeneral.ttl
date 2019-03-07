@@ -1,8 +1,9 @@
 # baseURI: http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_ConcreteElementGeneral
+# imports: http://www.buildingsmart-tech.org/ifcOWL/IFC4
 # imports: http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD
 
 @prefix : <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_ConcreteElementGeneral#> .
-@prefix IFC4: <http://ifcowl.openbimstandards.org/IFC4#> .
+@prefix IFC4: <http://www.buildingsmart-tech.org/ifcOWL/IFC4#> .
 @prefix IFC4-PSD: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -11,6 +12,7 @@
 
 <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_ConcreteElementGeneral>
   rdf:type owl:Ontology ;
+  owl:imports <http://www.buildingsmart-tech.org/ifcOWL/IFC4> ;
   owl:imports <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD> ;
   owl:versionInfo "Created with BIM-Bots PSD Repository" ;
 .
@@ -48,7 +50,7 @@
   IFC4-PSD:nameAlias "Bewehrungsgrad Fläche"@de-DE ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcAreaDensityMeasure> ;
+      IFC4-PSD:dataType IFC4:IfcAreaDensityMeasure ;
     ] ;
 .
 :_0764b8e36a7c4275859f1534ea3eec09
@@ -60,7 +62,7 @@
   IFC4-PSD:nameAlias "Betonüberdeckung"@de-DE ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcPositiveLengthMeasure> ;
+      IFC4-PSD:dataType IFC4:IfcPositiveLengthMeasure ;
     ] ;
 .
 :_64af56b30b4540c2b43d74b49a28b9db
@@ -72,7 +74,7 @@
   IFC4-PSD:nameAlias "Ausführung"@de-DE ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcLabel> ;
+      IFC4-PSD:dataType IFC4:IfcLabel ;
     ] ;
 .
 :_84899180d1cb11e1800000215ad4efdf
@@ -86,7 +88,7 @@
   IFC4-PSD:nameAlias "구조 클래스"@ko-KR ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcLabel> ;
+      IFC4-PSD:dataType IFC4:IfcLabel ;
     ] ;
 .
 :_96390dc443fd41d88cb6aca86dce4993
@@ -98,7 +100,7 @@
   IFC4-PSD:nameAlias "Betonfestigkeitsklasse"@de-DE ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcLabel> ;
+      IFC4-PSD:dataType IFC4:IfcLabel ;
     ] ;
 .
 :_9bee0bf72ad34a66bef57b71b7ca175b
@@ -110,7 +112,7 @@
   IFC4-PSD:nameAlias "Expositionsklasse"@de-DE ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcLabel> ;
+      IFC4-PSD:dataType IFC4:IfcLabel ;
     ] ;
 .
 :_a1c0e785c9bc41878ddbc67fd0ff3d26
@@ -122,7 +124,7 @@
   IFC4-PSD:nameAlias "Bewehrungsgrad Volumen"@de-DE ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcMassDensityMeasure> ;
+      IFC4-PSD:dataType IFC4:IfcMassDensityMeasure ;
     ] ;
 .
 :_a4b95080d1cb11e1800000215ad4efdf
@@ -136,7 +138,7 @@
   IFC4-PSD:nameAlias "치수 정밀도 클래스"@ko-KR ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcLabel> ;
+      IFC4-PSD:dataType IFC4:IfcLabel ;
     ] ;
 .
 :_abe05e80d1cb11e1800000215ad4efdf
@@ -150,7 +152,7 @@
   IFC4-PSD:nameAlias "제조 허용 클래스"@ko-KR ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcLabel> ;
+      IFC4-PSD:dataType IFC4:IfcLabel ;
     ] ;
 .
 :_b88ca2252c4b4014bcf289bbbd596398
@@ -160,7 +162,7 @@
   IFC4-PSD:name "ReinforcementStrengthClass" ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcLabel> ;
+      IFC4-PSD:dataType IFC4:IfcLabel ;
     ] ;
 .
 :_b8fd4d80d1cb11e1800000215ad4efdf
@@ -176,7 +178,7 @@
   IFC4-PSD:nameAlias "주근 콘크리트 입고"@ko-KR ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcPositiveLengthMeasure> ;
+      IFC4-PSD:dataType IFC4:IfcPositiveLengthMeasure ;
     ] ;
 .
 :_bef32e80d1cb11e1800000215ad4efdf
@@ -192,6 +194,6 @@
   IFC4-PSD:nameAlias "보강근 콘크리트 입고"@ko-KR ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcPositiveLengthMeasure> ;
+      IFC4-PSD:dataType IFC4:IfcPositiveLengthMeasure ;
     ] ;
 .

@@ -4,6 +4,10 @@
 @prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
 
+:IFC4
+        a          :User ;
+        :name      "IFC4" .
+
 :_82b5c1bf-da6b-4da3-b594-bf0d361f1f77
         a          :User ;
         :email     "peter.willems@tno.nl" ;

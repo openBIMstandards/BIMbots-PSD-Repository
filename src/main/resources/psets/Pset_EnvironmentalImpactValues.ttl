@@ -1,8 +1,9 @@
 # baseURI: http://www.buildingsmart-tech.org/ifcOWL/IFC-PSD/Pset_EnvironmentalImpactValues
+# imports: http://www.buildingsmart-tech.org/ifcOWL/IFC4
 # imports: http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD
 
 @prefix : <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_EnvironmentalImpactValues#> .
-@prefix IFC4: <http://ifcowl.openbimstandards.org/IFC4#> .
+@prefix IFC4: <http://www.buildingsmart-tech.org/ifcOWL/IFC4#> .
 @prefix IFC4-PSD: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -11,6 +12,7 @@
 
 <http://www.buildingsmart-tech.org/ifcOWL/IFC-PSD/Pset_EnvironmentalImpactValues>
   rdf:type owl:Ontology ;
+  owl:imports <http://www.buildingsmart-tech.org/ifcOWL/IFC4> ;
   owl:imports <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD> ;
 .
 :Pset_EnvironmentalImpactValues
@@ -55,7 +57,7 @@ Environmental impact values are obtained multiplying indicator value per unit by
   IFC4-PSD:nameAlias "모든 차 에너지 소비"@ko-KR ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcEnergyMeasure> ;
+      IFC4-PSD:dataType IFC4:IfcEnergyMeasure ;
     ] ;
 .
 :_097fa580d1e211e1800000215ad4efdf
@@ -71,7 +73,7 @@ Environmental impact values are obtained multiplying indicator value per unit by
   IFC4-PSD:nameAlias "물 사용"@ko-KR ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcVolumeMeasure> ;
+      IFC4-PSD:dataType IFC4:IfcVolumeMeasure ;
     ] ;
 .
 :_0f758680d1e211e1800000215ad4efdf
@@ -87,7 +89,7 @@ Environmental impact values are obtained multiplying indicator value per unit by
   IFC4-PSD:nameAlias "유해 폐기물"@ko-KR ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcMassMeasure> ;
+      IFC4-PSD:dataType IFC4:IfcMassMeasure ;
     ] ;
 .
 :_14d2d100d1e211e1800000215ad4efdf
@@ -103,7 +105,7 @@ Environmental impact values are obtained multiplying indicator value per unit by
   IFC4-PSD:nameAlias "비 유해 폐기물"@ko-KR ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcMassMeasure> ;
+      IFC4-PSD:dataType IFC4:IfcMassMeasure ;
     ] ;
 .
 :_1a301b80d1e211e1800000215ad4efdf
@@ -119,7 +121,7 @@ Environmental impact values are obtained multiplying indicator value per unit by
   IFC4-PSD:nameAlias "기후변화"@ko-KR ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcMassMeasure> ;
+      IFC4-PSD:dataType IFC4:IfcMassMeasure ;
     ] ;
 .
 :_1f8d6600d1e211e1800000215ad4efdf
@@ -135,7 +137,7 @@ Environmental impact values are obtained multiplying indicator value per unit by
   IFC4-PSD:nameAlias "대기산성화"@ko-KR ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcMassMeasure> ;
+      IFC4-PSD:dataType IFC4:IfcMassMeasure ;
     ] ;
 .
 :_25834700d1e211e1800000215ad4efdf
@@ -151,7 +153,7 @@ Environmental impact values are obtained multiplying indicator value per unit by
   IFC4-PSD:nameAlias "재생 가능 에너지 소비"@ko-KR ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcEnergyMeasure> ;
+      IFC4-PSD:dataType IFC4:IfcEnergyMeasure ;
     ] ;
 .
 :_2ae09180d1e211e1800000215ad4efdf
@@ -167,7 +169,7 @@ Environmental impact values are obtained multiplying indicator value per unit by
   IFC4-PSD:nameAlias "재생 불가 에너지 소비"@ko-KR ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcEnergyMeasure> ;
+      IFC4-PSD:dataType IFC4:IfcEnergyMeasure ;
     ] ;
 .
 :_303ddc00d1e211e1800000215ad4efdf
@@ -183,7 +185,7 @@ Environmental impact values are obtained multiplying indicator value per unit by
   IFC4-PSD:nameAlias "자원 소비"@ko-KR ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcMassMeasure> ;
+      IFC4-PSD:dataType IFC4:IfcMassMeasure ;
     ] ;
 .
 :_359b2680d1e211e1800000215ad4efdf
@@ -199,7 +201,7 @@ Environmental impact values are obtained multiplying indicator value per unit by
   IFC4-PSD:nameAlias "불활성 폐기불"@ko-KR ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcMassMeasure> ;
+      IFC4-PSD:dataType IFC4:IfcMassMeasure ;
     ] ;
 .
 :_3b910780d1e211e1800000215ad4efdf
@@ -215,7 +217,7 @@ Environmental impact values are obtained multiplying indicator value per unit by
   IFC4-PSD:nameAlias "방사성 폐기물"@ko-KR ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcMassMeasure> ;
+      IFC4-PSD:dataType IFC4:IfcMassMeasure ;
     ] ;
 .
 :_40ee5200d1e211e1800000215ad4efdf
@@ -231,7 +233,7 @@ Environmental impact values are obtained multiplying indicator value per unit by
   IFC4-PSD:nameAlias "성층권 오존층 파괴"@ko-KR ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcMassMeasure> ;
+      IFC4-PSD:dataType IFC4:IfcMassMeasure ;
     ] ;
 .
 :_46e43300d1e211e1800000215ad4efdf
@@ -247,7 +249,7 @@ Environmental impact values are obtained multiplying indicator value per unit by
   IFC4-PSD:nameAlias "광화학 오존 생성"@ko-KR ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcMassMeasure> ;
+      IFC4-PSD:dataType IFC4:IfcMassMeasure ;
     ] ;
 .
 :_4cda1400d1e211e1800000215ad4efdf
@@ -263,6 +265,6 @@ Environmental impact values are obtained multiplying indicator value per unit by
   IFC4-PSD:nameAlias "부영 양화"@ko-KR ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcMassMeasure> ;
+      IFC4-PSD:dataType IFC4:IfcMassMeasure ;
     ] ;
 .

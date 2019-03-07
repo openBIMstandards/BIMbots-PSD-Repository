@@ -1,8 +1,9 @@
 # baseURI: http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_BeamCommon
+# imports: http://www.buildingsmart-tech.org/ifcOWL/IFC4
 # imports: http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD
 
 @prefix : <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_BeamCommon#> .
-@prefix IFC4: <http://ifcowl.openbimstandards.org/IFC4#> .
+@prefix IFC4: <http://www.buildingsmart-tech.org/ifcOWL/IFC4#> .
 @prefix IFC4-PSD: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -11,6 +12,7 @@
 
 <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_BeamCommon>
   rdf:type owl:Ontology ;
+  owl:imports <http://www.buildingsmart-tech.org/ifcOWL/IFC4> ;
   owl:imports <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD> ;
   owl:versionInfo "Created with BIM-Bots PSD Repository" ;
 .
@@ -52,7 +54,7 @@
   IFC4-PSD:nameAlias "参考号"@zh-CN ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcIdentifier> ;
+      IFC4-PSD:dataType IFC4:IfcIdentifier ;
     ] ;
 .
 :_0970ad00d1c411e1800000215ad4efdf
@@ -99,7 +101,7 @@ Dieser Parameter wird zusätzlich zur geometrischen Repräsentation bereitgestel
   IFC4-PSD:nameAlias "跨度"@zh-CN ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcPositiveLengthMeasure> ;
+      IFC4-PSD:dataType IFC4:IfcPositiveLengthMeasure ;
     ] ;
 .
 :_1ee5d700d1c411e1800000215ad4efdf
@@ -124,7 +126,7 @@ Dieser Parameter wird zusätzlich zur geometrischen Repräsentation bereitgestel
   IFC4-PSD:nameAlias "坡度"@zh-CN ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcPlaneAngleMeasure> ;
+      IFC4-PSD:dataType IFC4:IfcPlaneAngleMeasure ;
     ] ;
 .
 :_23aa8b00d1c411e1800000215ad4efdf
@@ -155,7 +157,7 @@ Dieser Parameter wird zusätzlich zur geometrischen Repräsentation bereitgestel
   IFC4-PSD:nameAlias "转角"@zh-CN ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcPlaneAngleMeasure> ;
+      IFC4-PSD:dataType IFC4:IfcPlaneAngleMeasure ;
     ] ;
 .
 :_286f3f00d1c411e1800000215ad4efdf
@@ -173,7 +175,7 @@ Dieser Parameter wird zusätzlich zur geometrischen Repräsentation bereitgestel
   IFC4-PSD:nameAlias "是否外部构件"@zh-CN ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcBoolean> ;
+      IFC4-PSD:dataType IFC4:IfcBoolean ;
     ] ;
 .
 :_2f964d00d1c411e1800000215ad4efdf
@@ -200,7 +202,7 @@ Hier der Gesamtwärmedurchgangskoeffizient des Balkens (in Richtung des Wärmefl
   IFC4-PSD:nameAlias "熱貫流率"@ja-JP ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcThermalTransmittanceMeasure> ;
+      IFC4-PSD:dataType IFC4:IfcThermalTransmittanceMeasure ;
     ] ;
 .
 :_33c26a80d1c411e1800000215ad4efdf
@@ -218,7 +220,7 @@ Hier der Gesamtwärmedurchgangskoeffizient des Balkens (in Richtung des Wärmefl
   IFC4-PSD:nameAlias "耐力部材"@ja-JP ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcBoolean> ;
+      IFC4-PSD:dataType IFC4:IfcBoolean ;
     ] ;
 .
 :_38871e80d1c411e1800000215ad4efdf
@@ -237,6 +239,6 @@ Hier der Gesamtwärmedurchgangskoeffizient des Balkens (in Richtung des Wärmefl
   IFC4-PSD:nameAlias "防火等级"@zh-CN ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcLabel> ;
+      IFC4-PSD:dataType IFC4:IfcLabel ;
     ] ;
 .

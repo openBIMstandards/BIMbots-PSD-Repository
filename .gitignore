@@ -4,4 +4,6 @@
 .settings
 target
 src/test
-
+src/main/java/nl/tno/willemsph/psd_repository/sparql/AwsClientIO.java
+credentials.csv
+**/*.pdf

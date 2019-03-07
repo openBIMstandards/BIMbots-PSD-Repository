@@ -100,8 +100,8 @@ public class UserRepository {
 		queryStr.append("SELECT ?name ?email ?salt ?password ");
 		queryStr.append("WHERE {");
 		queryStr.append("  GRAPH ?graph { ");
-		queryStr.append(
-				"  ?user rdf:type usr:User ; usr:name ?name ; usr:email ?email ; usr:salt ?salt ; usr:password ?password . ");
+		queryStr.append("    ?user rdf:type usr:User ; usr:name ?name . ");
+		queryStr.append("    OPTIONAL { ?user usr:email ?email ; usr:salt ?salt ; usr:password ?password } . ");
 		queryStr.append("  }");
 		queryStr.append("}");
 

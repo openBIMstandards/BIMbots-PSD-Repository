@@ -117,6 +117,19 @@ public class PropertySetDefinitionInput {
 	public void setPropertyDefs(List<PropertyDefinitionInput> propertyDefs) {
 		this.propertyDefs = propertyDefs;
 	}
+	
+	//
+	// OwnerId
+	//
+	private String ownerId;
+	
+	public String getOwnerId() {
+		return ownerId;
+	}
+	
+	public void setOwnerId(String ownerId) {
+		this.ownerId = ownerId;
+	}
 
 	@Override
 	public String toString() {

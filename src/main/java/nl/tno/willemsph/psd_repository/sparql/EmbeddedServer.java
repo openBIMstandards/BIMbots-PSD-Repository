@@ -2,8 +2,6 @@ package nl.tno.willemsph.psd_repository.sparql;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -28,17 +26,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Service;
 
-import com.amazonaws.AmazonServiceException;
-import com.amazonaws.SdkClientException;
-import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.s3.model.Bucket;
-import com.amazonaws.services.s3.model.ListObjectsV2Result;
-import com.amazonaws.services.s3.model.S3Object;
-import com.amazonaws.services.s3.model.S3ObjectInputStream;
-import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -51,21 +38,25 @@ public class EmbeddedServer {
 	public static final String QUERY_URL = "http://localhost:3330/rdf/query";
 	public static final String UPDATE_URL = "http://localhost:3330/rdf/update";
 	public static final String BUCKET_NAME = "infrabim.nl";
-	public static final String USERS_KEY = "bimbots-psd-repository/users.ttl";
-	public static final String IFC4 = "http://ifcowl.openbimstandards.org/IFC4";
+	public static final String USERS_KEY = "bimbots-psd-repository/users/users.ttl";
+	public static final String OWNERS_KEY = "bimbots-psd-repository/psets/owners.ttl";
+	public static final String IFC4 = "http://www.buildingsmart-tech.org/ifcOWL/IFC4";
 	public static final String IFC4_PSD = "http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD";
 	public static final String USERS = "http://www.infrabim.nl/bimbots-psd-repository/users";
+	public static final String OWNERS = "http://www.infrabim.nl/bimbots-psd-repository/owners";
 	public static final String[] PSETS = { "Pset_BeamCommon", "Pset_BuildingCommon", "Pset_BuildingElementProxyCommon",
-			"Pset_BuildingStoreyCommon", "Pset_ChimneyCommon", "Pset_ColumnCommon", "Pset_ConcreteElementGeneral",
-			"Pset_CoveringCommon", "Pset_DoorCommon", "Pset_DoorWindowGlazingType",
-			"Pset_EnvironmentalImpactIndicators", "Pset_EnvironmentalImpactValues", "Pset_MaterialCommon",
-			"Pset_MaterialConcrete", "Pset_MemberCommon", "Pset_OpeningElementCommon", "Pset_PileCommon",
-			"Pset_PlateCommon", "Pset_PrecastConcreteElementGeneral", "Pset_PrecastSlab", "Pset_RoofCommon",
-			"Pset_SlabCommon", "Pset_SpaceCommon", "Pset_StairCommon", "Pset_WallCommon", "Pset_WindowCommon" };
+			"Pset_BuildingStoreyCommon", "Pset_BuildingSystemCommon", "Pset_ChimneyCommon", "Pset_CivilElementCommon",
+			"Pset_ColumnCommon", "Pset_ConcreteElementGeneral", "Pset_CoveringCommon", "Pset_CurtainWallCommon",
+			"Pset_DoorCommon", "Pset_DoorWindowGlazingType", "Pset_EnvironmentalImpactIndicators",
+			"Pset_EnvironmentalImpactValues", "Pset_MaterialCommon", "Pset_MaterialConcrete", "Pset_MemberCommon",
+			"Pset_OpeningElementCommon", "Pset_PileCommon", "Pset_PlateCommon", "Pset_PrecastConcreteElementGeneral",
+			"Pset_PrecastSlab", "Pset_RoofCommon", "Pset_SlabCommon", "Pset_SpaceCommon", "Pset_StairCommon",
+			"Pset_TransportElementCommon", "Pset_TransportElementElevator", "Pset_WallCommon", "Pset_WindowCommon",
+			"Pset_ZoneCommon" };
 	public static final String[] IDSS = { "Basic_IDM", "Kalkzandsteen_IDS" };
 	private static Dataset ds;
 	private ClassPathResource ifc4Resource, ifc4PsdResource;
-	private FileSystemResource usersResource;
+	private FileSystemResource usersResource, ownersResource;
 	private List<ClassPathResource> psetResources, idsResources;
 	public static FusekiServer sparql;
 	public static EmbeddedServer instance;
@@ -75,8 +66,8 @@ public class EmbeddedServer {
 		instance = this;
 		ifc4Resource = new ClassPathResource("IFC4.ttl");
 		ifc4PsdResource = new ClassPathResource("psetdef.ttl");
-		// usersResource = new ClassPathResource("users.ttl");
 		usersResource = new FileSystemResource("src/main/resources/users/users.ttl");
+		ownersResource = new FileSystemResource("src/main/resources/psets/owners.ttl");
 
 		psetResources = new ArrayList<>();
 		for (String pset : PSETS) {
@@ -91,7 +82,8 @@ public class EmbeddedServer {
 	}
 
 	public void startServer() throws IOException {
-		awsClientDownload();
+		AwsClientIO.getInstance().awsClientDownload(BUCKET_NAME, USERS_KEY, usersResource);
+		AwsClientIO.getInstance().awsClientDownload(BUCKET_NAME, OWNERS_KEY, ownersResource);
 
 		Model defaultModel = ModelFactory.createDefaultModel();
 		defaultModel.read(ifc4Resource.getInputStream(), null, "TURTLE");
@@ -105,44 +97,20 @@ public class EmbeddedServer {
 			defaultModel.read(idsResource.getInputStream(), null, "TURTLE");
 		}
 
-		// users model graph
 		ds = DatasetFactory.create(defaultModel);
+
+		// users model graph
 		Model usersModel = ModelFactory.createDefaultModel();
 		usersModel.read(usersResource.getInputStream(), null, "TURTLE");
 		ds.addNamedModel(USERS, usersModel);
 
+		// owners model graph
+		Model ownersModel = ModelFactory.createDefaultModel();
+		ownersModel.read(ownersResource.getInputStream(), null, "TURTLE");
+		ds.addNamedModel(OWNERS, ownersModel);
+
 		sparql = FusekiServer.create().add("/rdf", ds, true).build();
 		sparql.start();
-	}
-
-	private void awsClientDownload() throws FileNotFoundException, IOException {
-		System.setProperty("aws.accessKeyId", "AKIAIEKE6M6P3GWW6Z7A");
-		System.setProperty("aws.secretKey", "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");
-		final AmazonS3 s3 = AmazonS3ClientBuilder.standard().withRegion(Regions.US_EAST_2)
-				.withCredentials(new DefaultAWSCredentialsProviderChain()).build();
-
-//		List<Bucket> buckets = s3.listBuckets();
-//		System.out.println("Your Amazon S3 buckets are:");
-//		for (Bucket b : buckets) {
-//			System.out.println("* " + b.getName());
-//		}
-//		ListObjectsV2Result result = s3.listObjectsV2("infrabim.nl");
-//		List<S3ObjectSummary> objects = result.getObjectSummaries();
-//		for (S3ObjectSummary os : objects) {
-//			System.out.println("* " + os.getKey());
-//		}
-
-		S3Object usersS3Object = s3.getObject(BUCKET_NAME, USERS_KEY);
-		S3ObjectInputStream s3is = usersS3Object.getObjectContent();
-
-		FileOutputStream fos = new FileOutputStream(usersResource.getFile());
-		byte[] read_buf = new byte[1024];
-		int read_len = 0;
-		while ((read_len = s3is.read(read_buf)) > 0) {
-			fos.write(read_buf, 0, read_len);
-		}
-		s3is.close();
-		fos.close();
 	}
 
 	public static PrefixMapping getPrefixMapping() {
@@ -332,27 +300,29 @@ public class EmbeddedServer {
 		Model usersModel = ds.getNamedModel(USERS);
 		LOGGER.info("File path usersResource: " + usersResource.getFile().getAbsolutePath());
 		usersModel.write(new FileOutputStream(usersResource.getFile()), "TURTLE");
-		awsClientUpload();
-	}
 
-	private void awsClientUpload() {
 		Runnable upload = new Runnable() {
-			
+
 			@Override
 			public void run() {
-				System.setProperty("aws.accessKeyId", "AKIAIEKE6M6P3GWW6Z7A");
-				System.setProperty("aws.secretKey", "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");
-				final AmazonS3 s3 = AmazonS3ClientBuilder.standard().withRegion(Regions.US_EAST_2)
-						.withCredentials(new DefaultAWSCredentialsProviderChain()).build();
-				try {
-					s3.putObject(BUCKET_NAME, USERS_KEY, usersResource.getFile());
-				} catch (AmazonServiceException e) {
-					e.printStackTrace();
-				}
+				AwsClientIO.getInstance().awsClientUpload(BUCKET_NAME, USERS_KEY, usersResource);
 			}
 		};
-		
 		new Thread(upload).start();
 	}
 
+	public void saveOwnersModel() throws IOException {
+		Model ownersModel = ds.getNamedModel(OWNERS);
+		LOGGER.info("File path ownersResource: " + ownersResource.getFile().getAbsolutePath());
+		ownersModel.write(new FileOutputStream(ownersResource.getFile()), "TURTLE");
+
+		Runnable upload = new Runnable() {
+
+			@Override
+			public void run() {
+				AwsClientIO.getInstance().awsClientUpload(BUCKET_NAME, OWNERS_KEY, ownersResource);
+			}
+		};
+		new Thread(upload).start();
+	}
 }

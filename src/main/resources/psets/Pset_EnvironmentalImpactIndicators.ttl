@@ -1,8 +1,9 @@
 # baseURI: http://www.buildingsmart-tech.org/ifcOWL/IFC-PSD/Pset_EnvironmentalImpactIndicators
+# imports: http://www.buildingsmart-tech.org/ifcOWL/IFC4
 # imports: http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD
 
 @prefix : <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_EnvironmentalImpactIndicators#> .
-@prefix IFC4: <http://ifcowl.openbimstandards.org/IFC4#> .
+@prefix IFC4: <http://www.buildingsmart-tech.org/ifcOWL/IFC4#> .
 @prefix IFC4-PSD: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -11,6 +12,7 @@
 
 <http://www.buildingsmart-tech.org/ifcOWL/IFC-PSD/Pset_EnvironmentalImpactIndicators>
   rdf:type owl:Ontology ;
+  owl:imports <http://www.buildingsmart-tech.org/ifcOWL/IFC4> ;
   owl:imports <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD> ;
 .
 :Pset_EnvironmentalImpactIndicators
@@ -63,7 +65,7 @@ There is a consensus agreement international for the five one. Last ones are not
   IFC4-PSD:nameAlias "참조"@ko-KR ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcIdentifier> ;
+      IFC4-PSD:dataType IFC4:IfcIdentifier ;
     ] ;
 .
 :_88281300d1e111e1800000215ad4efdf
@@ -79,7 +81,7 @@ There is a consensus agreement international for the five one. Last ones are not
   IFC4-PSD:nameAlias "기능단위참조"@ko-KR ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcLabel> ;
+      IFC4-PSD:dataType IFC4:IfcLabel ;
     ] ;
 .
 :_8f4f2100d1e111e1800000215ad4efdf
@@ -95,7 +97,7 @@ There is a consensus agreement international for the five one. Last ones are not
   IFC4-PSD:nameAlias "단위"@ko-KR ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcText> ;
+      IFC4-PSD:dataType IFC4:IfcText ;
     ] ;
 .
 :_96762f00d1e111e1800000215ad4efdf
@@ -150,7 +152,7 @@ There is a consensus agreement international for the five one. Last ones are not
   IFC4-PSD:nameAlias "예상수명"@ko-KR ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcTimeMeasure> ;
+      IFC4-PSD:dataType IFC4:IfcTimeMeasure ;
     ] ;
 .
 :_adb51c80d1e111e1800000215ad4efdf
@@ -166,7 +168,7 @@ There is a consensus agreement international for the five one. Last ones are not
   IFC4-PSD:nameAlias "단위당 모든 차 에너지 소비"@ko-KR ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcEnergyMeasure> ;
+      IFC4-PSD:dataType IFC4:IfcEnergyMeasure ;
     ] ;
 .
 :_b3126700d1e111e1800000215ad4efdf
@@ -182,7 +184,7 @@ There is a consensus agreement international for the five one. Last ones are not
   IFC4-PSD:nameAlias "단위 당 물 사용"@ko-KR ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcVolumeMeasure> ;
+      IFC4-PSD:dataType IFC4:IfcVolumeMeasure ;
     ] ;
 .
 :_b9084800d1e111e1800000215ad4efdf
@@ -198,7 +200,7 @@ There is a consensus agreement international for the five one. Last ones are not
   IFC4-PSD:nameAlias "단위당 유해 폐기물"@ko-KR ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcMassMeasure> ;
+      IFC4-PSD:dataType IFC4:IfcMassMeasure ;
     ] ;
 .
 :_be659280d1e111e1800000215ad4efdf
@@ -214,7 +216,7 @@ There is a consensus agreement international for the five one. Last ones are not
   IFC4-PSD:nameAlias "단위당 비 유해 폐기물"@ko-KR ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcMassMeasure> ;
+      IFC4-PSD:dataType IFC4:IfcMassMeasure ;
     ] ;
 .
 :_c32a4680d1e111e1800000215ad4efdf
@@ -230,7 +232,7 @@ There is a consensus agreement international for the five one. Last ones are not
   IFC4-PSD:nameAlias "단위당 기후 변화"@ko-KR ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcMassMeasure> ;
+      IFC4-PSD:dataType IFC4:IfcMassMeasure ;
     ] ;
 .
 :_c9202780d1e111e1800000215ad4efdf
@@ -246,7 +248,7 @@ There is a consensus agreement international for the five one. Last ones are not
   IFC4-PSD:nameAlias "단위당 대기 산성화"@ko-KR ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcMassMeasure> ;
+      IFC4-PSD:dataType IFC4:IfcMassMeasure ;
     ] ;
 .
 :_cf160880d1e111e1800000215ad4efdf
@@ -262,7 +264,7 @@ There is a consensus agreement international for the five one. Last ones are not
   IFC4-PSD:nameAlias "단위당 재생 에너지 소비"@ko-KR ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcEnergyMeasure> ;
+      IFC4-PSD:dataType IFC4:IfcEnergyMeasure ;
     ] ;
 .
 :_d50be980d1e111e1800000215ad4efdf
@@ -278,7 +280,7 @@ There is a consensus agreement international for the five one. Last ones are not
   IFC4-PSD:nameAlias "단위당 재생 불가 에너지 소비"@ko-KR ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcEnergyMeasure> ;
+      IFC4-PSD:dataType IFC4:IfcEnergyMeasure ;
     ] ;
 .
 :_db01ca80d1e111e1800000215ad4efdf
@@ -294,7 +296,7 @@ There is a consensus agreement international for the five one. Last ones are not
   IFC4-PSD:nameAlias "단위당 자원소비"@ko-KR ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcMassMeasure> ;
+      IFC4-PSD:dataType IFC4:IfcMassMeasure ;
     ] ;
 .
 :_e0f7ab80d1e111e1800000215ad4efdf
@@ -310,7 +312,7 @@ There is a consensus agreement international for the five one. Last ones are not
   IFC4-PSD:nameAlias "단위당 불황성 폐기물"@ko-KR ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcMassMeasure> ;
+      IFC4-PSD:dataType IFC4:IfcMassMeasure ;
     ] ;
 .
 :_e6ed8c80d1e111e1800000215ad4efdf
@@ -326,7 +328,7 @@ There is a consensus agreement international for the five one. Last ones are not
   IFC4-PSD:nameAlias "단위당 방사성 폐기물"@ko-KR ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcMassMeasure> ;
+      IFC4-PSD:dataType IFC4:IfcMassMeasure ;
     ] ;
 .
 :_ec4ad700d1e111e1800000215ad4efdf
@@ -342,7 +344,7 @@ There is a consensus agreement international for the five one. Last ones are not
   IFC4-PSD:nameAlias "단위당 성층권 오존층 파괴"@ko-KR ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcMassMeasure> ;
+      IFC4-PSD:dataType IFC4:IfcMassMeasure ;
     ] ;
 .
 :_f2d94e80d1e111e1800000215ad4efdf
@@ -358,7 +360,7 @@ There is a consensus agreement international for the five one. Last ones are not
   IFC4-PSD:nameAlias "단위당 광화학 오존 생성"@ko-KR ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcMassMeasure> ;
+      IFC4-PSD:dataType IFC4:IfcMassMeasure ;
     ] ;
 .
 :_f79e0280d1e111e1800000215ad4efdf
@@ -374,6 +376,6 @@ There is a consensus agreement international for the five one. Last ones are not
   IFC4-PSD:nameAlias "단위당 부영양화"@ko-KR ;
   IFC4-PSD:propertyType [
       rdf:type IFC4-PSD:TypePropertySingleValue ;
-      IFC4-PSD:dataType <http://www.buildingsmart-tech.org/ifcOWL/IFC4#IfcMassMeasure> ;
+      IFC4-PSD:dataType IFC4:IfcMassMeasure ;
     ] ;
 .

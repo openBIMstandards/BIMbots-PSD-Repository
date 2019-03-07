@@ -1,5 +1,6 @@
 # baseURI: http://openbimstandards.org/information-delivery-specification/Kalkzandsteen_IDS
 # imports: http://openbimstandards.org/information-delivery-specification/Basic_IDM
+# imports: http://www.buildingsmart-tech.org/ifcOWL/IFC4
 # imports: http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD
 
 @prefix : <http://openbimstandards.org/information-delivery-specification/Kalkzandsteen_IDS#> .
@@ -13,6 +14,7 @@
 <http://openbimstandards.org/information-delivery-specification/Kalkzandsteen_IDS>
   rdf:type owl:Ontology ;
   owl:imports <http://openbimstandards.org/information-delivery-specification/Basic_IDM> ;
+  owl:imports <http://www.buildingsmart-tech.org/ifcOWL/IFC4> ;
   owl:imports <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD> ;
   owl:versionInfo "Created with TopBraid Composer" ;
 .

@@ -12,7 +12,6 @@ import com.itextpdf.text.DocumentException;
 
 import graphql.schema.DataFetchingEnvironment;
 import nl.tno.willemsph.psd_repository.common.AuthData;
-import nl.tno.willemsph.psd_repository.common.InvalidCredentialsException;
 import nl.tno.willemsph.psd_repository.common.SessionTimeOutException;
 import nl.tno.willemsph.psd_repository.common.SigninPayLoad;
 import nl.tno.willemsph.psd_repository.common.User;
@@ -66,12 +65,13 @@ public class Mutation implements GraphQLMutationResolver {
 	 * @throws IllegalAccessException
 	 * @throws IOException
 	 */
-	public SigninPayLoad signinUser(AuthData auth) throws IllegalAccessException, IOException {
+	public SigninPayLoad signinUser(AuthData auth) throws IOException {
 		User user = userRepository.findByEmail(auth.getEmail());
 		if (user != null && userRepository.verify(user, auth.getPassword())) {
 			return userRepository.signinUser(user);
+		} else {
+			return new SigninPayLoad("Invalid credentials");
 		}
-		throw new InvalidCredentialsException("Invalid credentials", null);
 	}
 
 	public boolean signoutUser(String token) {

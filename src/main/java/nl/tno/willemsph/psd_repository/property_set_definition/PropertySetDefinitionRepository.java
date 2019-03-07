@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+import nl.tno.willemsph.psd_repository.common.UserRepository;
 import nl.tno.willemsph.psd_repository.property_definition.PropertyDefinition;
 import nl.tno.willemsph.psd_repository.property_definition.PropertyDefinitionInput;
 import nl.tno.willemsph.psd_repository.property_type.PropertyTypeInput;
@@ -21,6 +22,12 @@ import nl.tno.willemsph.psd_repository.sparql.EmbeddedServer;
 @Component
 public class PropertySetDefinitionRepository {
 	private final static Logger LOGGER = Logger.getLogger(PropertySetDefinitionRepository.class.getName());
+
+	private UserRepository userRepository;
+
+	public PropertySetDefinitionRepository(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
 
 	public List<PropertySetDefinition> getAllPropertySetDefinitions() throws IOException {
 		List<PropertySetDefinition> allPropertySetDefinitions = new ArrayList<>();
@@ -104,14 +111,25 @@ public class PropertySetDefinitionRepository {
 		return psetNames;
 	}
 
+	/**
+	 * Create a new property set definition.
+	 * 
+	 * @param propertySetDefinitionInput Pset input parameters
+	 * @return resulted PropertySetDefinition instance
+	 * @throws IOException
+	 */
 	public PropertySetDefinition createPropertySetDefinition(PropertySetDefinitionInput propertySetDefinitionInput)
 			throws IOException {
 		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
 		queryStr.setIri("psd", propertySetDefinitionInput.getId());
 		queryStr.setLiteral("name", propertySetDefinitionInput.getName());
+		queryStr.setIri("owner", propertySetDefinitionInput.getOwnerId());
+		queryStr.setIri("graph", EmbeddedServer.OWNERS);
+		queryStr.setNsPrefix("owners", EmbeddedServer.OWNERS + "#");
 		queryStr.append("INSERT { ");
 		queryStr.append("  ?psd rdf:type IFC4-PSD:PropertySetDef . ");
 		queryStr.append("  ?psd IFC4-PSD:name ?name . ");
+		queryStr.append("  GRAPH ?graph { ?psd owners:owner ?owner }");
 		if (propertySetDefinitionInput.getDefinition() != null) {
 			queryStr.setLiteral("definition", propertySetDefinitionInput.getDefinition().toString());
 			queryStr.append("	?psd IFC4-PSD:definition ?definition . ");
@@ -176,6 +194,8 @@ public class PropertySetDefinitionRepository {
 
 		EmbeddedServer.instance.update(queryStr);
 
+		EmbeddedServer.instance.saveOwnersModel();
+
 		return getOnePropertySetDefinition(propertySetDefinitionInput.getName());
 	}
 
@@ -190,7 +210,7 @@ public class PropertySetDefinitionRepository {
 				updateName(psd, psetInput);
 			}
 
-			PropertySetDefinitionResolver psdResolver = new PropertySetDefinitionResolver();
+			PropertySetDefinitionResolver psdResolver = new PropertySetDefinitionResolver(this.userRepository);
 			psd.setDefinition(psdResolver.getDefinition(psd));
 			if (psd.getDefinition() != null && !psd.getDefinition().equals(psetInput.getDefinition())) {
 				updateDefinition(psd, psetInput);
@@ -298,20 +318,24 @@ public class PropertySetDefinitionRepository {
 		queryStr.append("WHERE { ");
 		queryStr.append(" ?psd IFC4-PSD:propertyDef ?propertyDef . ");
 		queryStr.append("} ");
-		
+
 		EmbeddedServer.instance.update(queryStr);
 	}
 
 	public boolean deletePropertySetDefinition(String psetId) throws IOException {
 		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
+		queryStr.setIri("graph", EmbeddedServer.OWNERS);
+		queryStr.setNsPrefix("owners", EmbeddedServer.OWNERS + "#");
 		queryStr.setIri("psd", psetId);
 		queryStr.append("DELETE { ");
+		queryStr.append("  GRAPH ?graph { ?psd owners:owner ?owner . } ");
 		queryStr.append("  ?psd ?pred ?obj . ");
 		queryStr.append("  ?obj rdf:type IFC4-PSD:PropertyDef ; IFC4-PSD:name ?pdName . ");
 		queryStr.append("  ?sub ?inv ?psd . ");
 		queryStr.append("} ");
 		queryStr.append("WHERE { ");
 		queryStr.append("  ?psd ?pred ?obj . ");
+		queryStr.append("  GRAPH ?graph { ?psd owners:owner ?owner . } ");
 		queryStr.append("  OPTIONAL { ?obj rdf:type IFC4-PSD:PropertyDef ; IFC4-PSD:name ?pdName . } ");
 		queryStr.append("  OPTIONAL { ?sub ?inv ?psd . } ");
 		queryStr.append("} ");
