@@ -35,7 +35,9 @@ public class InformationDeliverySpecificationResolver implements GraphQLResolver
 		queryStr.setIri("ids", ids.getId());
 		queryStr.append("SELECT ?parent ");
 		queryStr.append("WHERE {");
-		queryStr.append("	?ids IFC4-PSD:parent ?parent . ");
+		queryStr.append("	GRAPH ?graph {");
+		queryStr.append("		?ids IFC4-PSD:parent ?parent . ");
+		queryStr.append("	}");
 		queryStr.append("}");
 		JsonNode responseNodes = EmbeddedServer.instance.query(queryStr);
 		if (responseNodes.size() > 0) {
@@ -54,12 +56,20 @@ public class InformationDeliverySpecificationResolver implements GraphQLResolver
 		queryStr.setIri("ids", ids.getId());
 		queryStr.append("SELECT ?pset ?psetName ?prop ?propName ");
 		queryStr.append("WHERE {");
-		queryStr.append("	?ids IFC4-PSD:requiredPset ?reqPset . ");
-		queryStr.append("	?reqPset IFC4-PSD:propertySetDef ?pset . ");
-		queryStr.append("	?pset IFC4-PSD:name ?psetName . ");
+		queryStr.append("	GRAPH ?graph1 {");
+		queryStr.append("		?ids IFC4-PSD:requiredPset ?reqPset . ");
+		queryStr.append("		?reqPset IFC4-PSD:propertySetDef ?pset . ");
+		queryStr.append("	}");
+		queryStr.append("	GRAPH ?graph2 {");
+		queryStr.append("		?pset IFC4-PSD:name ?psetName . ");
+		queryStr.append("	}");
 		queryStr.append("	OPTIONAL {");
-		queryStr.append("		?reqPset IFC4-PSD:requiredProp ?prop . ");
-		queryStr.append("		?prop IFC4-PSD:name ?propName . ");
+		queryStr.append("		GRAPH ?graph1 {");
+		queryStr.append("			?reqPset IFC4-PSD:requiredProp ?prop . ");
+		queryStr.append("		}");
+		queryStr.append("		GRAPH ?graph2 {");
+		queryStr.append("			?prop IFC4-PSD:name ?propName . ");
+		queryStr.append("		}");
 		queryStr.append("	}");
 		queryStr.append("}");
 		queryStr.append("ORDER BY ?psetName ?propName ");
@@ -103,7 +113,9 @@ public class InformationDeliverySpecificationResolver implements GraphQLResolver
 		queryStr.setIri("id", id);
 		queryStr.append("SELECT ?name ");
 		queryStr.append("WHERE {");
+		queryStr.append("	GRAPH ?graph {");
 		queryStr.append("	?id IFC4-PSD:name ?name . ");
+		queryStr.append("	}");
 		queryStr.append("}");
 
 		JsonNode responseNodes = EmbeddedServer.instance.query(queryStr);

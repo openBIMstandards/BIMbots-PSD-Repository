@@ -42,6 +42,7 @@ public class EmbeddedServer {
 	public static final String OWNERS_KEY = "bimbots-psd-repository/psets/owners.ttl";
 	public static final String IFC4 = "http://www.buildingsmart-tech.org/ifcOWL/IFC4";
 	public static final String IFC4_PSD = "http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD";
+	public static final String IDS = "http://openbimstandards.org/information-delivery-specification";
 	public static final String USERS = "http://www.infrabim.nl/bimbots-psd-repository/users";
 	public static final String OWNERS = "http://www.infrabim.nl/bimbots-psd-repository/owners";
 	public static final String[] PSETS = { "Pset_BeamCommon", "Pset_BuildingCommon", "Pset_BuildingElementProxyCommon",
@@ -57,7 +58,6 @@ public class EmbeddedServer {
 	private static Dataset ds;
 	private ClassPathResource ifc4Resource, ifc4PsdResource;
 	private FileSystemResource usersResource, ownersResource;
-	private List<ClassPathResource> psetResources, idsResources;
 	public static FusekiServer sparql;
 	public static EmbeddedServer instance;
 	private static PrefixMapping prefixMapping;
@@ -69,15 +69,6 @@ public class EmbeddedServer {
 		usersResource = new FileSystemResource("src/main/resources/users/users.ttl");
 		ownersResource = new FileSystemResource("src/main/resources/psets/owners.ttl");
 
-		psetResources = new ArrayList<>();
-		for (String pset : PSETS) {
-			psetResources.add(new ClassPathResource("psets/" + pset + ".ttl"));
-		}
-		idsResources = new ArrayList<>();
-		for (String ids : IDSS) {
-			idsResources.add(new ClassPathResource("psets/" + ids + ".ttl"));
-		}
-
 		startServer();
 	}
 
@@ -88,16 +79,26 @@ public class EmbeddedServer {
 		Model defaultModel = ModelFactory.createDefaultModel();
 		defaultModel.read(ifc4Resource.getInputStream(), null, "TURTLE");
 		defaultModel.read(ifc4PsdResource.getInputStream(), null, "TURTLE");
-		for (ClassPathResource psetResource : psetResources) {
-			LOGGER.info("Reading " + psetResource.getFilename());
-			defaultModel.read(psetResource.getInputStream(), null, "TURTLE");
-		}
-		for (ClassPathResource idsResource : idsResources) {
-			LOGGER.info("Reading " + idsResource.getFilename());
-			defaultModel.read(idsResource.getInputStream(), null, "TURTLE");
-		}
 
 		ds = DatasetFactory.create(defaultModel);
+
+		// pset model graphs
+		for (String pset : PSETS) {
+			ClassPathResource psetResource = new ClassPathResource("psets/" + pset + ".ttl");
+			Model psetModel = ModelFactory.createDefaultModel();
+			LOGGER.info("Reading " + psetResource.getFilename());
+			psetModel.read(psetResource.getInputStream(), null, "TURTLE");
+			ds.addNamedModel(IFC4_PSD + "/" + pset, psetModel);
+		}
+		
+		// ids model graphs
+		for (String ids : IDSS) {
+			ClassPathResource idsResource = new ClassPathResource("psets/" + ids + ".ttl");
+			Model idsModel = ModelFactory.createDefaultModel();
+			LOGGER.info("Reading " + idsResource.getFilename());
+			idsModel.read(idsResource.getInputStream(), null, "TURTLE");
+			ds.addNamedModel(IDS + "/" + ids, idsModel);
+		}
 
 		// users model graph
 		Model usersModel = ModelFactory.createDefaultModel();
@@ -186,13 +187,19 @@ public class EmbeddedServer {
 		System.out.println("Response Code : " + responseCode);
 	}
 
-	public static String getStringValue(URI subject, URI predicate) throws IOException {
+	public static String getStringValue(URI subject, URI predicate, boolean graph) throws IOException {
 		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
 		queryStr.setIri("subject", subject.toString());
 		queryStr.setIri("predicate", predicate.toString());
 		queryStr.append("SELECT ?value ");
 		queryStr.append("WHERE {");
+		if (graph) {
+			queryStr.append("GRAPH ?graph {");
+		}
 		queryStr.append("	?subject ?predicate ?value .");
+		if (graph) {
+			queryStr.append("}");
+		}
 		queryStr.append("}");
 
 		JsonNode responseNodes = EmbeddedServer.instance.query(queryStr);
@@ -221,13 +228,19 @@ public class EmbeddedServer {
 		return null;
 	}
 
-	public static List<String> getStringValues(URI subject, URI predicate) throws IOException {
+	public static List<String> getStringValues(URI subject, URI predicate, boolean graph) throws IOException {
 		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
 		queryStr.setIri("subject", subject.toString());
 		queryStr.setIri("predicate", predicate.toString());
 		queryStr.append("SELECT ?value ");
 		queryStr.append("WHERE {");
+		if (graph) {
+			queryStr.append("GRAPH ?graph {");
+		}
 		queryStr.append("	?subject ?predicate ?value .");
+		if (graph) {
+			queryStr.append("}");
+		}
 		queryStr.append("}");
 		queryStr.append("ORDER BY ?value");
 
@@ -246,14 +259,20 @@ public class EmbeddedServer {
 		return null;
 	}
 
-	public static List<LanguageTaggedString> getLanguageTaggedStringValues(URI subject, URI predicate)
+	public static List<LanguageTaggedString> getLanguageTaggedStringValues(URI subject, URI predicate, boolean graph)
 			throws IOException {
 		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
 		queryStr.setIri("subject", subject.toString());
 		queryStr.setIri("predicate", predicate.toString());
 		queryStr.append("SELECT ?value ");
 		queryStr.append("WHERE {");
+		if (graph) {
+			queryStr.append("GRAPH ?graph {");
+		}
 		queryStr.append("	?subject ?predicate ?value .");
+		if (graph) {
+			queryStr.append("}");
+		}
 		queryStr.append("}");
 
 		JsonNode responseNodes = EmbeddedServer.instance.query(queryStr);
@@ -273,14 +292,20 @@ public class EmbeddedServer {
 		return null;
 	}
 
-	public static String getLanguageTaggedStringValue(URI subject, URI predicate, String language) throws IOException {
+	public static String getLanguageTaggedStringValue(URI subject, URI predicate, String language, boolean graph) throws IOException {
 		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
 		queryStr.setIri("subject", subject.toString());
 		queryStr.setIri("predicate", predicate.toString());
 		queryStr.setLiteral("language", language);
 		queryStr.append("SELECT ?value ");
 		queryStr.append("WHERE {");
+		if (graph) {
+			queryStr.append("GRAPH ?graph {");
+		}
 		queryStr.append("	?subject ?predicate ?value .");
+		if (graph) {
+			queryStr.append("}");
+		}
 		queryStr.append("	FILTER langMatches(lang(?value), ?language)");
 		queryStr.append("}");
 

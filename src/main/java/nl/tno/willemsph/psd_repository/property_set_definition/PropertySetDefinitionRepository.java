@@ -78,14 +78,20 @@ public class PropertySetDefinitionRepository {
 		queryStr.append("SELECT ?pset ?name ");
 		queryStr.append("WHERE {");
 		if (classId == null) {
+			queryStr.append("GRAPH ?graph {");
 			queryStr.append("	?pset rdf:type IFC4-PSD:PropertySetDef ; ");
 			queryStr.append("	   IFC4-PSD:name ?name . ");
+			queryStr.append("}");
 		} else {
+			queryStr.append("GRAPH ?graph {");
 			queryStr.append("	?pset rdf:type IFC4-PSD:PropertySetDef ; ");
 			queryStr.append("	   IFC4-PSD:name ?name . ");
+			queryStr.append("}");
 			queryStr.setIri("classId", classId);
 			queryStr.append("	  ?classId rdfs:subClassOf* ?parentClass . ");
+			queryStr.append("GRAPH ?graph {");
 			queryStr.append("	  ?pset IFC4-PSD:applicableClass ?parentClass . ");
+			queryStr.append("}");
 			queryStr.append("	  ?parentClass rdf:type owl:Class . ");
 			queryStr.append("FILTER ( ");
 			queryStr.append("	!EXISTS { ?parentClass owl:unionOf ?union } ");
@@ -354,8 +360,10 @@ public class PropertySetDefinitionRepository {
 		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
 		queryStr.append("SELECT ?propDef ?name ");
 		queryStr.append("WHERE {");
-		queryStr.append("	?propDef rdf:type IFC4-PSD:PropertyDef ; ");
-		queryStr.append("	 IFC4-PSD:name ?name . ");
+		queryStr.append("	GRAPh ?graph {");
+		queryStr.append("		?propDef rdf:type IFC4-PSD:PropertyDef ; ");
+		queryStr.append("	 	IFC4-PSD:name ?name . ");
+		queryStr.append("	}");
 		queryStr.append("}");
 		queryStr.append("ORDER BY ?name ");
 

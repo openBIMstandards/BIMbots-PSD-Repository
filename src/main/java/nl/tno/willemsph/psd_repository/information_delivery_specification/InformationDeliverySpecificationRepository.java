@@ -47,8 +47,10 @@ public class InformationDeliverySpecificationRepository {
 		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
 		queryStr.append("SELECT ?ids ?name ");
 		queryStr.append("WHERE {");
-		queryStr.append("	?ids rdf:type IFC4-PSD:InformationDeliverySpecification ; ");
-		queryStr.append("	   IFC4-PSD:name ?name . ");
+		queryStr.append("	GRAPH ?graph {");
+		queryStr.append("		?ids rdf:type IFC4-PSD:InformationDeliverySpecification ; ");
+		queryStr.append("	   	IFC4-PSD:name ?name . ");
+		queryStr.append("	}");
 		queryStr.append("}");
 		queryStr.append("ORDER BY ?name ");
 

@@ -45,7 +45,7 @@ public class PropertySetDefinitionResolver implements GraphQLResolver<PropertySe
 			throws IOException, URISyntaxException {
 		URI subject = new URI(getId(propertySetDefinition));
 		URI predicate = new URI(EmbeddedServer.IFC4_PSD + "#applicableTypeValue");
-		return EmbeddedServer.getStringValue(subject, predicate);
+		return EmbeddedServer.getStringValue(subject, predicate, true);
 	}
 
 	public List<String> getApplicableClasses(PropertySetDefinition propertySetDefinition)
@@ -54,7 +54,7 @@ public class PropertySetDefinitionResolver implements GraphQLResolver<PropertySe
 		if (id != null) {
 			URI subject = new URI(id);
 			URI predicate = new URI(EmbeddedServer.IFC4_PSD + "#applicableClass");
-			return EmbeddedServer.getStringValues(subject, predicate);
+			return EmbeddedServer.getStringValues(subject, predicate, true);
 		}
 		return null;
 	}
@@ -64,7 +64,7 @@ public class PropertySetDefinitionResolver implements GraphQLResolver<PropertySe
 		if (id != null) {
 			URI subject = new URI(id);
 			URI predicate = new URI(EmbeddedServer.IFC4_PSD + "#definition");
-			return EmbeddedServer.getStringValue(subject, predicate);
+			return EmbeddedServer.getStringValue(subject, predicate, true);
 		}
 		return null;
 	}
@@ -73,14 +73,14 @@ public class PropertySetDefinitionResolver implements GraphQLResolver<PropertySe
 			throws URISyntaxException, IOException {
 		URI subject = new URI(getId(propertySetDefinition));
 		URI predicate = new URI(EmbeddedServer.IFC4_PSD + "#definitionAlias");
-		return EmbeddedServer.getLanguageTaggedStringValue(subject, predicate, language);
+		return EmbeddedServer.getLanguageTaggedStringValue(subject, predicate, language, true);
 	}
 
 	public List<LanguageTaggedString> getDefinitionAliases(PropertySetDefinition propertySetDefinition)
 			throws URISyntaxException, IOException {
 		URI subject = new URI(getId(propertySetDefinition));
 		URI predicate = new URI(EmbeddedServer.IFC4_PSD + "#definitionAlias");
-		return EmbeddedServer.getLanguageTaggedStringValues(subject, predicate);
+		return EmbeddedServer.getLanguageTaggedStringValues(subject, predicate, true);
 	}
 
 	public List<PropertyDefinition> getPropertyDefs(PropertySetDefinition propertySetDefinition)
@@ -90,7 +90,7 @@ public class PropertySetDefinitionResolver implements GraphQLResolver<PropertySe
 		if (id != null) {
 			URI subject = new URI(id);
 			URI predicate = new URI(EmbeddedServer.IFC4_PSD + "#propertyDef");
-			String valuesString = EmbeddedServer.getStringValue(subject, predicate);
+			String valuesString = EmbeddedServer.getStringValue(subject, predicate, true);
 			if (valuesString != null) {
 				String[] values = valuesString.split(" ");
 				List<String> valueList = Arrays.asList(values);
@@ -121,8 +121,10 @@ public class PropertySetDefinitionResolver implements GraphQLResolver<PropertySe
 		queryStr.setLiteral("name", name);
 		queryStr.append("SELECT ?id ");
 		queryStr.append("WHERE {");
-		queryStr.append("	?id rdf:type ?type ; ");
-		queryStr.append("	   IFC4-PSD:name ?name . ");
+		queryStr.append("	GRAPH ?graph {");
+		queryStr.append("		?id rdf:type ?type ; ");
+		queryStr.append("	   		IFC4-PSD:name ?name . ");
+		queryStr.append("	}");
 		queryStr.append("}");
 
 		JsonNode responseNodes = EmbeddedServer.instance.query(queryStr);

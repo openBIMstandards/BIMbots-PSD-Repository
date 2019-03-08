@@ -24,47 +24,47 @@ public class PropertyDefinitionResolver implements GraphQLResolver<PropertyDefin
 	public String getName(PropertyDefinition propertyDefinition) throws IOException, URISyntaxException {
 		URI subject = new URI(propertyDefinition.getId());
 		URI predicate = new URI(EmbeddedServer.IFC4_PSD + "#name");
-		return EmbeddedServer.getStringValue(subject, predicate);
+		return EmbeddedServer.getStringValue(subject, predicate, true);
 	}
 
 	public String getNameAlias(PropertyDefinition propertyDefinition, String language)
 			throws URISyntaxException, IOException {
 		URI subject = new URI(propertyDefinition.getId());
 		URI predicate = new URI(EmbeddedServer.IFC4_PSD + "#nameAlias");
-		return EmbeddedServer.getLanguageTaggedStringValue(subject, predicate, language);
+		return EmbeddedServer.getLanguageTaggedStringValue(subject, predicate, language, true);
 	}
 
 	public List<LanguageTaggedString> getNameAliases(PropertyDefinition propertyDefinition)
 			throws URISyntaxException, IOException {
 		URI subject = new URI(propertyDefinition.getId());
 		URI predicate = new URI(EmbeddedServer.IFC4_PSD + "#nameAlias");
-		return EmbeddedServer.getLanguageTaggedStringValues(subject, predicate);
+		return EmbeddedServer.getLanguageTaggedStringValues(subject, predicate, true);
 	}
 
 	public String getIfdguid(PropertyDefinition propertyDefinition) throws IOException, URISyntaxException {
 		URI subject = new URI(propertyDefinition.getId());
 		URI predicate = new URI(EmbeddedServer.IFC4_PSD + "#ifdguid");
-		return EmbeddedServer.getStringValue(subject, predicate);
+		return EmbeddedServer.getStringValue(subject, predicate, true);
 	}
 
 	public String getDefinition(PropertyDefinition propertyDefinition) throws IOException, URISyntaxException {
 		URI subject = new URI(propertyDefinition.getId());
 		URI predicate = new URI(EmbeddedServer.IFC4_PSD + "#definition");
-		return EmbeddedServer.getStringValue(subject, predicate);
+		return EmbeddedServer.getStringValue(subject, predicate, true);
 	}
 
 	public String getDefinitionAlias(PropertyDefinition propertyDefinition, String language)
 			throws URISyntaxException, IOException {
 		URI subject = new URI(propertyDefinition.getId());
 		URI predicate = new URI(EmbeddedServer.IFC4_PSD + "#definitionAlias");
-		return EmbeddedServer.getLanguageTaggedStringValue(subject, predicate, language);
+		return EmbeddedServer.getLanguageTaggedStringValue(subject, predicate, language, true);
 	}
 
 	public List<LanguageTaggedString> getDefinitionAliases(PropertyDefinition propertyDefinition)
 			throws URISyntaxException, IOException {
 		URI subject = new URI(propertyDefinition.getId());
 		URI predicate = new URI(EmbeddedServer.IFC4_PSD + "#definitionAlias");
-		return EmbeddedServer.getLanguageTaggedStringValues(subject, predicate);
+		return EmbeddedServer.getLanguageTaggedStringValues(subject, predicate, true);
 	}
 
 	public PropertyType getPropertyType(PropertyDefinition propertyDefinition) throws IOException {
@@ -75,10 +75,12 @@ public class PropertyDefinitionResolver implements GraphQLResolver<PropertyDefin
 		queryStr.setIri("enumItemPred", EmbeddedServer.IFC4_PSD + "#enumItem");
 		queryStr.append("SELECT ?type ?dataType ?enumItem ");
 		queryStr.append("WHERE { ");
-		queryStr.append("	?subject ?propertyTypePred ?propertyType . ");
-		queryStr.append("	?propertyType rdf:type ?type . ");
-		queryStr.append("	OPTIONAL { ?propertyType ?dataTypePred ?dataType } . ");
-		queryStr.append("	OPTIONAL { ?propertyType ?enumItemPred ?enumItem } . ");
+		queryStr.append("	GRAPH ?graph { ");
+		queryStr.append("		?subject ?propertyTypePred ?propertyType . ");
+		queryStr.append("		?propertyType rdf:type ?type . ");
+		queryStr.append("		OPTIONAL { ?propertyType ?dataTypePred ?dataType } . ");
+		queryStr.append("		OPTIONAL { ?propertyType ?enumItemPred ?enumItem } . ");
+		queryStr.append("	} ");
 		queryStr.append("} ");
 		queryStr.append("ORDER BY ?enumItem ");
 
@@ -116,8 +118,10 @@ public class PropertyDefinitionResolver implements GraphQLResolver<PropertyDefin
 		queryStr.setIri("propDef", propertyDefinition.getId());
 		queryStr.append("SELECT ?name ");
 		queryStr.append("WHERE { ");
-		queryStr.append("	?pset  IFC4-PSD:propertyDef ?propDef . ");
-		queryStr.append("	?pset IFC4-PSD:name ?name . ");
+		queryStr.append("	GRAPH ?graph { ");
+		queryStr.append("		?pset  IFC4-PSD:propertyDef ?propDef . ");
+		queryStr.append("		?pset IFC4-PSD:name ?name . ");
+		queryStr.append("	} ");
 		queryStr.append("} ");
 		queryStr.append("ORDER BY ?name ");
 
