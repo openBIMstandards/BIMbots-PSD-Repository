@@ -129,27 +129,32 @@ public class PropertySetDefinitionRepository {
 		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
 		queryStr.setIri("psd", propertySetDefinitionInput.getId());
 		queryStr.setLiteral("name", propertySetDefinitionInput.getName());
+		queryStr.setIri("psetGraph",
+				propertySetDefinitionInput.getId().substring(0, propertySetDefinitionInput.getId().indexOf('#')));
 		queryStr.setIri("owner", propertySetDefinitionInput.getOwnerId());
-		queryStr.setIri("graph", EmbeddedServer.OWNERS);
+		queryStr.setIri("ownersGraph", EmbeddedServer.OWNERS);
 		queryStr.setNsPrefix("owners", EmbeddedServer.OWNERS + "#");
 		queryStr.append("INSERT { ");
-		queryStr.append("  ?psd rdf:type IFC4-PSD:PropertySetDef . ");
-		queryStr.append("  ?psd IFC4-PSD:name ?name . ");
-		queryStr.append("  GRAPH ?graph { ?psd owners:owner ?owner }");
+		queryStr.append("  GRAPH ?psetGraph {");
+		queryStr.append("    ?psd rdf:type IFC4-PSD:PropertySetDef . ");
+		queryStr.append("    ?psd IFC4-PSD:name ?name . ");
+		queryStr.append("  } ");
+		queryStr.append("  GRAPH ?ownersGraph { ?psd owners:owner ?owner }");
 		if (propertySetDefinitionInput.getDefinition() != null) {
 			queryStr.setLiteral("definition", propertySetDefinitionInput.getDefinition().toString());
-			queryStr.append("	?psd IFC4-PSD:definition ?definition . ");
+			queryStr.append("	GRAPH ?psetGraph { ?psd IFC4-PSD:definition ?definition . } ");
 		}
 		if (propertySetDefinitionInput.getIfcVersion() != null) {
 			queryStr.setLiteral("ifcVersion", propertySetDefinitionInput.getIfcVersion());
 			queryStr.append(
-					"	?psd IFC4-PSD:ifcVersion [ rdf:type IFC4-PSD:IfcVersion ; IFC4-PSD:version ?ifcVersion ] . ");
+					"	GRAPH ?psetGraph { ?psd IFC4-PSD:ifcVersion [ rdf:type IFC4-PSD:IfcVersion ; IFC4-PSD:version ?ifcVersion ] . } ");
 		}
 		if (propertySetDefinitionInput.getApplicableClasses() != null) {
 			int index = 0;
 			for (String applicableClass : propertySetDefinitionInput.getApplicableClasses()) {
 				queryStr.setIri("applicableClass" + index, applicableClass);
-				queryStr.append("  ?psd IFC4-PSD:applicableClass ?applicableClass" + index + " . ");
+				queryStr.append(
+						"  GRAPH ?psetGraph { ?psd IFC4-PSD:applicableClass ?applicableClass" + index + " . } ");
 				index++;
 			}
 		}
@@ -167,7 +172,8 @@ public class PropertySetDefinitionRepository {
 					String definition = pDefInput.getDefinition();
 					if (definition != null) {
 						queryStr.setLiteral("pdDefinition" + index, pDefInput.getDefinition());
-						queryStr.append("  ?pd" + index + " IFC4-PSD:definition ?pdDefinition" + index + " . ");
+						queryStr.append("  GRAPH ?psetGraph { ?pd" + index + " IFC4-PSD:definition ?pdDefinition"
+								+ index + " . } ");
 					}
 					PropertyTypeInput propertyType = pDefInput.getPropertyType();
 					if (propertyType != null) {
@@ -175,23 +181,24 @@ public class PropertySetDefinitionRepository {
 						if (propertyType.getDataType() != null) {
 							queryStr.setIri("dataType" + index, propertyType.getDataType());
 							queryStr.setIri("dataTypePred", EmbeddedServer.IFC4_PSD + "#dataType");
-							queryStr.append("  ?pd" + index + " IFC4-PSD:propertyType  [ rdf:type  ?propertyType"
-									+ index + " ; ?dataTypePred ?dataType" + index + "] . ");
+							queryStr.append("  GRAPH ?psetGraph { ?pd" + index
+									+ " IFC4-PSD:propertyType  [ rdf:type  ?propertyType" + index
+									+ " ; ?dataTypePred ?dataType" + index + "] . } ");
 						} else {
-							queryStr.append("  ?pd" + index + " IFC4-PSD:propertyType  [ rdf:type  ?propertyType"
-									+ index + " ; ");
+							queryStr.append("  GRAPH ?psetGraph { ?pd" + index
+									+ " IFC4-PSD:propertyType  [ rdf:type  ?propertyType" + index + " ; ");
 							queryStr.setIri("enumItemPred", EmbeddedServer.IFC4_PSD + "#enumItem");
 							for (int itemIndex = 0; itemIndex < propertyType.getEnumItems().size(); itemIndex++) {
 								queryStr.setLiteral("item" + itemIndex, propertyType.getEnumItems().get(itemIndex));
 								queryStr.append(" ?enumItemPred ?item" + itemIndex + " ; ");
 							}
-							queryStr.append(" ] . ");
+							queryStr.append(" ] . } ");
 						}
 					}
 				} else {
 					queryStr.setIri("pd" + index, id);
 				}
-				queryStr.append("  ?psd IFC4-PSD:propertyDef ?pd" + index + ". ");
+				queryStr.append("  GRAPH ?psetGraph { ?psd IFC4-PSD:propertyDef ?pd" + index + ". } ");
 				index++;
 			}
 		}
@@ -199,6 +206,8 @@ public class PropertySetDefinitionRepository {
 		queryStr.append("WHERE { } ");
 
 		EmbeddedServer.instance.update(queryStr);
+
+		EmbeddedServer.instance.savePsetModel(queryStr.getParam("psetGraph").toString());
 
 		EmbeddedServer.instance.saveOwnersModel();
 
@@ -330,23 +339,31 @@ public class PropertySetDefinitionRepository {
 
 	public boolean deletePropertySetDefinition(String psetId) throws IOException {
 		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
-		queryStr.setIri("graph", EmbeddedServer.OWNERS);
+		queryStr.setIri("psetGraph", psetId.substring(0, psetId.indexOf('#')));
+		queryStr.setIri("ownersGraph", EmbeddedServer.OWNERS);
 		queryStr.setNsPrefix("owners", EmbeddedServer.OWNERS + "#");
 		queryStr.setIri("psd", psetId);
 		queryStr.append("DELETE { ");
-		queryStr.append("  GRAPH ?graph { ?psd owners:owner ?owner . } ");
-		queryStr.append("  ?psd ?pred ?obj . ");
-		queryStr.append("  ?obj rdf:type IFC4-PSD:PropertyDef ; IFC4-PSD:name ?pdName . ");
-		queryStr.append("  ?sub ?inv ?psd . ");
+		queryStr.append("  GRAPH ?ownersGraph { ?psd owners:owner ?owner . } ");
+		queryStr.append("  GRAPH ?psetGraph { ");
+		queryStr.append("    ?psd ?pred ?obj . ");
+		queryStr.append("    ?obj rdf:type IFC4-PSD:PropertyDef ; IFC4-PSD:name ?pdName . ");
+		queryStr.append("    ?sub ?inv ?psd . ");
+		queryStr.append("  } ");
 		queryStr.append("} ");
 		queryStr.append("WHERE { ");
-		queryStr.append("  ?psd ?pred ?obj . ");
-		queryStr.append("  GRAPH ?graph { ?psd owners:owner ?owner . } ");
-		queryStr.append("  OPTIONAL { ?obj rdf:type IFC4-PSD:PropertyDef ; IFC4-PSD:name ?pdName . } ");
-		queryStr.append("  OPTIONAL { ?sub ?inv ?psd . } ");
+		queryStr.append("  GRAPH ?psetGraph { ");
+		queryStr.append("    ?psd ?pred ?obj . ");
+		queryStr.append("} ");
+		queryStr.append("  GRAPH ?ownersGraph { ?psd owners:owner ?owner . } ");
+		queryStr.append("  GRAPH ?psetGraph { ");
+		queryStr.append("    OPTIONAL { ?obj rdf:type IFC4-PSD:PropertyDef ; IFC4-PSD:name ?pdName . } ");
+		queryStr.append("    OPTIONAL { ?sub ?inv ?psd . } ");
+		queryStr.append("  } ");
 		queryStr.append("} ");
 
 		EmbeddedServer.instance.update(queryStr);
+		EmbeddedServer.instance.deletePsetModel(psetId);
 
 		return true;
 	}

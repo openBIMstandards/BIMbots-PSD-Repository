@@ -2,8 +2,10 @@ package nl.tno.willemsph.psd_repository.sparql;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URI;
@@ -42,6 +44,7 @@ public class EmbeddedServer {
 	public static final String OWNERS_KEY = "bimbots-psd-repository/psets/owners.ttl";
 	public static final String IFC4 = "http://www.buildingsmart-tech.org/ifcOWL/IFC4";
 	public static final String IFC4_PSD = "http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD";
+	public static final String USRDEF_PSET = "http://openbimstandards.org/pset_repository";
 	public static final String IDS = "http://openbimstandards.org/information-delivery-specification";
 	public static final String USERS = "http://www.infrabim.nl/bimbots-psd-repository/users";
 	public static final String OWNERS = "http://www.infrabim.nl/bimbots-psd-repository/owners";
@@ -82,7 +85,7 @@ public class EmbeddedServer {
 
 		ds = DatasetFactory.create(defaultModel);
 
-		// pset model graphs
+		// IFC pset model graphs
 		for (String pset : PSETS) {
 			ClassPathResource psetResource = new ClassPathResource("psets/" + pset + ".ttl");
 			Model psetModel = ModelFactory.createDefaultModel();
@@ -90,7 +93,18 @@ public class EmbeddedServer {
 			psetModel.read(psetResource.getInputStream(), null, "TURTLE");
 			ds.addNamedModel(IFC4_PSD + "/" + pset, psetModel);
 		}
-		
+
+		// User defined pset model graphs
+		List<String> filenames = AwsClientIO.getInstance().getFileNames(BUCKET_NAME, "bimbots-psd-repository/psets/");
+		for (String filename : filenames) {
+			String modelName = filename.substring(0, filename.indexOf(".ttl"));
+			Model psetModel = ModelFactory.createDefaultModel();
+			InputStream objectInputStream = AwsClientIO.getInstance().getObjectInputStream(BUCKET_NAME,
+					"bimbots-psd-repository/psets/" + filename);
+			psetModel.read(objectInputStream, null, "TURTLE");
+			ds.addNamedModel(USRDEF_PSET + "/" + modelName, psetModel);
+		}
+
 		// ids model graphs
 		for (String ids : IDSS) {
 			ClassPathResource idsResource = new ClassPathResource("psets/" + ids + ".ttl");
@@ -292,7 +306,8 @@ public class EmbeddedServer {
 		return null;
 	}
 
-	public static String getLanguageTaggedStringValue(URI subject, URI predicate, String language, boolean graph) throws IOException {
+	public static String getLanguageTaggedStringValue(URI subject, URI predicate, String language, boolean graph)
+			throws IOException {
 		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
 		queryStr.setIri("subject", subject.toString());
 		queryStr.setIri("predicate", predicate.toString());
@@ -346,6 +361,38 @@ public class EmbeddedServer {
 			@Override
 			public void run() {
 				AwsClientIO.getInstance().awsClientUpload(BUCKET_NAME, OWNERS_KEY, ownersResource);
+			}
+		};
+		new Thread(upload).start();
+	}
+
+	public void savePsetModel(String psetModelGraph) throws IOException {
+		Model psetModel = ds.getNamedModel(psetModelGraph);
+		final File tempFile = File.createTempFile("PSET", "MODEL");
+		FileSystemResource fileResource = new FileSystemResource(tempFile);
+		psetModel.write(System.out, "TURTLE");
+		psetModel.write(new FileOutputStream(fileResource.getFile()), "TURTLE");
+		String psetName = psetModelGraph.substring(psetModelGraph.lastIndexOf('/') + 1);
+		Runnable upload = new Runnable() {
+
+			@Override
+			public void run() {
+				AwsClientIO.getInstance().awsClientUpload(BUCKET_NAME,
+						"bimbots-psd-repository/psets/" + psetName + ".ttl", fileResource);
+				tempFile.delete();
+			}
+		};
+		new Thread(upload).start();
+	}
+
+	public void deletePsetModel(String psetId) {
+		String psetName = psetId.substring(psetId.lastIndexOf('/') + 1, psetId.lastIndexOf('#'));
+		Runnable upload = new Runnable() {
+
+			@Override
+			public void run() {
+				AwsClientIO.getInstance().deleteObject(BUCKET_NAME,
+						"bimbots-psd-repository/psets/" + psetName + ".ttl");
 			}
 		};
 		new Thread(upload).start();
