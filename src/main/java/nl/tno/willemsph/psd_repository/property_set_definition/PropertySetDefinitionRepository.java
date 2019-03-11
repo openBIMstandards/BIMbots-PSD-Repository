@@ -45,11 +45,13 @@ public class PropertySetDefinitionRepository {
 	}
 
 	private String getPropertySetDefinitionName(String psetId) throws IOException {
+		String psetGraph = psetId.substring(0, psetId.indexOf('#'));
 		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
 		queryStr.setIri("pset", psetId);
+		queryStr.setIri("psetGraph", psetGraph);
 		queryStr.append("SELECT ?name ");
 		queryStr.append("WHERE {");
-		queryStr.append("  ?pset IFC4-PSD:name ?name . ");
+		queryStr.append("  GRAPH ?psetGraph { ?pset IFC4-PSD:name ?name . } ");
 		queryStr.append("} ");
 		JsonNode responseNodes = EmbeddedServer.instance.query(queryStr);
 		if (responseNodes.size() > 0) {
@@ -120,18 +122,17 @@ public class PropertySetDefinitionRepository {
 	/**
 	 * Create a new property set definition.
 	 * 
-	 * @param propertySetDefinitionInput Pset input parameters
+	 * @param psdInput Pset input parameters
 	 * @return resulted PropertySetDefinition instance
 	 * @throws IOException
 	 */
-	public PropertySetDefinition createPropertySetDefinition(PropertySetDefinitionInput propertySetDefinitionInput)
-			throws IOException {
+	public PropertySetDefinition createPropertySetDefinition(PropertySetDefinitionInput psdInput) throws IOException {
+		String psetGraph = psdInput.getId().substring(0, psdInput.getId().indexOf('#'));
 		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
-		queryStr.setIri("psd", propertySetDefinitionInput.getId());
-		queryStr.setLiteral("name", propertySetDefinitionInput.getName());
-		queryStr.setIri("psetGraph",
-				propertySetDefinitionInput.getId().substring(0, propertySetDefinitionInput.getId().indexOf('#')));
-		queryStr.setIri("owner", propertySetDefinitionInput.getOwnerId());
+		queryStr.setIri("psd", psdInput.getId());
+		queryStr.setLiteral("name", psdInput.getName());
+		queryStr.setIri("psetGraph", psetGraph);
+		queryStr.setIri("owner", psdInput.getOwnerId());
 		queryStr.setIri("ownersGraph", EmbeddedServer.OWNERS);
 		queryStr.setNsPrefix("owners", EmbeddedServer.OWNERS + "#");
 		queryStr.append("INSERT { ");
@@ -140,35 +141,34 @@ public class PropertySetDefinitionRepository {
 		queryStr.append("    ?psd IFC4-PSD:name ?name . ");
 		queryStr.append("  } ");
 		queryStr.append("  GRAPH ?ownersGraph { ?psd owners:owner ?owner }");
-		if (propertySetDefinitionInput.getDefinition() != null) {
-			queryStr.setLiteral("definition", propertySetDefinitionInput.getDefinition().toString());
+		if (psdInput.getDefinition() != null) {
+			queryStr.setLiteral("definition", psdInput.getDefinition().toString());
 			queryStr.append("	GRAPH ?psetGraph { ?psd IFC4-PSD:definition ?definition . } ");
 		}
-		if (propertySetDefinitionInput.getIfcVersion() != null) {
-			queryStr.setLiteral("ifcVersion", propertySetDefinitionInput.getIfcVersion());
+		if (psdInput.getIfcVersion() != null) {
+			queryStr.setLiteral("ifcVersion", psdInput.getIfcVersion());
 			queryStr.append(
 					"	GRAPH ?psetGraph { ?psd IFC4-PSD:ifcVersion [ rdf:type IFC4-PSD:IfcVersion ; IFC4-PSD:version ?ifcVersion ] . } ");
 		}
-		if (propertySetDefinitionInput.getApplicableClasses() != null) {
+		if (psdInput.getApplicableClasses() != null) {
 			int index = 0;
-			for (String applicableClass : propertySetDefinitionInput.getApplicableClasses()) {
+			for (String applicableClass : psdInput.getApplicableClasses()) {
 				queryStr.setIri("applicableClass" + index, applicableClass);
 				queryStr.append(
 						"  GRAPH ?psetGraph { ?psd IFC4-PSD:applicableClass ?applicableClass" + index + " . } ");
 				index++;
 			}
 		}
-		if (propertySetDefinitionInput.getPropertyDefs() != null
-				&& propertySetDefinitionInput.getPropertyDefs().size() > 0) {
+		if (psdInput.getPropertyDefs() != null && psdInput.getPropertyDefs().size() > 0) {
 			int index = 0;
-			for (PropertyDefinitionInput pDefInput : propertySetDefinitionInput.getPropertyDefs()) {
+			for (PropertyDefinitionInput pDefInput : psdInput.getPropertyDefs()) {
 				String id = pDefInput.getId();
 				if (id == null) {
-					id = "http://openbimstandards.org/pset_repository#PropertyDef_" + UUID.randomUUID().toString();
+					id = psetGraph + "#_" + UUID.randomUUID().toString();
 					queryStr.setIri("pd" + index, id);
 					queryStr.setLiteral("pdName" + index, pDefInput.getName());
-					queryStr.append("  ?pd" + index + " rdf:type IFC4-PSD:PropertyDef ; ");
-					queryStr.append("    IFC4-PSD:name ?pdName" + index + " . ");
+					queryStr.append("  GRAPH ?psetGraph { ?pd" + index + " rdf:type IFC4-PSD:PropertyDef ; ");
+					queryStr.append("    IFC4-PSD:name ?pdName" + index + " . } ");
 					String definition = pDefInput.getDefinition();
 					if (definition != null) {
 						queryStr.setLiteral("pdDefinition" + index, pDefInput.getDefinition());
@@ -211,88 +211,95 @@ public class PropertySetDefinitionRepository {
 
 		EmbeddedServer.instance.saveOwnersModel();
 
-		return getOnePropertySetDefinition(propertySetDefinitionInput.getName());
+		return getOnePropertySetDefinition(psdInput.getName());
 	}
 
 	public PropertySetDefinition updatePropertySetDefinition(PropertySetDefinitionInput psetInput)
 			throws IOException, URISyntaxException {
+		String psetGraph = psetInput.getId().substring(0, psetInput.getId().indexOf('#'));
 		String psetName = getPropertySetDefinitionName(psetInput.getId());
 		if (psetName != null) {
 			PropertySetDefinition psd = getOnePropertySetDefinition(psetName);
 			psd.setId(psetInput.getId());
 			if (!psd.getName().equals(psetInput.getName()) && psetInput.getName() != null
 					&& psetInput.getName().length() > 0) {
-				updateName(psd, psetInput);
+				updateName(psd, psetInput, psetGraph);
 			}
 
 			PropertySetDefinitionResolver psdResolver = new PropertySetDefinitionResolver(this.userRepository);
 			psd.setDefinition(psdResolver.getDefinition(psd));
 			if (psd.getDefinition() != null && !psd.getDefinition().equals(psetInput.getDefinition())) {
-				updateDefinition(psd, psetInput);
+				updateDefinition(psd, psetInput, psetGraph);
 			} else if (psd.getDefinition() == null && psetInput.getDefinition() != null) {
-				updateDefinition(psd, psetInput);
+				updateDefinition(psd, psetInput, psetGraph);
 			}
 
 			psd.setApplicableClasses(psdResolver.getApplicableClasses(psd));
-			updateApplicableClasses(psd, psetInput);
+			updateApplicableClasses(psd, psetInput, psetGraph);
 
 			psd.setPropertyDefs(psdResolver.getPropertyDefs(psd));
-			updatePropertyDefs(psd, psetInput);
+			updatePropertyDefs(psd, psetInput, psetGraph);
 
+			EmbeddedServer.instance.savePsetModel(psetGraph);
 			return psd;
 		}
 		return null;
 	}
 
-	private void updateName(PropertySetDefinition psd, PropertySetDefinitionInput psdInput) throws IOException {
+	private void updateName(PropertySetDefinition psd, PropertySetDefinitionInput psdInput, String psetGraph)
+			throws IOException {
 		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
 		queryStr.setIri("psd", psd.getId());
+		queryStr.setIri("psetGraph", psetGraph);
 		queryStr.setLiteral("origName", psd.getName());
 		queryStr.setLiteral("newName", psdInput.getName());
 		queryStr.append("DELETE { ");
-		queryStr.append("  ?psd IFC4-PSD:name ?origName .");
+		queryStr.append("  GRAPH ?psetGraph { ?psd IFC4-PSD:name ?origName . } ");
 		queryStr.append("} ");
 		queryStr.append("INSERT { ");
-		queryStr.append("  ?psd IFC4-PSD:name ?newName .");
+		queryStr.append("  GRAPH ?psetGraph { ?psd IFC4-PSD:name ?newName . } ");
 		queryStr.append("} ");
-		queryStr.append("WHERE { ?psd IFC4-PSD:name ?origName . } ");
+		queryStr.append("WHERE { GRAPH ?psetGraph { ?psd IFC4-PSD:name ?origName . } } ");
 
 		EmbeddedServer.instance.update(queryStr);
 	}
 
-	private void updateDefinition(PropertySetDefinition psd, PropertySetDefinitionInput psdInput) throws IOException {
+	private void updateDefinition(PropertySetDefinition psd, PropertySetDefinitionInput psdInput, String psetGraph)
+			throws IOException {
 		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
 		queryStr.setIri("psd", psd.getId());
+		queryStr.setIri("psetGraph", psetGraph);
 		if (psd.getDefinition() != null) {
 			queryStr.setLiteral("origDefinition", psd.getDefinition());
 			queryStr.append("DELETE { ");
-			queryStr.append("  ?psd IFC4-PSD:definition ?origDefinition .");
+			queryStr.append("  GRAPH ?psetGraph { ?psd IFC4-PSD:definition ?origDefinition . } ");
 			queryStr.append("} ");
 		}
 		if (psdInput.getDefinition() != null) {
 			queryStr.setLiteral("newDefinition", psdInput.getDefinition());
 			queryStr.append("INSERT { ");
-			queryStr.append("  ?psd IFC4-PSD:definition ?newDefinition .");
+			queryStr.append("  GRAPH ?psetGraph { ?psd IFC4-PSD:definition ?newDefinition . } ");
 			queryStr.append("} ");
 		}
 		queryStr.append("WHERE { ");
 		if (psd.getDefinition() != null) {
-			queryStr.append(" ?psd IFC4-PSD:definition ?origDefinition . ");
+			queryStr.append(" GRAPH ?psetGraph { ?psd IFC4-PSD:definition ?origDefinition . } ");
 		}
 		queryStr.append("} ");
 
 		EmbeddedServer.instance.update(queryStr);
 	}
 
-	private void updateApplicableClasses(PropertySetDefinition psd, PropertySetDefinitionInput psdInput)
-			throws IOException {
+	private void updateApplicableClasses(PropertySetDefinition psd, PropertySetDefinitionInput psdInput,
+			String psetGraph) throws IOException {
 		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
 		queryStr.setIri("psd", psd.getId());
+		queryStr.setIri("psetGraph", psetGraph);
 		if (psd.getApplicableClasses() != null) {
 			queryStr.append("DELETE { ");
 			for (int index = 0; index < psd.getApplicableClasses().size(); index++) {
 				queryStr.setIri("origClass" + index, psd.getApplicableClasses().get(index));
-				queryStr.append("  ?psd IFC4-PSD:applicableClass ?origClass" + index + " .");
+				queryStr.append("  GRAPH ?psetGraph { ?psd IFC4-PSD:applicableClass ?origClass" + index + " . } ");
 			}
 			queryStr.append("} ");
 		}
@@ -300,25 +307,27 @@ public class PropertySetDefinitionRepository {
 			queryStr.append("INSERT { ");
 			for (int index = 0; index < psdInput.getApplicableClasses().size(); index++) {
 				queryStr.setIri("newClass" + index, psdInput.getApplicableClasses().get(index));
-				queryStr.append("  ?psd IFC4-PSD:applicableClass ?newClass" + index + " .");
+				queryStr.append("  GRAPH ?psetGraph { ?psd IFC4-PSD:applicableClass ?newClass" + index + " . } ");
 			}
 			queryStr.append("} ");
 		}
 		queryStr.append("WHERE { ");
-		queryStr.append(" ?psd IFC4-PSD:applicableClass ?applicableClass . ");
+		queryStr.append(" GRAPH ?psetGraph { ?psd IFC4-PSD:applicableClass ?applicableClass . } ");
 		queryStr.append("} ");
 
 		EmbeddedServer.instance.update(queryStr);
 	}
 
-	private void updatePropertyDefs(PropertySetDefinition psd, PropertySetDefinitionInput psdInput) throws IOException {
+	private void updatePropertyDefs(PropertySetDefinition psd, PropertySetDefinitionInput psdInput, String psetGraph)
+			throws IOException {
 		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
 		queryStr.setIri("psd", psd.getId());
+		queryStr.setIri("psetGraph", psetGraph);
 		if (psd.getPropertyDefs() != null) {
 			queryStr.append("DELETE { ");
 			for (int index = 0; index < psd.getPropertyDefs().size(); index++) {
 				queryStr.setIri("origClass" + index, psd.getPropertyDefs().get(index).getId());
-				queryStr.append("  ?psd IFC4-PSD:propertyDef ?origClass" + index + " .");
+				queryStr.append("  GRAPH ?psetGraph { ?psd IFC4-PSD:propertyDef ?origClass" + index + " . } ");
 			}
 			queryStr.append("} ");
 		}
@@ -326,12 +335,12 @@ public class PropertySetDefinitionRepository {
 			queryStr.append("INSERT { ");
 			for (int index = 0; index < psdInput.getPropertyDefs().size(); index++) {
 				queryStr.setIri("newClass" + index, psdInput.getPropertyDefs().get(index).getId());
-				queryStr.append("  ?psd IFC4-PSD:propertyDef ?newClass" + index + " .");
+				queryStr.append("  GRAPH ?psetGraph { ?psd IFC4-PSD:propertyDef ?newClass" + index + " . } ");
 			}
 			queryStr.append("} ");
 		}
 		queryStr.append("WHERE { ");
-		queryStr.append(" ?psd IFC4-PSD:propertyDef ?propertyDef . ");
+		queryStr.append(" GRAPH ?psetGraph { ?psd IFC4-PSD:propertyDef ?propertyDef . } ");
 		queryStr.append("} ");
 
 		EmbeddedServer.instance.update(queryStr);
@@ -363,6 +372,7 @@ public class PropertySetDefinitionRepository {
 		queryStr.append("} ");
 
 		EmbeddedServer.instance.update(queryStr);
+		EmbeddedServer.instance.saveOwnersModel();
 		EmbeddedServer.instance.deletePsetModel(psetId);
 
 		return true;

@@ -368,10 +368,12 @@ public class EmbeddedServer {
 
 	public void savePsetModel(String psetModelGraph) throws IOException {
 		Model psetModel = ds.getNamedModel(psetModelGraph);
+		psetModel.setNsPrefixes(prefixMapping);
+		psetModel.setNsPrefix("", psetModelGraph + "#");
 		final File tempFile = File.createTempFile("PSET", "MODEL");
 		FileSystemResource fileResource = new FileSystemResource(tempFile);
-		psetModel.write(System.out, "TURTLE");
-		psetModel.write(new FileOutputStream(fileResource.getFile()), "TURTLE");
+		psetModel.write(System.out, "TURTLE", psetModelGraph);
+		psetModel.write(new FileOutputStream(fileResource.getFile()), "TURTLE", psetModelGraph);
 		String psetName = psetModelGraph.substring(psetModelGraph.lastIndexOf('/') + 1);
 		Runnable upload = new Runnable() {
 
