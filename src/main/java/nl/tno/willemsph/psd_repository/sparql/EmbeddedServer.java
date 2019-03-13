@@ -68,7 +68,7 @@ public class EmbeddedServer {
 	public EmbeddedServer() throws IOException {
 		instance = this;
 		ifc4Resource = new ClassPathResource("IFC4.ttl");
-		ifc4PsdResource = new ClassPathResource("psetdef.ttl");
+		ifc4PsdResource = new ClassPathResource("static/psets/psetdef.ttl");
 		usersResource = new FileSystemResource("src/main/resources/users/users.ttl");
 		ownersResource = new FileSystemResource("src/main/resources/idss/owners.ttl");
 
