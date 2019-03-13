@@ -21,7 +21,7 @@ public class InformationDeliverySpecificationRepository {
 	private final static Logger LOGGER = Logger.getLogger(InformationDeliverySpecificationRepository.class.getName());
 
 	private final PropertySetDefinitionRepository propertySetDefinitionRepository;
-	
+
 	public InformationDeliverySpecificationRepository(PropertySetDefinitionRepository propertySetDefinitionRepository) {
 		this.propertySetDefinitionRepository = propertySetDefinitionRepository;
 	}
@@ -77,16 +77,22 @@ public class InformationDeliverySpecificationRepository {
 
 	public InformationDeliverySpecification addProp2Pset(String idsId, String psetId, String propId)
 			throws IOException {
+		String idsGraph = idsId.substring(0, idsId.indexOf('#'));
 		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
 		queryStr.setIri("ids", idsId);
 		queryStr.setIri("pset", psetId);
 		queryStr.setIri("prop", propId);
-		queryStr.append("INSERT {");
-		queryStr.append("	?reqPset IFC4-PSD:requiredProp ?prop . ");
-		queryStr.append("}");
+		queryStr.setIri("idsGraph", idsGraph);
+		queryStr.append("INSERT { ");
+		queryStr.append("  GRAPH ?idsGraph { ");
+		queryStr.append("	 ?reqPset IFC4-PSD:requiredProp ?prop . ");
+		queryStr.append("  } ");
+		queryStr.append("} ");
 		queryStr.append("WHERE {");
-		queryStr.append("	?ids IFC4-PSD:requiredPset ?reqPset . ");
-		queryStr.append("	?reqPset IFC4-PSD:propertySetDef ?pset . ");
+		queryStr.append("  GRAPH ?idsGraph { ");
+		queryStr.append("	 ?ids IFC4-PSD:requiredPset ?reqPset . ");
+		queryStr.append("	 ?reqPset IFC4-PSD:propertySetDef ?pset . ");
+		queryStr.append("  } ");
 		queryStr.append("}");
 
 		EmbeddedServer.instance.update(queryStr);
@@ -96,16 +102,22 @@ public class InformationDeliverySpecificationRepository {
 
 	public InformationDeliverySpecification removeProp2Pset(String idsId, String psetId, String propId)
 			throws IOException {
+		String idsGraph = idsId.substring(0, idsId.indexOf('#'));
 		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
 		queryStr.setIri("ids", idsId);
 		queryStr.setIri("pset", psetId);
 		queryStr.setIri("prop", propId);
-		queryStr.append("DELETE {");
-		queryStr.append("	?reqPset IFC4-PSD:requiredProp ?prop . ");
-		queryStr.append("}");
-		queryStr.append("WHERE {");
-		queryStr.append("	?ids IFC4-PSD:requiredPset ?reqPset . ");
-		queryStr.append("	?reqPset IFC4-PSD:propertySetDef ?pset . ");
+		queryStr.setIri("idsGraph", idsGraph);
+		queryStr.append("DELETE { ");
+		queryStr.append("  GRAPH ?idsGraph { ");
+		queryStr.append("	 ?reqPset IFC4-PSD:requiredProp ?prop . ");
+		queryStr.append("  } ");
+		queryStr.append("} ");
+		queryStr.append("WHERE { ");
+		queryStr.append("  GRAPH ?idsGraph { ");
+		queryStr.append("	 ?ids IFC4-PSD:requiredPset ?reqPset . ");
+		queryStr.append("	 ?reqPset IFC4-PSD:propertySetDef ?pset . ");
+		queryStr.append("  } ");
 		queryStr.append("}");
 
 		EmbeddedServer.instance.update(queryStr);
@@ -130,11 +142,15 @@ public class InformationDeliverySpecificationRepository {
 			}
 		}
 		if (!psetFound) {
+			String idsGraph = idsId.substring(0, idsId.indexOf('#'));
 			ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
 			queryStr.setIri("ids", idsId);
 			queryStr.setIri("pset", psetId);
+			queryStr.setIri("idsGraph", idsGraph);
 			queryStr.append("INSERT {");
-			queryStr.append("	?ids IFC4-PSD:requiredPset [IFC4-PSD:propertySetDef ?pset] . ");
+			queryStr.append("  GRAPH ?idsGraph { ");
+			queryStr.append("	 ?ids IFC4-PSD:requiredPset [IFC4-PSD:propertySetDef ?pset] . ");
+			queryStr.append("  }");
 			queryStr.append("}");
 			queryStr.append("WHERE {");
 			queryStr.append("}");
@@ -151,17 +167,23 @@ public class InformationDeliverySpecificationRepository {
 
 	public InformationDeliverySpecification removePset2Ids(String idsId, String psetId) throws IOException {
 		InformationDeliverySpecification ids = getOneInformationDeliverySpecification(idsId);
+		String idsGraph = idsId.substring(0, idsId.indexOf('#'));
 		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
 		queryStr.setIri("ids", idsId);
 		queryStr.setIri("pset", psetId);
+		queryStr.setIri("idsGraph", idsGraph);
 		queryStr.append("DELETE {");
-		queryStr.append("	?reqPset IFC4-PSD:propertySetDef ?pset . ");
-		queryStr.append("	?reqPset IFC4-PSD:requiredProp ?prop . ");
-		queryStr.append("	?ids IFC4-PSD:requiredPset ?reqPset . ");
+		queryStr.append("  GRAPH ?idsGraph { ");
+		queryStr.append("	 ?reqPset IFC4-PSD:propertySetDef ?pset . ");
+		queryStr.append("	 ?reqPset IFC4-PSD:requiredProp ?prop . ");
+		queryStr.append("	 ?ids IFC4-PSD:requiredPset ?reqPset . ");
+		queryStr.append("  }");
 		queryStr.append("}");
 		queryStr.append("WHERE {");
-		queryStr.append("	?ids IFC4-PSD:requiredPset ?reqPset . ");
-		queryStr.append("	?reqPset IFC4-PSD:propertySetDef ?pset . ");
+		queryStr.append("  GRAPH ?idsGraph { ");
+		queryStr.append("	 ?ids IFC4-PSD:requiredPset ?reqPset . ");
+		queryStr.append("	 ?reqPset IFC4-PSD:propertySetDef ?pset . ");
+		queryStr.append("  }");
 		queryStr.append("}");
 
 		EmbeddedServer.instance.update(queryStr);

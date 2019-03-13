@@ -70,7 +70,7 @@ public class EmbeddedServer {
 		ifc4Resource = new ClassPathResource("IFC4.ttl");
 		ifc4PsdResource = new ClassPathResource("psetdef.ttl");
 		usersResource = new FileSystemResource("src/main/resources/users/users.ttl");
-		ownersResource = new FileSystemResource("src/main/resources/psets/owners.ttl");
+		ownersResource = new FileSystemResource("src/main/resources/idss/owners.ttl");
 
 		startServer();
 	}
@@ -87,7 +87,7 @@ public class EmbeddedServer {
 
 		// IFC pset model graphs
 		for (String pset : PSETS) {
-			ClassPathResource psetResource = new ClassPathResource("psets/" + pset + ".ttl");
+			ClassPathResource psetResource = new ClassPathResource("static/psets/IFC4/" + pset + ".ttl");
 			Model psetModel = ModelFactory.createDefaultModel();
 			LOGGER.info("Reading " + psetResource.getFilename());
 			psetModel.read(psetResource.getInputStream(), null, "TURTLE");
@@ -107,7 +107,7 @@ public class EmbeddedServer {
 
 		// ids model graphs
 		for (String ids : IDSS) {
-			ClassPathResource idsResource = new ClassPathResource("psets/" + ids + ".ttl");
+			ClassPathResource idsResource = new ClassPathResource("idss/" + ids + ".ttl");
 			Model idsModel = ModelFactory.createDefaultModel();
 			LOGGER.info("Reading " + idsResource.getFilename());
 			idsModel.read(idsResource.getInputStream(), null, "TURTLE");
