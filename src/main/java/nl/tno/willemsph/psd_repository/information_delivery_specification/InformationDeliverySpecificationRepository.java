@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.itextpdf.text.DocumentException;
 
+import nl.tno.willemsph.psd_repository.common.UserRepository;
 import nl.tno.willemsph.psd_repository.property_set_definition.PropertySetDefinitionRepository;
 import nl.tno.willemsph.psd_repository.sparql.EmbeddedServer;
 
@@ -21,9 +22,12 @@ public class InformationDeliverySpecificationRepository {
 	private final static Logger LOGGER = Logger.getLogger(InformationDeliverySpecificationRepository.class.getName());
 
 	private final PropertySetDefinitionRepository propertySetDefinitionRepository;
+	private final UserRepository userRepository;
 
-	public InformationDeliverySpecificationRepository(PropertySetDefinitionRepository propertySetDefinitionRepository) {
+	public InformationDeliverySpecificationRepository(PropertySetDefinitionRepository propertySetDefinitionRepository,
+			UserRepository userRepository) {
 		this.propertySetDefinitionRepository = propertySetDefinitionRepository;
+		this.userRepository = userRepository;
 	}
 
 	public List<InformationDeliverySpecification> getAllInformationDeliverySpecifications() throws IOException {
@@ -96,6 +100,7 @@ public class InformationDeliverySpecificationRepository {
 		queryStr.append("}");
 
 		EmbeddedServer.instance.update(queryStr);
+		EmbeddedServer.instance.saveIdsModel(idsGraph);
 
 		return new InformationDeliverySpecification(idsId, null);
 	}
@@ -121,6 +126,7 @@ public class InformationDeliverySpecificationRepository {
 		queryStr.append("}");
 
 		EmbeddedServer.instance.update(queryStr);
+		EmbeddedServer.instance.saveIdsModel(idsGraph);
 
 		return new InformationDeliverySpecification(idsId, null);
 	}
@@ -131,7 +137,8 @@ public class InformationDeliverySpecificationRepository {
 		InformationDeliverySpecification ids = getOneInformationDeliverySpecification(idsId);
 		boolean psetFound = false;
 
-		InformationDeliverySpecificationResolver idsResolver = new InformationDeliverySpecificationResolver();
+		InformationDeliverySpecificationResolver idsResolver = new InformationDeliverySpecificationResolver(
+				this.userRepository);
 		List<RequiredPset> reqPsets = idsResolver.getReqPsets(ids);
 		if (reqPsets != null) {
 			for (RequiredPset reqPset : reqPsets) {
@@ -156,6 +163,7 @@ public class InformationDeliverySpecificationRepository {
 			queryStr.append("}");
 
 			EmbeddedServer.instance.update(queryStr);
+			EmbeddedServer.instance.saveIdsModel(idsGraph);
 		}
 		if (propIds.isPresent()) {
 			for (String propId : propIds.get()) {
@@ -187,25 +195,36 @@ public class InformationDeliverySpecificationRepository {
 		queryStr.append("}");
 
 		EmbeddedServer.instance.update(queryStr);
+		EmbeddedServer.instance.saveIdsModel(idsGraph);
 		return ids;
 	}
 
 	public InformationDeliverySpecification createInformationDeliverySpecification(String idsId, String name,
-			Optional<String> parentId) throws IOException {
+			String ownerId, Optional<String> parentId) throws IOException {
+		String idsGraph = idsId.substring(0, idsId.indexOf('#'));
 		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
-		queryStr.append("INSERT {");
+		queryStr.setNsPrefix("owners", EmbeddedServer.OWNERS + "#");
+		queryStr.setIri("idsGraph", idsGraph);
+		queryStr.setIri("ownersGraph", EmbeddedServer.OWNERS);
 		queryStr.setIri("ids", idsId);
 		queryStr.setLiteral("name", name);
-		queryStr.append("	?ids rdf:type IFC4-PSD:InformationDeliverySpecification ; ");
+		queryStr.setIri("owner", ownerId);
+		queryStr.append("INSERT {");
+		queryStr.append("  GRAPH ?idsGraph { ");
+		queryStr.append("	 ?ids rdf:type IFC4-PSD:InformationDeliverySpecification ; ");
 		queryStr.append("	   IFC4-PSD:name ?name . ");
 		if (parentId.isPresent()) {
 			queryStr.setIri("parent", parentId.get());
 		}
+		queryStr.append("  }");
+		queryStr.append("  GRAPH ?ownersGraph { ?ids owners:owner ?owner }");
 		queryStr.append("}");
 		queryStr.append("WHERE {");
 		queryStr.append("}");
 
 		EmbeddedServer.instance.update(queryStr);
+		EmbeddedServer.instance.saveIdsModel(queryStr.getParam("idsGraph").toString());
+		EmbeddedServer.instance.saveOwnersModel();
 
 		return getOneInformationDeliverySpecification(idsId);
 	}
@@ -213,7 +232,8 @@ public class InformationDeliverySpecificationRepository {
 	public String exportIDS(String id, ExportFormat format) throws IOException, DocumentException, URISyntaxException {
 		switch (format) {
 		case PDF:
-			return PdfGenerator.generate(getOneInformationDeliverySpecification(id), propertySetDefinitionRepository);
+			return PdfGenerator.generate(getOneInformationDeliverySpecification(id), propertySetDefinitionRepository,
+					userRepository);
 		case JSON:
 			return null;
 		default:

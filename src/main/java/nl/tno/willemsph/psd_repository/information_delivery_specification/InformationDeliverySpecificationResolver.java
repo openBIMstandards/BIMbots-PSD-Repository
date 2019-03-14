@@ -16,12 +16,20 @@ import org.springframework.stereotype.Component;
 import com.coxautodev.graphql.tools.GraphQLResolver;
 import com.fasterxml.jackson.databind.JsonNode;
 
+import nl.tno.willemsph.psd_repository.common.User;
+import nl.tno.willemsph.psd_repository.common.UserRepository;
 import nl.tno.willemsph.psd_repository.sparql.EmbeddedServer;
 
 @Component
 public class InformationDeliverySpecificationResolver implements GraphQLResolver<InformationDeliverySpecification> {
 	// private final static Logger LOGGER =
 	// Logger.getLogger(PropertySetDefinitionResolver.class.getName());
+	
+	private UserRepository userRepository;
+
+	public InformationDeliverySpecificationResolver(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
 
 	public String getName(InformationDeliverySpecification ids) throws IOException {
 		if (ids.getName() == null) {
@@ -124,6 +132,30 @@ public class InformationDeliverySpecificationResolver implements GraphQLResolver
 				JsonNode nameNode = node.get("name");
 				if (nameNode != null) {
 					return nameNode.get("value").asText();
+				}
+			}
+		}
+		return null;
+	}
+	
+	public User getOwner(InformationDeliverySpecification ids) throws IOException, URISyntaxException {
+		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
+		queryStr.setNsPrefix("owners", EmbeddedServer.OWNERS + "#");
+		queryStr.append("SELECT ?user ");
+		queryStr.append("WHERE {");
+		queryStr.setIri("ids", ids.getId());
+		queryStr.setIri("graph", EmbeddedServer.OWNERS);
+		queryStr.append("  GRAPH ?graph { ");
+		queryStr.append("    ?ids owners:owner ?user .");
+		queryStr.append("  }");
+		queryStr.append("}");
+		
+		JsonNode responseNodes = EmbeddedServer.instance.query(queryStr);
+		if (responseNodes.size() > 0) {
+			for (JsonNode node : responseNodes) {
+				JsonNode userNode = node.get("user");
+				if (userNode != null) {
+					return userRepository.findById(userNode.get("value").asText());
 				}
 			}
 		}

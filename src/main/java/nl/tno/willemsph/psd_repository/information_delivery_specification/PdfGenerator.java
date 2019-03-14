@@ -28,6 +28,7 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import nl.tno.willemsph.psd_repository.common.UserRepository;
 import nl.tno.willemsph.psd_repository.property_definition.PropertyDefinition;
 import nl.tno.willemsph.psd_repository.property_definition.PropertyDefinitionResolver;
 import nl.tno.willemsph.psd_repository.property_set_definition.PropertySetDefinitionRepository;
@@ -35,7 +36,8 @@ import nl.tno.willemsph.psd_repository.property_set_definition.PropertySetDefini
 public class PdfGenerator {
 
 	public static String generate(InformationDeliverySpecification ids,
-			PropertySetDefinitionRepository propertySetDefinitionRepository)
+			PropertySetDefinitionRepository propertySetDefinitionRepository,
+			UserRepository userRepository)
 			throws IOException, DocumentException, URISyntaxException {
 		String idsName = null;
 		int lastIndexOfHashMark = ids.getId().lastIndexOf('#');
@@ -45,7 +47,7 @@ public class PdfGenerator {
 			int lastIndexOfSlash = ids.getId().lastIndexOf('/');
 			idsName = ids.getId().substring(lastIndexOfSlash + 1);
 		}
-		InformationDeliverySpecificationResolver idsRslver = new InformationDeliverySpecificationResolver();
+		InformationDeliverySpecificationResolver idsRslver = new InformationDeliverySpecificationResolver(userRepository);
 		String title = idsRslver.getName(ids);
 
 		Document document = new Document();

@@ -86,6 +86,7 @@ public class Mutation implements GraphQLMutationResolver {
 	 * PropertySetDefinition
 	 * 
 	 * @param propertySetDefinitionInput Property set definition property values
+	 * @param env Data fetching environment
 	 * @return Created Property set definition
 	 * @throws IOException
 	 */
@@ -140,12 +141,17 @@ public class Mutation implements GraphQLMutationResolver {
 	 * @param idsId    Id of information delivery specification
 	 * @param name     Name of information delivery specification
 	 * @param parentId (Optional) parent ID
+	 * @param env Data fetching environment
 	 * @return Created information delivery specification
 	 * @throws IOException
 	 */
 	public InformationDeliverySpecification createInformationDeliverySpecification(String idsId, String name,
-			Optional<String> parentId) throws IOException {
-		return informationDeliverySpecificationRepository.createInformationDeliverySpecification(idsId, name, parentId);
+			String ownerId, Optional<String> parentId, DataFetchingEnvironment env) throws IOException {
+		boolean activeSession = userRepository.sessionActive(env.getContext());
+		if (!activeSession) {
+			throw new SessionTimeOutException("Session timed out", null);
+		}
+		return informationDeliverySpecificationRepository.createInformationDeliverySpecification(idsId, name, ownerId, parentId);
 	}
 
 	/**
@@ -216,7 +222,7 @@ public class Mutation implements GraphQLMutationResolver {
 	public InformationDeliverySpecification removePset2Ids(String idsId, String psetId) throws IOException {
 		return informationDeliverySpecificationRepository.removePset2Ids(idsId, psetId);
 	}
-	
+
 	/**
 	 * Export IDS, a link to the result is the return value
 	 * 
@@ -225,9 +231,9 @@ public class Mutation implements GraphQLMutationResolver {
 	 * @param id
 	 * @param format
 	 * @return
-	 * @throws IOException 
-	 * @throws DocumentException 
-	 * @throws URISyntaxException 
+	 * @throws IOException
+	 * @throws DocumentException
+	 * @throws URISyntaxException
 	 */
 	public String exportIDS(String id, ExportFormat format) throws IOException, DocumentException, URISyntaxException {
 		return this.informationDeliverySpecificationRepository.exportIDS(id, format);

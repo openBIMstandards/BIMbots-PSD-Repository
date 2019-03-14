@@ -95,8 +95,8 @@ public class EmbeddedServer {
 		}
 
 		// User defined pset model graphs
-		List<String> filenames = AwsClientIO.getInstance().getFileNames(BUCKET_NAME, "bimbots-psd-repository/psets/");
-		for (String filename : filenames) {
+		List<String> psetFileNames = AwsClientIO.getInstance().getFileNames(BUCKET_NAME, "bimbots-psd-repository/psets/");
+		for (String filename : psetFileNames) {
 			String modelName = filename.substring(0, filename.indexOf(".ttl"));
 			Model psetModel = ModelFactory.createDefaultModel();
 			InputStream objectInputStream = AwsClientIO.getInstance().getObjectInputStream(BUCKET_NAME,
@@ -106,13 +106,23 @@ public class EmbeddedServer {
 		}
 
 		// ids model graphs
-		for (String ids : IDSS) {
-			ClassPathResource idsResource = new ClassPathResource("idss/" + ids + ".ttl");
+		List<String> idsFileNames = AwsClientIO.getInstance().getFileNames(BUCKET_NAME, "bimbots-psd-repository/idss/");
+		for (String filename : idsFileNames) {
+			String modelName = filename.substring(0, filename.indexOf(".ttl"));
 			Model idsModel = ModelFactory.createDefaultModel();
-			LOGGER.info("Reading " + idsResource.getFilename());
-			idsModel.read(idsResource.getInputStream(), null, "TURTLE");
-			ds.addNamedModel(IDS + "/" + ids, idsModel);
+			InputStream objectInputStream = AwsClientIO.getInstance().getObjectInputStream(BUCKET_NAME,
+					"bimbots-psd-repository/idss/" + filename);
+			idsModel.read(objectInputStream, null, "TURTLE");
+			ds.addNamedModel(IDS + "/" + modelName, idsModel);
 		}
+		
+//		for (String ids : IDSS) {
+//			ClassPathResource idsResource = new ClassPathResource("idss/" + ids + ".ttl");
+//			Model idsModel = ModelFactory.createDefaultModel();
+//			LOGGER.info("Reading " + idsResource.getFilename());
+//			idsModel.read(idsResource.getInputStream(), null, "TURTLE");
+//			ds.addNamedModel(IDS + "/" + ids, idsModel);
+//		}
 
 		// users model graph
 		Model usersModel = ModelFactory.createDefaultModel();
@@ -399,4 +409,39 @@ public class EmbeddedServer {
 		};
 		new Thread(upload).start();
 	}
+	
+	public void saveIdsModel(String idsModelGraph) throws IOException {
+		Model idsModel = ds.getNamedModel(idsModelGraph);
+		idsModel.setNsPrefixes(prefixMapping);
+		idsModel.setNsPrefix("", idsModelGraph + "#");
+		final File tempFile = File.createTempFile("IDS", "MODEL");
+		FileSystemResource fileResource = new FileSystemResource(tempFile);
+		idsModel.write(System.out, "TURTLE", idsModelGraph);
+		idsModel.write(new FileOutputStream(fileResource.getFile()), "TURTLE", idsModelGraph);
+		String idsName = idsModelGraph.substring(idsModelGraph.lastIndexOf('/') + 1);
+		Runnable upload = new Runnable() {
+
+			@Override
+			public void run() {
+				AwsClientIO.getInstance().awsClientUpload(BUCKET_NAME,
+						"bimbots-psd-repository/idss/" + idsName + ".ttl", fileResource);
+				tempFile.delete();
+			}
+		};
+		new Thread(upload).start();
+	}
+	
+	public void deleteIdsModel(String idsModelGraph) {
+		String idsName = idsModelGraph.substring(idsModelGraph.lastIndexOf('/') + 1, idsModelGraph.lastIndexOf('#'));
+		Runnable upload = new Runnable() {
+
+			@Override
+			public void run() {
+				AwsClientIO.getInstance().deleteObject(BUCKET_NAME,
+						"bimbots-psd-repository/idss/" + idsName + ".ttl");
+			}
+		};
+		new Thread(upload).start();
+	}
+
 }
