@@ -229,6 +229,37 @@ public class InformationDeliverySpecificationRepository {
 		return getOneInformationDeliverySpecification(idsId);
 	}
 
+	public boolean deleteInformationDeliverySpecification(String idsId) throws IOException {
+		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
+		String idsGraph = idsId.substring(0, idsId.indexOf('#'));
+		queryStr.setIri("idsGraph", idsGraph);
+		queryStr.setIri("ownersGraph", EmbeddedServer.OWNERS);
+		queryStr.setNsPrefix("owners", EmbeddedServer.OWNERS + "#");
+		queryStr.setIri("ids", idsId);
+		queryStr.append("DELETE { ");
+		queryStr.append("  GRAPH ?ownersGraph { ?ids owners:owner ?owner . } ");
+		queryStr.append("  GRAPH ?idsGraph { ");
+		queryStr.append("    ?ids ?pred1 ?obj1 . ");
+		queryStr.append("    ?obj1 ?pred2 ?obj2 . ");
+		queryStr.append("    ?sub ?inv ?ids . ");
+		queryStr.append("  } ");
+		queryStr.append("} ");
+		queryStr.append("WHERE { ");
+		queryStr.append("  GRAPH ?ownersGraph { ?ids owners:owner ?owner . } ");
+		queryStr.append("  GRAPH ?idsGraph { ");
+		queryStr.append("    ?ids ?pred1 ?obj1 . ");
+		queryStr.append("    OPTIONAL { ?obj1 ?pred2 ?obj2  . } ");
+		queryStr.append("    OPTIONAL { ?sub ?inv ?ids . } ");
+		queryStr.append("  } ");
+		queryStr.append("} ");
+
+		EmbeddedServer.instance.update(queryStr);
+		EmbeddedServer.instance.saveOwnersModel();
+		EmbeddedServer.instance.deleteIdsModel(idsId);
+
+		return true;
+	}
+
 	public String exportIDS(String id, ExportFormat format) throws IOException, DocumentException, URISyntaxException {
 		switch (format) {
 		case PDF:
@@ -240,4 +271,5 @@ public class InformationDeliverySpecificationRepository {
 			return null;
 		}
 	}
+
 }

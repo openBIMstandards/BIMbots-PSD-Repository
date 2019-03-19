@@ -86,7 +86,7 @@ public class Mutation implements GraphQLMutationResolver {
 	 * PropertySetDefinition
 	 * 
 	 * @param propertySetDefinitionInput Property set definition property values
-	 * @param env Data fetching environment
+	 * @param env                        Data fetching environment
 	 * @return Created Property set definition
 	 * @throws IOException
 	 */
@@ -119,9 +119,10 @@ public class Mutation implements GraphQLMutationResolver {
 	/**
 	 * Delete a property set definition
 	 * 
-	 * GRAPHQL: deletePropertySetDefinition(psetId: ID!)
+	 * GRAPHQL: deletePropertySetDefinition(psetId: ID!): Boolean
 	 * 
 	 * @param psetId Id of property set definition
+	 * @return result
 	 * @throws IOException
 	 */
 	public boolean deletePropertySetDefinition(String psetId, DataFetchingEnvironment env) throws IOException {
@@ -141,7 +142,7 @@ public class Mutation implements GraphQLMutationResolver {
 	 * @param idsId    Id of information delivery specification
 	 * @param name     Name of information delivery specification
 	 * @param parentId (Optional) parent ID
-	 * @param env Data fetching environment
+	 * @param env      Data fetching environment
 	 * @return Created information delivery specification
 	 * @throws IOException
 	 */
@@ -151,7 +152,28 @@ public class Mutation implements GraphQLMutationResolver {
 		if (!activeSession) {
 			throw new SessionTimeOutException("Session timed out", null);
 		}
-		return informationDeliverySpecificationRepository.createInformationDeliverySpecification(idsId, name, ownerId, parentId);
+		return informationDeliverySpecificationRepository.createInformationDeliverySpecification(idsId, name, ownerId,
+				parentId);
+	}
+
+	/**
+	 * Delete an information delivery specification
+	 * 
+	 * GRAPHQL: deleteInformationDeliverySpecification(idsId: ID!):
+	 * InformationDeliverySpecification
+	 * 
+	 * @param idsId Id of information delivery specification
+	 * @param env   Data fetching environment
+	 * @return result
+	 * @throws IOException
+	 */
+	public boolean deleteInformationDeliverySpecification(String idsId, DataFetchingEnvironment env)
+			throws IOException {
+		boolean activeSession = userRepository.sessionActive(env.getContext());
+		if (!activeSession) {
+			throw new SessionTimeOutException("Session timed out", null);
+		}
+		return informationDeliverySpecificationRepository.deleteInformationDeliverySpecification(idsId);
 	}
 
 	/**

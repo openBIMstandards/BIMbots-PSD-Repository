@@ -130,12 +130,14 @@ input PropertySetDefinitionInput {
 type Mutation {
 		# Create an information delivery specification.
 	createInformationDeliverySpecification(idsId: ID!, name: String!, ownerId: String!, parentId: ID): InformationDeliverySpecification
+		# Delete an information delivery specification.
+	deleteInformationDeliverySpecification(idsId: ID!): Boolean
 		# Create a property set definition specified by this PropertySetDefinitionInput instance.
 	createPropertySetDefinition(psdInput: PropertySetDefinitionInput!): PropertySetDefinition
-		# Update a property set definition specified by this PropertySetDefinitionInput instance.
-	updatePropertySetDefinition(psdInput: PropertySetDefinitionInput!): PropertySetDefinition
 		# Delete a property set definition.
 	deletePropertySetDefinition(psetId: ID!): Boolean
+		# Update a property set definition specified by this PropertySetDefinitionInput instance.
+	updatePropertySetDefinition(psdInput: PropertySetDefinitionInput!): PropertySetDefinition
 		# Add a required property set to an information delivery specification.
 	addPset2Ids(idsId: ID!,	psetId: ID!, propIds: [ID]): InformationDeliverySpecification
 		# Remove a required property set from an information delivery specification.
