@@ -200,6 +200,16 @@ public class PsetXmlResourceImporter {
 			}
 		}
 		model.add(model.createStatement(pDefResrc, model.createProperty(PSD_PROP_PROPERTY_TYPE), propertyType));
+
+		// In case of a IFC4-PSD property set
+		if (pDefInput.getId().startsWith(EmbeddedServer.IFC4_PSD)) {
+			Resource objectProperty = model.createResource(
+					pDefInput.getId().substring(0, pDefInput.getId().indexOf('#') + 1) + pDefInput.getName());
+			model.add(model.createStatement(objectProperty, RDF.type, RDF.Property));
+			model.add(model.createStatement(objectProperty, RDFS.subPropertyOf,
+					model.createResource(EmbeddedServer.IFC4_PSD + "#" + pDefInput.getName())));
+			model.add(model.createStatement(objectProperty, RDFS.seeAlso, pDefResrc));
+		}
 		return pDefResrc;
 	}
 
@@ -279,7 +289,7 @@ public class PsetXmlResourceImporter {
 				for (Element propertyDefElement : propertyDefElements) {
 					String ifdguid = propertyDefElement.getAttribute("ifdguid");
 					PropertyDefinitionInput propertyDefinitionInput = createPropertyDefinitionInput(propertyDefElement,
-							id + "#_" + ifdguid);
+							id + "#p" + ifdguid);
 					propertyDefs.add(propertyDefinitionInput);
 				}
 				psetDefInput.setPropertyDefs(propertyDefs);

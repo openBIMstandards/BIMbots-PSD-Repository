@@ -15,11 +15,279 @@
   owl:imports <http://www.buildingsmart-tech.org/ifcOWL/IFC4> ;
   owl:versionInfo "Created with TopBraid Composer" ;
 .
+PSD:AboveGround
+  rdf:type rdf:Property ;
+  rdfs:label "Above ground"@en ;
+.
+PSD:AcousticRating
+  rdf:type rdf:Property ;
+  rdfs:label "Acoustic rating"@en ;
+.
+PSD:AdmixturesDescription
+  rdf:type rdf:Property ;
+  rdfs:label "Admixtures description"@en ;
+.
+PSD:AngleBetweenComponentAxes
+  rdf:type rdf:Property ;
+  rdfs:label "Angle between component axes"@en ;
+.
+PSD:AngleToFirstAxis
+  rdf:type rdf:Property ;
+  rdfs:label "Angle to first axis"@en ;
+.
+PSD:AtmosphericAcidification
+  rdf:type rdf:Property ;
+  rdfs:label "Atmospheric acidification"@en ;
+.
+PSD:AtmosphericAcidificationPerUnit
+  rdf:type rdf:Property ;
+  rdfs:label "Atmospheric acidification per unit"@en ;
+.
+PSD:BatterAtEnd
+  rdf:type rdf:Property ;
+  rdfs:label "Batter at end"@en ;
+.
+PSD:BatterAtStart
+  rdf:type rdf:Property ;
+  rdfs:label "Batter at start"@en ;
+.
+PSD:BuildingID
+  rdf:type rdf:Property ;
+  rdfs:label "Building ID"@en ;
+.
+PSD:CamberAtMidspan
+  rdf:type rdf:Property ;
+  rdfs:label "Camber at midspan"@en ;
+.
+PSD:CapacityPeople
+  rdf:type rdf:Property ;
+  rdfs:label "Capacity people"@en ;
+.
+PSD:CapacityWeight
+  rdf:type rdf:Property ;
+  rdfs:label "Capacity weight"@en ;
+.
+PSD:ClearDepth
+  rdf:type rdf:Property ;
+  rdfs:label "Clear depth"@en ;
+.
+PSD:ClearHeight
+  rdf:type rdf:Property ;
+  rdfs:label "Clear height"@en ;
+.
+PSD:ClearWidth
+  rdf:type rdf:Property ;
+  rdfs:label "Clear width"@en ;
+.
+PSD:ClimateChange
+  rdf:type rdf:Property ;
+  rdfs:label "Climate change"@en ;
+.
+PSD:ClimateChangePerUnit
+  rdf:type rdf:Property ;
+  rdfs:label "Climate change per unit"@en ;
+.
+PSD:Combustible
+  rdf:type rdf:Property ;
+  rdfs:label "Combustible"@en ;
+.
+PSD:Compartmentation
+  rdf:type rdf:Property ;
+  rdfs:label "Compartmentation"@en ;
+.
+PSD:CompressiveStrength
+  rdf:type rdf:Property ;
+  rdfs:label "Compressive strength"@en ;
+.
+PSD:ConcreteCover
+  rdf:type rdf:Property ;
+  rdfs:label "Concrete cover"@en ;
+.
+PSD:ConcreteCoverAtLinks
+  rdf:type rdf:Property ;
+  rdfs:label "Concrete cover at links"@en ;
+.
+PSD:ConcreteCoverAtMainBars
+  rdf:type rdf:Property ;
+  rdfs:label "Concrete cover at main bars"@en ;
+.
+PSD:ConstructionMethod
+  rdf:type rdf:Property ;
+  rdfs:label "Construction method"@en ;
+.
+PSD:ConstructionToleranceClass
+  rdf:type rdf:Property ;
+  rdfs:label "Construction tolerance class"@en ;
+.
+PSD:CornerChamfer
+  rdf:type rdf:Property ;
+  rdfs:label "Corner chamfer"@en ;
+.
+PSD:DesignLocationNumber
+  rdf:type rdf:Property ;
+  rdfs:label "Design location number"@en ;
+.
+PSD:DimensionalAccuracyClass
+  rdf:type rdf:Property ;
+  rdfs:label "Dimensional accuracy class"@en ;
+.
+PSD:DistanceBetweenComponentAxes
+  rdf:type rdf:Property ;
+  rdfs:label "Distance between component axes"@en ;
+.
+PSD:DurabilityRating
+  rdf:type rdf:Property ;
+  rdfs:label "Durability rating"@en ;
+.
+PSD:EdgeDistanceToFirstAxis
+  rdf:type rdf:Property ;
+  rdfs:label "Edge distance to first axis"@en ;
+.
+PSD:EntranceLevel
+  rdf:type rdf:Property ;
+  rdfs:label "Entrance level"@en ;
+.
+PSD:Eutrophication
+  rdf:type rdf:Property ;
+  rdfs:label "Eutrophication"@en ;
+.
+PSD:EutrophicationPerUnit
+  rdf:type rdf:Property ;
+  rdfs:label "Eutrophication per unit"@en ;
+.
+PSD:ExpectedServiceLife
+  rdf:type rdf:Property ;
+  rdfs:label "Expected service life"@en ;
+.
+PSD:ExposureClass
+  rdf:type rdf:Property ;
+  rdfs:label "Exposure class"@en ;
+.
+PSD:ExtendToStructure
+  rdf:type rdf:Property ;
+  rdfs:label "Extend to structure"@en ;
+.
+PSD:FillGas
+  rdf:type rdf:Property ;
+  rdfs:label "Fill gas"@en ;
+.
+PSD:Finish
+  rdf:type rdf:Property ;
+  rdfs:label "Finish"@en ;
+.
+PSD:FireExit
+  rdf:type rdf:Property ;
+  rdfs:label "Fire exit"@en ;
+.
+PSD:FireFightingLift
+  rdf:type rdf:Property ;
+  rdfs:label "Fire fighting lift"@en ;
+.
+PSD:FireProtectionClass
+  rdf:type rdf:Property ;
+  rdfs:label "Fire protection class"@en ;
+.
+PSD:FireRating
+  rdf:type rdf:Property ;
+  rdfs:label "Fire rating"@en ;
+.
+PSD:FlammabilityRating
+  rdf:type rdf:Property ;
+  rdfs:label "Flammability rating"@en ;
+.
+PSD:FormStrippingStrength
+  rdf:type rdf:Property ;
+  rdfs:label "Form stripping strength"@en ;
+.
+PSD:FragilityRating
+  rdf:type rdf:Property ;
+  rdfs:label "Fragility rating"@en ;
+.
+PSD:FunctionalUnitReference
+  rdf:type rdf:Property ;
+  rdfs:label "Functional unit reference"@en ;
+.
+PSD:GlassColor
+  rdf:type rdf:Property ;
+  rdfs:label "Glass color"@en ;
+.
+PSD:GlassLayers
+  rdf:type rdf:Property ;
+  rdfs:label "Glass layers"@en ;
+.
+PSD:GlassThickness1
+  rdf:type rdf:Property ;
+  rdfs:label "Glass thickness 1"@en ;
+.
+PSD:GlassThickness2
+  rdf:type rdf:Property ;
+  rdfs:label "Glass thickness 2"@en ;
+.
+PSD:GlassThickness3
+  rdf:type rdf:Property ;
+  rdfs:label "Glass thickness 3"@en ;
+.
+PSD:GlazingAreaFraction
+  rdf:type rdf:Property ;
+  rdfs:label "Glazing area fraction"@en ;
+.
+PSD:GrossPlannedArea
+  rdf:type rdf:Property ;
+  rdfs:label "Gross planned area"@en ;
+.
+PSD:HandicapAccessible
+  rdf:type rdf:Property ;
+  rdfs:label "Handicap accessible"@en ;
+.
+PSD:HasDrive
+  rdf:type rdf:Property ;
+  rdfs:label "Has drive"@en ;
+.
+PSD:HasNonSkidSurface
+  rdf:type rdf:Property ;
+  rdfs:label "Has non skid surface"@en ;
+.
+PSD:HasSillExternal
+  rdf:type rdf:Property ;
+  rdfs:label "Has sill external"@en ;
+.
+PSD:HasSillInternal
+  rdf:type rdf:Property ;
+  rdfs:label "Has sill internal"@en ;
+.
+PSD:HazardousWaste
+  rdf:type rdf:Property ;
+  rdfs:label "Hazardous waste"@en ;
+.
+PSD:HazardousWastePerUnit
+  rdf:type rdf:Property ;
+  rdfs:label "Hazardous waste per unit"@en ;
+.
+PSD:HollowCorePlugging
+  rdf:type rdf:Property ;
+  rdfs:label "Hollow core plugging"@en ;
+.
+PSD:HygrothermalRating
+  rdf:type rdf:Property ;
+  rdfs:label "Hygrothermal rating"@en ;
+.
 PSD:IfcVersion
   rdf:type owl:Class ;
   rdfs:comment "Version information of IFC release and sub schema."@en ;
   rdfs:label "IFC version"@en ;
   rdfs:subClassOf owl:Thing ;
+.
+PSD:InertWaste
+  rdf:type rdf:Property ;
+  rdfs:label "Inert waste"@en ;
+.
+PSD:InertWastePerUnit
+  rdf:type rdf:Property ;
+  rdfs:label "Inert waste per unit"@en ;
+.
+PSD:Infiltration
+  rdf:type rdf:Property ;
+  rdfs:label "Infiltration"@en ;
 .
 PSD:InformationDeliverySpecification
   rdf:type owl:Class ;
@@ -30,6 +298,150 @@ PSD:InformationDeliverySpecification
       owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
       owl:onProperty PSD:name ;
     ] ;
+.
+PSD:InitialTension
+  rdf:type rdf:Property ;
+  rdfs:label "Initial tension"@en ;
+.
+PSD:IsCoated
+  rdf:type rdf:Property ;
+  rdfs:label "Is coated"@en ;
+.
+PSD:IsExternal
+  rdf:type rdf:Property ;
+  rdfs:label "Is external"@en ;
+.
+PSD:IsLaminated
+  rdf:type rdf:Property ;
+  rdfs:label "Is laminated"@en ;
+.
+PSD:IsLandmarked
+  rdf:type rdf:Property ;
+  rdfs:label "Is landmarked"@en ;
+.
+PSD:IsPermanentID
+  rdf:type rdf:Property ;
+  rdfs:label "Is permanent ID"@en ;
+.
+PSD:IsTempered
+  rdf:type rdf:Property ;
+  rdfs:label "Is tempered"@en ;
+.
+PSD:IsWired
+  rdf:type rdf:Property ;
+  rdfs:label "Is wired"@en ;
+.
+PSD:LifeCyclePhase
+  rdf:type rdf:Property ;
+  rdfs:label "Life cycle phase"@en ;
+.
+PSD:LiftingStrength
+  rdf:type rdf:Property ;
+  rdfs:label "Lifting strength"@en ;
+.
+PSD:LoadBearing
+  rdf:type rdf:Property ;
+  rdfs:label "Load bearing"@en ;
+.
+PSD:LoadBearingCapacity
+  rdf:type rdf:Property ;
+  rdfs:label "Load bearing capacity"@en ;
+.
+PSD:ManufacturingToleranceClass
+  rdf:type rdf:Property ;
+  rdfs:label "Manufacturing tolerance class"@en ;
+.
+PSD:MassDensity
+  rdf:type rdf:Property ;
+  rdfs:label "Mass density"@en ;
+.
+PSD:MaxAggregateSize
+  rdf:type rdf:Property ;
+  rdfs:label "Max aggregate size"@en ;
+.
+PSD:MechanicalLoadRating
+  rdf:type rdf:Property ;
+  rdfs:label "Mechanical load rating"@en ;
+.
+PSD:MinimumAllowableSupportLength
+  rdf:type rdf:Property ;
+  rdfs:label "Minimum allowable support length"@en ;
+.
+PSD:MolecularWeight
+  rdf:type rdf:Property ;
+  rdfs:label "Molecular weight"@en ;
+.
+PSD:NetPlannedArea
+  rdf:type rdf:Property ;
+  rdfs:label "Net planned area"@en ;
+.
+PSD:NominalThickness
+  rdf:type rdf:Property ;
+  rdfs:label "Nominal thickness"@en ;
+.
+PSD:NominalToppingThickness
+  rdf:type rdf:Property ;
+  rdfs:label "Nominal topping thickness"@en ;
+.
+PSD:NonHazardousWaste
+  rdf:type rdf:Property ;
+  rdfs:label "Non hazardous waste"@en ;
+.
+PSD:NonHazardousWastePerUnit
+  rdf:type rdf:Property ;
+  rdfs:label "Non hazardous waste per unit"@en ;
+.
+PSD:NonRenewableEnergyConsumption
+  rdf:type rdf:Property ;
+  rdfs:label "Non renewable energy consumption"@en ;
+.
+PSD:NonRenewableEnergyConsumptionPerUnit
+  rdf:type rdf:Property ;
+  rdfs:label "Non renewable energy consumption per unit"@en ;
+.
+PSD:NosingLength
+  rdf:type rdf:Property ;
+  rdfs:label "Nosing length"@en ;
+.
+PSD:NumberOfDrafts
+  rdf:type rdf:Property ;
+  rdfs:label "Number of drafts"@en ;
+.
+PSD:NumberOfRiser
+  rdf:type rdf:Property ;
+  rdfs:label "Number of riser"@en ;
+.
+PSD:NumberOfStoreys
+  rdf:type rdf:Property ;
+  rdfs:label "Number of storeys"@en ;
+.
+PSD:NumberOfTreads
+  rdf:type rdf:Property ;
+  rdfs:label "Number of treads"@en ;
+.
+PSD:OccupancyType
+  rdf:type rdf:Property ;
+  rdfs:label "Occupancy type"@en ;
+.
+PSD:PhotochemicalOzoneFormation
+  rdf:type rdf:Property ;
+  rdfs:label "Photochemical ozone formation"@en ;
+.
+PSD:PhotochemicalOzoneFormationPerUnit
+  rdf:type rdf:Property ;
+  rdfs:label "Photochemical ozone formation per unit"@en ;
+.
+PSD:PieceMark
+  rdf:type rdf:Property ;
+  rdfs:label "Piece mark"@en ;
+.
+PSD:PitchAngle
+  rdf:type rdf:Property ;
+  rdfs:label "Pitch angle"@en ;
+.
+PSD:Porosity
+  rdf:type rdf:Property ;
+  rdfs:label "Porosity"@en ;
 .
 PSD:PropertyDef
   rdf:type owl:Class ;
@@ -73,6 +485,62 @@ PSD:PropertyType
   rdfs:label "Property type"@en ;
   rdfs:subClassOf owl:Thing ;
 .
+PSD:ProtectedOpening
+  rdf:type rdf:Property ;
+  rdfs:label "Protected opening"@en ;
+.
+PSD:ProtectivePoreRatio
+  rdf:type rdf:Property ;
+  rdfs:label "Protective pore ratio"@en ;
+.
+PSD:PubliclyAccessible
+  rdf:type rdf:Property ;
+  rdfs:label "Publicly accessible"@en ;
+.
+PSD:Purpose
+  rdf:type rdf:Property ;
+  rdfs:label "Purpose"@en ;
+.
+PSD:RadioactiveWaste
+  rdf:type rdf:Property ;
+  rdfs:label "Radioactive waste"@en ;
+.
+PSD:RadioactiveWastePerUnit
+  rdf:type rdf:Property ;
+  rdfs:label "Radioactive waste per unit"@en ;
+.
+PSD:Reference
+  rdf:type rdf:Property ;
+  rdfs:label "Reference"@en ;
+.
+PSD:ReinforcementAreaRatio
+  rdf:type rdf:Property ;
+  rdfs:label "Reinforcement area ratio"@en ;
+.
+PSD:ReinforcementStrengthClass
+  rdf:type rdf:Property ;
+  rdfs:label "Reinforcement strength class"@en ;
+.
+PSD:ReinforcementVolumeRatio
+  rdf:type rdf:Property ;
+  rdfs:label "Reinforcement volume ratio"@en ;
+.
+PSD:ReleaseStrength
+  rdf:type rdf:Property ;
+  rdfs:label "Release strength"@en ;
+.
+PSD:RenewableEnergyConsumption
+  rdf:type rdf:Property ;
+  rdfs:label "Renewable energy consumption"@en ;
+.
+PSD:RenewableEnergyConsumptionPerUnit
+  rdf:type rdf:Property ;
+  rdfs:label "Renewable energy consumption per unit"@en ;
+.
+PSD:RequiredHeadroom
+  rdf:type rdf:Property ;
+  rdfs:label "Required headroom"@en ;
+.
 PSD:RequiredPset
   rdf:type owl:Class ;
   rdfs:label "Required property set" ;
@@ -82,6 +550,154 @@ PSD:RequiredPset
       owl:cardinality "1"^^xsd:nonNegativeInteger ;
       owl:onProperty PSD:propertySetDef ;
     ] ;
+.
+PSD:ResourceDepletion
+  rdf:type rdf:Property ;
+  rdfs:label "Resource depletion"@en ;
+.
+PSD:ResourceDepletionPerUnit
+  rdf:type rdf:Property ;
+  rdfs:label "Resource depletion per unit"@en ;
+.
+PSD:RiserHeight
+  rdf:type rdf:Property ;
+  rdfs:label "Riser height"@en ;
+.
+PSD:Roll
+  rdf:type rdf:Property ;
+  rdfs:label "Roll"@en ;
+.
+PSD:SecurityRating
+  rdf:type rdf:Property ;
+  rdfs:label "Security rating"@en ;
+.
+PSD:SelfClosing
+  rdf:type rdf:Property ;
+  rdfs:label "Self closing"@en ;
+.
+PSD:ShadingCoefficient
+  rdf:type rdf:Property ;
+  rdfs:label "Shading coefficient"@en ;
+.
+PSD:Shortening
+  rdf:type rdf:Property ;
+  rdfs:label "Shortening"@en ;
+.
+PSD:Slope
+  rdf:type rdf:Property ;
+  rdfs:label "Slope"@en ;
+.
+PSD:SmokeStop
+  rdf:type rdf:Property ;
+  rdfs:label "Smoke stop"@en ;
+.
+PSD:SolarAbsorption
+  rdf:type rdf:Property ;
+  rdfs:label "Solar absorption"@en ;
+.
+PSD:SolarHeatGainTransmittance
+  rdf:type rdf:Property ;
+  rdfs:label "Solar heat gain transmittance"@en ;
+.
+PSD:SolarReflectance
+  rdf:type rdf:Property ;
+  rdfs:label "Solar reflectance"@en ;
+.
+PSD:SolarTransmittance
+  rdf:type rdf:Property ;
+  rdfs:label "Solar transmittance"@en ;
+.
+PSD:Span
+  rdf:type rdf:Property ;
+  rdfs:label "Span"@en ;
+.
+PSD:SprinklerProtection
+  rdf:type rdf:Property ;
+  rdfs:label "Sprinkler protection"@en ;
+.
+PSD:SprinklerProtectionAutomatic
+  rdf:type rdf:Property ;
+  rdfs:label "Sprinkler protection automatic"@en ;
+.
+PSD:Status
+  rdf:type rdf:Property ;
+  rdfs:label "Status"@en ;
+.
+PSD:StratosphericOzoneLayerDestruction
+  rdf:type rdf:Property ;
+  rdfs:label "Stratospheric ozone layer destruction"@en ;
+.
+PSD:StratosphericOzoneLayerDestructionPerUnit
+  rdf:type rdf:Property ;
+  rdfs:label "Stratospheric ozone layer destruction per unit"@en ;
+.
+PSD:StrengthClass
+  rdf:type rdf:Property ;
+  rdfs:label "Strength class"@en ;
+.
+PSD:StructuralClass
+  rdf:type rdf:Property ;
+  rdfs:label "Structural class"@en ;
+.
+PSD:SupportDuringTransportDescription
+  rdf:type rdf:Property ;
+  rdfs:label "Support during transport description"@en ;
+.
+PSD:SupportDuringTransportDocReference
+  rdf:type rdf:Property ;
+  rdfs:label "Support during transport doc reference"@en ;
+.
+PSD:SurfaceSpreadOfFlame
+  rdf:type rdf:Property ;
+  rdfs:label "Surface spread of flame"@en ;
+.
+PSD:TendonRelaxation
+  rdf:type rdf:Property ;
+  rdfs:label "Tendon relaxation"@en ;
+.
+PSD:ThermalTransmittance
+  rdf:type rdf:Property ;
+  rdfs:label "Thermal transmittance"@en ;
+.
+PSD:ThermalTransmittanceSummer
+  rdf:type rdf:Property ;
+  rdfs:label "Thermal transmittance summer"@en ;
+.
+PSD:ThermalTransmittanceWinter
+  rdf:type rdf:Property ;
+  rdfs:label "Thermal transmittance winter"@en ;
+.
+PSD:ToppingType
+  rdf:type rdf:Property ;
+  rdfs:label "Topping type"@en ;
+.
+PSD:TotalPrimaryEnergyConsumption
+  rdf:type rdf:Property ;
+  rdfs:label "Total primary energy consumption"@en ;
+.
+PSD:TotalPrimaryEnergyConsumptionPerUnit
+  rdf:type rdf:Property ;
+  rdfs:label "Total primary energy consumption per unit"@en ;
+.
+PSD:TransportationStrength
+  rdf:type rdf:Property ;
+  rdfs:label "Transportation strength"@en ;
+.
+PSD:TreadLength
+  rdf:type rdf:Property ;
+  rdfs:label "Tread length"@en ;
+.
+PSD:TreadLengthAtInnerSide
+  rdf:type rdf:Property ;
+  rdfs:label "Tread length at inner side"@en ;
+.
+PSD:TreadLengthAtOffset
+  rdf:type rdf:Property ;
+  rdfs:label "Tread length at offset"@en ;
+.
+PSD:Twisting
+  rdf:type rdf:Property ;
+  rdfs:label "Twisting"@en ;
 .
 PSD:TypeComplexProperty
   rdf:type owl:Class ;
@@ -98,6 +714,10 @@ PSD:TypeComplexProperty
   owl:disjointWith PSD:TypePropertyReferenceValue ;
   owl:disjointWith PSD:TypePropertySingleValue ;
   owl:disjointWith PSD:TypePropertyTableValue ;
+.
+PSD:TypeDesignator
+  rdf:type rdf:Property ;
+  rdfs:label "Type designator"@en ;
 .
 PSD:TypePropertyBoundedValue
   rdf:type owl:Class ;
@@ -221,6 +841,10 @@ PSD:TypePropertyTableValue
   owl:disjointWith PSD:TypePropertyReferenceValue ;
   owl:disjointWith PSD:TypePropertySingleValue ;
 .
+PSD:Unit
+  rdf:type rdf:Property ;
+  rdfs:label "Unit"@en ;
+.
 PSD:Value
   rdf:type owl:Class ;
   rdfs:label "Defining value"@en ;
@@ -240,6 +864,54 @@ PSD:Value
       owl:minCardinality "0"^^xsd:nonNegativeInteger ;
       owl:onProperty PSD:valueItem ;
     ] ;
+.
+PSD:VisibleLightReflectance
+  rdf:type rdf:Property ;
+  rdfs:label "Visible light reflectance"@en ;
+.
+PSD:VisibleLightTransmittance
+  rdf:type rdf:Property ;
+  rdfs:label "Visible light transmittance"@en ;
+.
+PSD:WaistThickness
+  rdf:type rdf:Property ;
+  rdfs:label "Waist thickness"@en ;
+.
+PSD:WalkingLineOffset
+  rdf:type rdf:Property ;
+  rdfs:label "Walking line offset"@en ;
+.
+PSD:WaterConsumption
+  rdf:type rdf:Property ;
+  rdfs:label "Water consumption"@en ;
+.
+PSD:WaterConsumptionPerUnit
+  rdf:type rdf:Property ;
+  rdfs:label "Water consumption per unit"@en ;
+.
+PSD:WaterImpermeability
+  rdf:type rdf:Property ;
+  rdfs:label "Water impermeability"@en ;
+.
+PSD:WaterTightnessRating
+  rdf:type rdf:Property ;
+  rdfs:label "Water tightness rating"@en ;
+.
+PSD:WindLoadRating
+  rdf:type rdf:Property ;
+  rdfs:label "Wind load rating"@en ;
+.
+PSD:Workability
+  rdf:type rdf:Property ;
+  rdfs:label "Workability"@en ;
+.
+PSD:YearOfConstruction
+  rdf:type rdf:Property ;
+  rdfs:label "Year of construction"@en ;
+.
+PSD:YearOfLastRefurbishment
+  rdf:type rdf:Property ;
+  rdfs:label "Year of last refurbishment"@en ;
 .
 PSD:applicability
   rdf:type owl:DatatypeProperty ;
