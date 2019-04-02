@@ -211,15 +211,29 @@ public class InformationDeliverySpecificationRepository {
 		queryStr.setIri("owner", ownerId);
 		queryStr.append("INSERT {");
 		queryStr.append("  GRAPH ?idsGraph { ");
+		queryStr.append("	 ?idsGraph rdf:type owl:Ontology . ");
 		queryStr.append("	 ?ids rdf:type IFC4-PSD:InformationDeliverySpecification ; ");
 		queryStr.append("	   IFC4-PSD:name ?name . ");
 		if (parentId.isPresent()) {
-			queryStr.setIri("parent", parentId.get());
+			queryStr.append("	 ?ids IFC4-PSD:requiredPset [");
+			queryStr.append("      IFC4-PSD:propertySetDef ?propertySetDef ; ");
+			queryStr.append("      IFC4-PSD:requiredProp ?propertyDef ");
+			queryStr.append("    ] . ");
 		}
 		queryStr.append("  }");
 		queryStr.append("  GRAPH ?ownersGraph { ?ids owners:owner ?owner }");
 		queryStr.append("}");
 		queryStr.append("WHERE {");
+		if (parentId.isPresent()) {
+			String parentGraph = parentId.get().substring(0, parentId.get().indexOf('#'));
+			queryStr.setIri("parentGraph", parentGraph);
+			queryStr.setIri("parent", parentId.get());
+			queryStr.append("  GRAPH ?parentGraph { ");
+			queryStr.append("    ?parent IFC4-PSD:requiredPset ?requiredPset . ");
+			queryStr.append("    ?requiredPset IFC4-PSD:propertySetDef ?propertySetDef ; ");
+			queryStr.append("      IFC4-PSD:requiredProp ?propertyDef . ");
+			queryStr.append("  }");
+		}
 		queryStr.append("}");
 
 		EmbeddedServer.instance.update(queryStr);

@@ -129,7 +129,7 @@ input PropertySetDefinitionInput {
 # All mutations that are defined for this property set definition repository
 type Mutation {
 		# Create an information delivery specification.
-	createInformationDeliverySpecification(idsId: ID!, name: String!, ownerId: String!, parentId: ID): InformationDeliverySpecification
+	createInformationDeliverySpecification(idsId: ID!, name: String!, ownerId: ID!, parentId: ID): InformationDeliverySpecification
 		# Delete an information delivery specification.
 	deleteInformationDeliverySpecification(idsId: ID!): Boolean
 		# Create a property set definition specified by this PropertySetDefinitionInput instance.
