@@ -61,8 +61,25 @@ public class Query implements GraphQLQueryResolver {
 	// Property Definition
 	//
 
+	/**
+	 * GRAPHQL query: allPDs: [PropertyDefinition]
+	 * 
+	 * @return All property definitions
+	 * @throws IOException
+	 */
 	public List<PropertyDefinition> allPDs() throws IOException {
 		return this.propertySetDefinitionRepository.getAllPropertyDefinitions();
+	}
+
+	/**
+	 * GRAPHQL query: searchPD(searchString: String!): [PropertyDefinition]
+	 * 
+	 * @param searchString specification of the search string
+	 * @return All property definitions with names that contain search string;
+	 * @throws IOException 
+	 */
+	public List<PropertyDefinition> searchPD(String searchString) throws IOException {
+		return this.propertySetDefinitionRepository.searchPropertyDefinition(searchString);
 	}
 
 	//

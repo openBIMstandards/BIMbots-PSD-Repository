@@ -62,6 +62,8 @@ type Query {
 	allPSDs: [PropertySetDefinition]
 		# Get all property definitions that are store in the repository
 	allPDs: [PropertyDefinition]
+		# Search for property definitions that contain the specified search string
+	searchPD(searchString: String!): [PropertyDefinition]
 		# Get a single property set definition identified by its name (e.g. Pset_WallCommon)
 	onePSD(name: String!): PropertySetDefinition
 		# Get all property set definitions that are applicable to the specified IFC class

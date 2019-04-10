@@ -419,4 +419,32 @@ public class PropertySetDefinitionRepository {
 		return allPropertyDefinitions;
 	}
 
+	public List<PropertyDefinition> searchPropertyDefinition(String searchString) throws IOException {
+		List<PropertyDefinition> foundPropertyDefinitions = new ArrayList<>();
+		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
+		queryStr.setLiteral("searchString", searchString.toLowerCase());
+		queryStr.append("SELECT ?propDef ?name ");
+		queryStr.append("WHERE {");
+		queryStr.append("	GRAPh ?graph {");
+		queryStr.append("		?propDef rdf:type IFC4-PSD:PropertyDef ; ");
+		queryStr.append("	 	IFC4-PSD:name ?name . ");
+		queryStr.append("		FILTER regex(LCASE(?name), ?searchString)");
+		queryStr.append("	}");
+		queryStr.append("}");
+		queryStr.append("ORDER BY ?name ");
+
+		JsonNode responseNodes = EmbeddedServer.instance.query(queryStr);
+		if (responseNodes.size() > 0) {
+			PropertyDefinition propDef = null;
+			for (JsonNode node : responseNodes) {
+				JsonNode propDefNode = node.get("propDef");
+				if (propDefNode != null) {
+					propDef = new PropertyDefinition(propDefNode.get("value").asText());
+					foundPropertyDefinitions.add(propDef);
+				}
+			}
+		}
+		return foundPropertyDefinitions;
+	}
+
 }
