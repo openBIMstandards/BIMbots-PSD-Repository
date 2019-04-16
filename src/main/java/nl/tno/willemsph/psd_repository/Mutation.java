@@ -177,6 +177,30 @@ public class Mutation implements GraphQLMutationResolver {
 	}
 
 	/**
+	 * Add the content of another information delivery specification to this
+	 * information delivery specification.
+	 * 
+	 * GRAPHQL: addIds2Ids(thisIdsId: ID!, otherIdsId: ID!):
+	 * InformationDeliverySpecification
+	 * 
+	 * @param thisIdsId  Id of the information delivery specification that will be
+	 *                   mutated
+	 * @param otherIdsId Id of the information delivery specification that will be
+	 *                   copied
+	 * @param env        Data fetching environment
+	 * @return Updated information delivery specification
+	 * @throws IOException
+	 */
+	public InformationDeliverySpecification addIds2Ids(String thisIdsId, String otherIdsId, DataFetchingEnvironment env)
+			throws IOException {
+		boolean activeSession = userRepository.sessionActive(env.getContext());
+		if (!activeSession) {
+			throw new SessionTimeOutException("Session timed out", null);
+		}
+		return informationDeliverySpecificationRepository.addIds2Ids(thisIdsId, otherIdsId);
+	}
+
+	/**
 	 * Add a mandatory property to a required property set to an information
 	 * delivery specification
 	 * 

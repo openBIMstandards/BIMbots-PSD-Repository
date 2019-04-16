@@ -286,4 +286,34 @@ public class InformationDeliverySpecificationRepository {
 		}
 	}
 
+	public InformationDeliverySpecification addIds2Ids(String thisIdsId, String otherIdsId) throws IOException {
+		String thisIdsGraph = thisIdsId.substring(0, thisIdsId.indexOf('#'));
+		String otherIdsGraph = otherIdsId.substring(0, otherIdsId.indexOf('#'));
+		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
+		queryStr.setIri("thisIdsGraph", thisIdsGraph);
+		queryStr.setIri("thisIdsId", thisIdsId);
+		queryStr.setIri("otherIdsGraph", otherIdsGraph);
+		queryStr.setIri("otherIdsId", otherIdsId);
+		queryStr.append("INSERT {");
+		queryStr.append("  GRAPH ?thisIdsGraph { ");
+		queryStr.append("	 ?thisIdsId IFC4-PSD:requiredPset [");
+		queryStr.append("      IFC4-PSD:propertySetDef ?propertySetDef ; ");
+		queryStr.append("      IFC4-PSD:requiredProp ?propertyDef ");
+		queryStr.append("    ] . ");
+		queryStr.append("  } ");
+		queryStr.append("} ");
+		queryStr.append("WHERE {");
+		queryStr.append("  GRAPH ?otherIdsGraph { ");
+		queryStr.append("    ?otherIdsId IFC4-PSD:requiredPset ?requiredPset . ");
+		queryStr.append("    ?requiredPset IFC4-PSD:propertySetDef ?propertySetDef ; ");
+		queryStr.append("      IFC4-PSD:requiredProp ?propertyDef . ");
+		queryStr.append("  } ");
+		queryStr.append("} ");
+
+		EmbeddedServer.instance.update(queryStr);
+		EmbeddedServer.instance.saveIdsModel(queryStr.getParam("thisIdsGraph").toString());
+		
+		return getOneInformationDeliverySpecification(thisIdsId);
+	}
+
 }

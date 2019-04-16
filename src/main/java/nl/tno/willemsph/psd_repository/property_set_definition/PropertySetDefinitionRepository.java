@@ -422,13 +422,15 @@ public class PropertySetDefinitionRepository {
 	public List<PropertyDefinition> searchPropertyDefinition(String searchString) throws IOException {
 		List<PropertyDefinition> foundPropertyDefinitions = new ArrayList<>();
 		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
-		queryStr.setLiteral("searchString", searchString.toLowerCase());
+		queryStr.setLiteral("searchString", searchString);
+//		queryStr.setLiteral("searchString", searchString.toLowerCase());
 		queryStr.append("SELECT ?propDef ?name ");
 		queryStr.append("WHERE {");
 		queryStr.append("	GRAPh ?graph {");
 		queryStr.append("		?propDef rdf:type IFC4-PSD:PropertyDef ; ");
 		queryStr.append("	 	IFC4-PSD:name ?name . ");
-		queryStr.append("		FILTER regex(LCASE(?name), ?searchString)");
+		queryStr.append("		FILTER regex(?name, ?searchString)");
+//		queryStr.append("		FILTER regex(LCASE(?name), ?searchString)");
 		queryStr.append("	}");
 		queryStr.append("}");
 		queryStr.append("ORDER BY ?name ");
