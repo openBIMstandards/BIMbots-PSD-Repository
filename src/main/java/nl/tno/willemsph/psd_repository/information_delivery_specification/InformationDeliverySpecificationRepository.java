@@ -3,7 +3,9 @@ package nl.tno.willemsph.psd_repository.information_delivery_specification;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -286,33 +288,101 @@ public class InformationDeliverySpecificationRepository {
 		}
 	}
 
+	/**
+	 * Merge the required psets and mandatory properties of the 'other' IDS with the
+	 * required psets and mandatory properties of 'this' IDS.
+	 * 
+	 * @param thisIdsId  Id of 'this' IDS
+	 * @param otherIdsId ID of the 'other' IDS
+	 * @return the merged result IDS
+	 * @throws IOException
+	 */
 	public InformationDeliverySpecification addIds2Ids(String thisIdsId, String otherIdsId) throws IOException {
 		String thisIdsGraph = thisIdsId.substring(0, thisIdsId.indexOf('#'));
 		String otherIdsGraph = otherIdsId.substring(0, otherIdsId.indexOf('#'));
+
 		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
 		queryStr.setIri("thisIdsGraph", thisIdsGraph);
 		queryStr.setIri("thisIdsId", thisIdsId);
 		queryStr.setIri("otherIdsGraph", otherIdsGraph);
 		queryStr.setIri("otherIdsId", otherIdsId);
-		queryStr.append("INSERT {");
-		queryStr.append("  GRAPH ?thisIdsGraph { ");
-		queryStr.append("	 ?thisIdsId IFC4-PSD:requiredPset [");
-		queryStr.append("      IFC4-PSD:propertySetDef ?propertySetDef ; ");
-		queryStr.append("      IFC4-PSD:requiredProp ?propertyDef ");
-		queryStr.append("    ] . ");
-		queryStr.append("  } ");
+		queryStr.append("SELECT DISTINCT ?propertySetDef ?propertyDef WHERE {");
+		queryStr.append("	{ GRAPH ?thisIdsGraph { ");
+		queryStr.append("		?thisIdsId IFC4-PSD:requiredPset ?tReqPset . ");
+		queryStr.append("		?tReqPset IFC4-PSD:propertySetDef ?propertySetDef ; ");
+		queryStr.append("			IFC4-PSD:requiredProp ?propertyDef . ");
+		queryStr.append("	} } UNION ");
+		queryStr.append("	{ GRAPH ?otherIdsGraph { ");
+		queryStr.append("		?otherIdsId IFC4-PSD:requiredPset ?reqPset . ");
+		queryStr.append("		?reqPset IFC4-PSD:propertySetDef ?propertySetDef ; ");
+		queryStr.append("			IFC4-PSD:requiredProp ?propertyDef . ");
+		queryStr.append("	} } ");
+		queryStr.append("} ");
+		queryStr.append("ORDER BY ?propertySetDef");
+
+		JsonNode responseNodes = EmbeddedServer.instance.query(queryStr);
+		Map<String, List<String>> reqPsetMap = new HashMap<>();
+		if (responseNodes.size() > 0) {
+			for (JsonNode node : responseNodes) {
+				String propertySetDefNode = node.get("propertySetDef").get("value").asText();
+				String propertyDefNode = node.get("propertyDef").get("value").asText();
+				List<String> proplist = reqPsetMap.get(propertySetDefNode);
+				if (proplist == null) {
+					proplist = new ArrayList<>();
+				}
+				proplist.add(propertyDefNode);
+				reqPsetMap.put(propertySetDefNode, proplist);
+			}
+		}
+
+		queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
+		queryStr.setIri("thisIdsGraph", thisIdsGraph);
+		queryStr.setIri("thisIdsId", thisIdsId);
+
+		queryStr.append("DELETE {");
+		queryStr.append("	GRAPH ?thisIdsGraph { ");
+		queryStr.append("		?thisIdsId IFC4-PSD:requiredPset ?tReqPset . ");
+		queryStr.append("		?tReqPset ?pred ?obj . ");
+		queryStr.append("	} ");
 		queryStr.append("} ");
 		queryStr.append("WHERE {");
-		queryStr.append("  GRAPH ?otherIdsGraph { ");
-		queryStr.append("    ?otherIdsId IFC4-PSD:requiredPset ?requiredPset . ");
-		queryStr.append("    ?requiredPset IFC4-PSD:propertySetDef ?propertySetDef ; ");
-		queryStr.append("      IFC4-PSD:requiredProp ?propertyDef . ");
+		queryStr.append("	GRAPH ?thisIdsGraph { ");
+		queryStr.append("		?thisIdsId IFC4-PSD:requiredPset ?tReqPset . ");
+		queryStr.append("		?tReqPset ?pred ?obj . ");
+		queryStr.append("	} ");
+		queryStr.append("} ");
+
+		EmbeddedServer.instance.update(queryStr);
+
+		queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
+		queryStr.setIri("thisIdsGraph", thisIdsGraph);
+		queryStr.setIri("thisIdsId", thisIdsId);
+		queryStr.setIri("otherIdsGraph", otherIdsGraph);
+		queryStr.setIri("otherIdsId", otherIdsId);
+
+		queryStr.append("INSERT DATA {");
+		queryStr.append("  GRAPH ?thisIdsGraph { ");
+		int psetIndex = 0;
+		int pdefIndex = 0;
+		for (String propertySetDef : reqPsetMap.keySet()) {
+			queryStr.setIri("propertySetDef" + psetIndex, propertySetDef);
+			for (String propertyDef : reqPsetMap.get(propertySetDef)) {
+				queryStr.setIri("propertyDef" + pdefIndex, propertyDef);
+				queryStr.append("	 ?thisIdsId IFC4-PSD:requiredPset [");
+				queryStr.append("      IFC4-PSD:propertySetDef ?propertySetDef" + psetIndex + " ; ");
+				queryStr.append("      IFC4-PSD:requiredProp ?propertyDef" + pdefIndex + " ");
+				queryStr.append("    ] . ");
+				pdefIndex++;
+			}
+			psetIndex++;
+		}
 		queryStr.append("  } ");
 		queryStr.append("} ");
 
 		EmbeddedServer.instance.update(queryStr);
+
 		EmbeddedServer.instance.saveIdsModel(queryStr.getParam("thisIdsGraph").toString());
-		
+
 		return getOneInformationDeliverySpecification(thisIdsId);
 	}
 
