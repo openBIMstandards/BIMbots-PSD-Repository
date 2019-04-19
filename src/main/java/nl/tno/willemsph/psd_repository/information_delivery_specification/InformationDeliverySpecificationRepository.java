@@ -193,6 +193,7 @@ public class InformationDeliverySpecificationRepository {
 		queryStr.append("  GRAPH ?idsGraph { ");
 		queryStr.append("	 ?ids IFC4-PSD:requiredPset ?reqPset . ");
 		queryStr.append("	 ?reqPset IFC4-PSD:propertySetDef ?pset . ");
+		queryStr.append("	 ?reqPset IFC4-PSD:requiredProp ?prop . ");
 		queryStr.append("  }");
 		queryStr.append("}");
 
