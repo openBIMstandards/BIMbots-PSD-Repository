@@ -93,6 +93,7 @@ type SigninPayload {
 input AuthData {
 	email: String!
 	password: String!
+	name: String
 }
 
 input LanguageTaggedStringInput {
@@ -156,6 +157,8 @@ type Mutation {
 	signinUser(auth: AuthData!): SigninPayload
 		# Sign out a user.
 	signoutUser(token: String!): Boolean!
+		# Sign up a user
+	signupUser(auth: AuthData!): Boolean!
 		# Export IDS, a link to the result is the return value
 	exportIDS(id: ID!, format: ExportFormat!): String
 }

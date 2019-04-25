@@ -1,9 +1,14 @@
 package nl.tno.willemsph.psd_repository;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+
+import javax.mail.MessagingException;
 
 import org.springframework.stereotype.Component;
 
@@ -22,6 +27,7 @@ import nl.tno.willemsph.psd_repository.information_delivery_specification.Inform
 import nl.tno.willemsph.psd_repository.property_set_definition.PropertySetDefinition;
 import nl.tno.willemsph.psd_repository.property_set_definition.PropertySetDefinitionInput;
 import nl.tno.willemsph.psd_repository.property_set_definition.PropertySetDefinitionRepository;
+import nl.tno.willemsph.psd_repository.sparql.AwsSendEmail;
 
 @Component
 public class Mutation implements GraphQLMutationResolver {
@@ -58,6 +64,23 @@ public class Mutation implements GraphQLMutationResolver {
 	}
 
 	/**
+	 * Sign up a user.
+	 * 
+	 * @param auth User authorization data
+	 * @return result successful
+	 * @throws MessagingException 
+	 * @throws UnsupportedEncodingException 
+	 */
+	public boolean signupUser(AuthData auth) throws MessagingException, UnsupportedEncodingException {
+		AwsSendEmail awsSendEmail = AwsSendEmail.getInstance();
+		Map<String,String> arguments =  new HashMap<>();
+		arguments.put("name", auth.getName());
+		arguments.put("email", auth.getEmail());
+		arguments.put("password", auth.getPassword());
+		return awsSendEmail.sendEmail(arguments);
+	}
+
+	/**
 	 * Sign in a user.
 	 * 
 	 * @param auth User authorization data
@@ -74,6 +97,12 @@ public class Mutation implements GraphQLMutationResolver {
 		}
 	}
 
+	/**
+	 * Sign out a user.
+	 * 
+	 * @param token Session token
+	 * @return result successful
+	 */
 	public boolean signoutUser(String token) {
 		return userRepository.signoutUser(token);
 	}
