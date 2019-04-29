@@ -68,16 +68,23 @@ public class Mutation implements GraphQLMutationResolver {
 	 * 
 	 * @param auth User authorization data
 	 * @return result successful
-	 * @throws MessagingException 
-	 * @throws UnsupportedEncodingException 
+	 * @throws MessagingException
+	 * @throws IOException
 	 */
-	public boolean signupUser(AuthData auth) throws MessagingException, UnsupportedEncodingException {
+	public boolean signupUser(AuthData auth) throws MessagingException, IOException {
 		AwsSendEmail awsSendEmail = AwsSendEmail.getInstance();
-		Map<String,String> arguments =  new HashMap<>();
+
+		Map<String, String> arguments = new HashMap<>();
 		arguments.put("name", auth.getName());
 		arguments.put("email", auth.getEmail());
 		arguments.put("password", auth.getPassword());
-		return awsSendEmail.sendEmail(arguments);
+
+		User user = userRepository.findByEmail(auth.getEmail());
+		if (user == null) {
+			return awsSendEmail.signupUser(arguments);
+		} else {
+			return awsSendEmail.resetPassword(arguments);
+		}
 	}
 
 	/**
