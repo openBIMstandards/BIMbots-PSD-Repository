@@ -1,7 +1,6 @@
 package nl.tno.willemsph.psd_repository;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;

@@ -7,6 +7,7 @@ type PropertyType {
 	type: String
 	dataType: String
 	enumItems: [String]
+	reftype: String
 }
 
 type PropertyDefinition {
@@ -105,6 +106,7 @@ input PropertyTypeInput {
 	type: String!
 	dataType: String
 	enumItems: [String]
+	reftype: String
 }
 
 input PropertyDefinitionInput {

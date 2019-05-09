@@ -73,13 +73,15 @@ public class PropertyDefinitionResolver implements GraphQLResolver<PropertyDefin
 		queryStr.setIri("propertyTypePred", EmbeddedServer.IFC4_PSD + "#propertyType");
 		queryStr.setIri("dataTypePred", EmbeddedServer.IFC4_PSD + "#dataType");
 		queryStr.setIri("enumItemPred", EmbeddedServer.IFC4_PSD + "#enumItem");
-		queryStr.append("SELECT ?type ?dataType ?enumItem ");
+		queryStr.setIri("reftypePred", EmbeddedServer.IFC4_PSD + "#reftype");
+		queryStr.append("SELECT ?type ?dataType ?enumItem ?reftype ");
 		queryStr.append("WHERE { ");
 		queryStr.append("	GRAPH ?graph { ");
 		queryStr.append("		?subject ?propertyTypePred ?propertyType . ");
 		queryStr.append("		?propertyType rdf:type ?type . ");
 		queryStr.append("		OPTIONAL { ?propertyType ?dataTypePred ?dataType } . ");
 		queryStr.append("		OPTIONAL { ?propertyType ?enumItemPred ?enumItem } . ");
+		queryStr.append("		OPTIONAL { ?propertyType ?reftypePred ?reftype } . ");
 		queryStr.append("	} ");
 		queryStr.append("} ");
 		queryStr.append("ORDER BY ?enumItem ");
@@ -89,6 +91,7 @@ public class PropertyDefinitionResolver implements GraphQLResolver<PropertyDefin
 			String type = null;
 			String dataType = null;
 			List<String> enumItems = new ArrayList<>();
+			String reftype = null;
 			for (JsonNode node : responseNodes) {
 				JsonNode typeNode = node.get("type");
 				if (typeNode != null) {
@@ -102,18 +105,26 @@ public class PropertyDefinitionResolver implements GraphQLResolver<PropertyDefin
 				if (enumItemNode != null) {
 					enumItems.add(enumItemNode.get("value").asText());
 				}
+				JsonNode reftypeNode = node.get("reftype");
+				if (reftypeNode != null) {
+					reftype = reftypeNode.get("value").asText();
+				}
 
 			}
 			PropertyType propertyType = new PropertyType(type, dataType);
 			if (!enumItems.isEmpty()) {
 				propertyType.setEnumItems(enumItems);
 			}
+			if (reftype != null) {
+				propertyType.setReftype(reftype);
+			}
 			return propertyType;
 		}
 		return null;
 	}
 
-	public List<PropertySetDefinition> getInvPropertySetDefinitions(PropertyDefinition propertyDefinition) throws IOException {
+	public List<PropertySetDefinition> getInvPropertySetDefinitions(PropertyDefinition propertyDefinition)
+			throws IOException {
 		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
 		queryStr.setIri("propDef", propertyDefinition.getId());
 		queryStr.append("SELECT ?name ");

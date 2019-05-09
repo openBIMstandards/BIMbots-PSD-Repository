@@ -51,15 +51,15 @@ public class EmbeddedServer {
 	public static final String IDS = "http://openbimstandards.org/information-delivery-specification";
 	public static final String USERS = "http://www.infrabim.nl/bimbots-psd-repository/users";
 	public static final String OWNERS = "http://www.infrabim.nl/bimbots-psd-repository/owners";
-	public static final String[] PSETS = { "Pset_BeamCommon", "Pset_BuildingCommon", "Pset_BuildingElementProxyCommon",
-			"Pset_BuildingStoreyCommon", "Pset_BuildingSystemCommon", "Pset_ChimneyCommon", "Pset_CivilElementCommon",
-			"Pset_ColumnCommon", "Pset_ConcreteElementGeneral", "Pset_CoveringCommon", "Pset_CurtainWallCommon",
-			"Pset_DoorCommon", "Pset_DoorWindowGlazingType", "Pset_EnvironmentalImpactIndicators",
-			"Pset_EnvironmentalImpactValues", "Pset_MaterialCommon", "Pset_MaterialConcrete", "Pset_MemberCommon",
-			"Pset_OpeningElementCommon", "Pset_PileCommon", "Pset_PlateCommon", "Pset_PrecastConcreteElementGeneral",
-			"Pset_PrecastSlab", "Pset_RoofCommon", "Pset_SlabCommon", "Pset_SpaceCommon", "Pset_StairCommon",
-			"Pset_TransportElementCommon", "Pset_TransportElementElevator", "Pset_WallCommon", "Pset_WindowCommon",
-			"Pset_ZoneCommon" };
+	public static final String[] PSETS = { "Pset_ActionRequest", "Pset_BeamCommon", "Pset_BuildingCommon",
+			"Pset_BuildingElementProxyCommon", "Pset_BuildingStoreyCommon", "Pset_BuildingSystemCommon",
+			"Pset_ChimneyCommon", "Pset_CivilElementCommon", "Pset_ColumnCommon", "Pset_ConcreteElementGeneral",
+			"Pset_CoveringCommon", "Pset_CurtainWallCommon", "Pset_DoorCommon", "Pset_DoorWindowGlazingType",
+			"Pset_EnvironmentalImpactIndicators", "Pset_EnvironmentalImpactValues", "Pset_MaterialCommon",
+			"Pset_MaterialConcrete", "Pset_MemberCommon", "Pset_OpeningElementCommon", "Pset_PileCommon",
+			"Pset_PlateCommon", "Pset_PrecastConcreteElementGeneral", "Pset_PrecastSlab", "Pset_RoofCommon",
+			"Pset_SlabCommon", "Pset_SpaceCommon", "Pset_StairCommon", "Pset_TransportElementCommon",
+			"Pset_TransportElementElevator", "Pset_WallCommon", "Pset_WindowCommon", "Pset_ZoneCommon" };
 	public static final String[] IDSS = { "Basic_IDM", "Kalkzandsteen_IDS" };
 	private static Dataset ds;
 	private ClassPathResource ifc4Resource, ifc4PsdResource;

@@ -50,6 +50,7 @@ public class PsetXmlResourceImporter {
 	private final static String PSD_PROP_NAME_ALIAS = EmbeddedServer.IFC4_PSD + "#nameAlias";
 	private final static String PSD_PROP_PROPERTY_DEF = EmbeddedServer.IFC4_PSD + "#propertyDef";
 	private final static String PSD_PROP_PROPERTY_TYPE = EmbeddedServer.IFC4_PSD + "#propertyType";
+	private final static String PSD_PROP_REF_TYPE = EmbeddedServer.IFC4_PSD + "#reftype";
 	private final static String PSD_PROP_VERSION = EmbeddedServer.IFC4_PSD + "#version";
 
 	private URL psetXmlUri;
@@ -193,6 +194,10 @@ public class PsetXmlResourceImporter {
 		if (pDefInput.getPropertyType().getDataType() != null) {
 			model.add(model.createStatement(propertyType, model.createProperty(PSD_PROP_DATA_TYPE),
 					model.createResource(pDefInput.getPropertyType().getDataType())));
+		}
+		if (pDefInput.getPropertyType().getReftype() != null) {
+			model.add(model.createStatement(propertyType, model.createProperty(PSD_PROP_REF_TYPE),
+					model.createResource(pDefInput.getPropertyType().getReftype())));
 		}
 		if (pDefInput.getPropertyType().getEnumItems() != null) {
 			for (String enumItem : pDefInput.getPropertyType().getEnumItems()) {
@@ -369,6 +374,12 @@ public class PsetXmlResourceImporter {
 								propertyType.setEnumItems(constantDefs);
 								break;
 							}
+						}
+						break;
+					case "TypePropertyReferenceValue":
+						String reftype = propertyTypeElement.getAttribute("reftype");
+						if (reftype != null) {
+							propertyType.setReftype(EmbeddedServer.IFC4 + "#" + reftype);
 						}
 						break;
 					case "TypePropertySingleValue":

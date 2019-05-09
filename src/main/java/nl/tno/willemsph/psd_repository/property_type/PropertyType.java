@@ -42,4 +42,13 @@ public class PropertyType {
 		this.enumItems = enumItems;
 	}
 
+	private String reftype;
+
+	public String getReftype() {
+		return this.reftype;
+	}
+
+	public void setReftype(String reftype) {
+		this.reftype = reftype;
+	}
 }
