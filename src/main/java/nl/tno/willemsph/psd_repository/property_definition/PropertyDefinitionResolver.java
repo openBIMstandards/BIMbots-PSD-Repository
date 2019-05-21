@@ -74,7 +74,9 @@ public class PropertyDefinitionResolver implements GraphQLResolver<PropertyDefin
 		queryStr.setIri("dataTypePred", EmbeddedServer.IFC4_PSD + "#dataType");
 		queryStr.setIri("enumItemPred", EmbeddedServer.IFC4_PSD + "#enumItem");
 		queryStr.setIri("reftypePred", EmbeddedServer.IFC4_PSD + "#reftype");
-		queryStr.append("SELECT ?type ?dataType ?enumItem ?reftype ");
+		queryStr.setIri("definingValuePred", EmbeddedServer.IFC4_PSD + "#definingValue");
+		queryStr.setIri("definedValuePred", EmbeddedServer.IFC4_PSD + "#definedValue");
+		queryStr.append("SELECT ?type ?dataType ?enumItem ?reftype ?definingValue ?definedValue ");
 		queryStr.append("WHERE { ");
 		queryStr.append("	GRAPH ?graph { ");
 		queryStr.append("		?subject ?propertyTypePred ?propertyType . ");
@@ -82,6 +84,8 @@ public class PropertyDefinitionResolver implements GraphQLResolver<PropertyDefin
 		queryStr.append("		OPTIONAL { ?propertyType ?dataTypePred ?dataType } . ");
 		queryStr.append("		OPTIONAL { ?propertyType ?enumItemPred ?enumItem } . ");
 		queryStr.append("		OPTIONAL { ?propertyType ?reftypePred ?reftype } . ");
+		queryStr.append("		OPTIONAL { ?propertyType ?definingValuePred ?definingValue } . ");
+		queryStr.append("		OPTIONAL { ?propertyType ?definedValuePred ?definedValue } . ");
 		queryStr.append("	} ");
 		queryStr.append("} ");
 		queryStr.append("ORDER BY ?enumItem ");
@@ -92,6 +96,8 @@ public class PropertyDefinitionResolver implements GraphQLResolver<PropertyDefin
 			String dataType = null;
 			List<String> enumItems = new ArrayList<>();
 			String reftype = null;
+			String definingValue = null;
+			String definedValue = null;
 			for (JsonNode node : responseNodes) {
 				JsonNode typeNode = node.get("type");
 				if (typeNode != null) {
@@ -109,6 +115,14 @@ public class PropertyDefinitionResolver implements GraphQLResolver<PropertyDefin
 				if (reftypeNode != null) {
 					reftype = reftypeNode.get("value").asText();
 				}
+				JsonNode definingValueNode = node.get("definingValue");
+				if (definingValueNode != null) {
+					definingValue = definingValueNode.get("value").asText();
+				}
+				JsonNode definedValueNode = node.get("definedValue");
+				if (definedValueNode != null) {
+					definedValue = definedValueNode.get("value").asText();
+				}
 
 			}
 			PropertyType propertyType = new PropertyType(type, dataType);
@@ -117,6 +131,12 @@ public class PropertyDefinitionResolver implements GraphQLResolver<PropertyDefin
 			}
 			if (reftype != null) {
 				propertyType.setReftype(reftype);
+			}
+			if (definingValue != null) {
+				propertyType.setDefiningValue(definingValue);
+			}
+			if (definedValue != null) {
+				propertyType.setDefinedValue(definedValue);
 			}
 			return propertyType;
 		}

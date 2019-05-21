@@ -35,6 +35,21 @@ PSD:AngleToFirstAxis
   rdf:type rdf:Property ;
   rdfs:label "Angle to first axis"@en ;
 .
+PSD:AssetAccountingType
+  rdf:type rdf:Property ;
+  rdfs:comment "Identifies the predefined types of risk from which the type required may be set."@en ;
+  rdfs:label "Asset accounting type"@en ;
+.
+PSD:AssetInsuranceType
+  rdf:type rdf:Property ;
+  rdfs:comment "Identifies the predefined types of insurance rating from which the type required may be set."@en ;
+  rdfs:label "Asset insurance type"@en ;
+.
+PSD:AssetTaxType
+  rdf:type rdf:Property ;
+  rdfs:comment "Identifies the predefined types of taxation group from which the type required may be set."@en ;
+  rdfs:label "Asset tax type"@en ;
+.
 PSD:AtmosphericAcidification
   rdf:type rdf:Property ;
   rdfs:label "Atmospheric acidification"@en ;
@@ -66,6 +81,11 @@ PSD:CapacityPeople
 PSD:CapacityWeight
   rdf:type rdf:Property ;
   rdfs:label "Capacity weight"@en ;
+.
+PSD:Category
+  rdf:type rdf:Property ;
+  rdfs:comment "Designation of the category into which the actors in the population belong."@en ;
+  rdfs:label "Category"@en ;
 .
 PSD:ClearDepth
   rdf:type rdf:Property ;
@@ -142,6 +162,11 @@ PSD:DurabilityRating
 PSD:EdgeDistanceToFirstAxis
   rdf:type rdf:Property ;
   rdfs:label "Edge distance to first axis"@en ;
+.
+PSD:EnergySource
+  rdf:type rdf:Property ;
+  rdfs:comment "Enumeration defining the energy source or fuel cumbusted to generate heat."@en ;
+  rdfs:label "Energy source"@en ;
 .
 PSD:EntranceLevel
   rdf:type rdf:Property ;
@@ -263,6 +288,11 @@ PSD:HazardousWastePerUnit
   rdf:type rdf:Property ;
   rdfs:label "Hazardous waste per unit"@en ;
 .
+PSD:HeatTransferSurfaceArea
+  rdf:type rdf:Property ;
+  rdfs:comment "Total heat transfer area of the vessel."@en ;
+  rdfs:label "Heat transfer surface area"@en ;
+.
 PSD:HollowCorePlugging
   rdf:type rdf:Property ;
   rdfs:label "Hollow core plugging"@en ;
@@ -327,6 +357,11 @@ PSD:IsTempered
   rdf:type rdf:Property ;
   rdfs:label "Is tempered"@en ;
 .
+PSD:IsWaterStorageHeater
+  rdf:type rdf:Property ;
+  rdfs:comment "This is used to identify if the boiler has storage capacity (TRUE). If FALSE, then there is no storage capacity built into the boiler, such as an instantaneous hot water heater."@en ;
+  rdfs:label "Is water storage heater"@en ;
+.
 PSD:IsWired
   rdf:type rdf:Property ;
   rdfs:label "Is wired"@en ;
@@ -375,6 +410,16 @@ PSD:NetPlannedArea
   rdf:type rdf:Property ;
   rdfs:label "Net planned area"@en ;
 .
+PSD:NominalEnergyConsumption
+  rdf:type rdf:Property ;
+  rdfs:comment "Nominal fuel consumption rate required to produce the total boiler heat output."@en ;
+  rdfs:label "Nominal energy consumption"@en ;
+.
+PSD:NominalPartLoadRatio
+  rdf:type rdf:Property ;
+  rdfs:comment "Allowable part load ratio range."@en ;
+  rdfs:label "Nominal part load ratio"@en ;
+.
 PSD:NominalThickness
   rdf:type rdf:Property ;
   rdfs:label "Nominal thickness"@en ;
@@ -403,6 +448,11 @@ PSD:NosingLength
   rdf:type rdf:Property ;
   rdfs:label "Nosing length"@en ;
 .
+PSD:NumberOfActors
+  rdf:type rdf:Property ;
+  rdfs:comment "The number of actors that are to be dealt with together in the population."@en ;
+  rdfs:label "Number of actors"@en ;
+.
 PSD:NumberOfDrafts
   rdf:type rdf:Property ;
   rdfs:label "Number of drafts"@en ;
@@ -423,6 +473,21 @@ PSD:OccupancyType
   rdf:type rdf:Property ;
   rdfs:label "Occupancy type"@en ;
 .
+PSD:OperatingMode
+  rdf:type rdf:Property ;
+  rdfs:comment "Identifies the operating mode of the boiler."@en ;
+  rdfs:label "Operating mode"@en ;
+.
+PSD:OutletTemperatureRange
+  rdf:type rdf:Property ;
+  rdfs:comment "Allowable outlet temperature of either the water or the steam."@en ;
+  rdfs:label "Outlet temperature range"@en ;
+.
+PSD:PartialLoadEfficiencyCurves
+  rdf:type rdf:Property ;
+  rdfs:comment "Boiler efficiency as a function of the partial load factor; E = f (partialLaodfactor)."@en ;
+  rdfs:label "Partial load efficiency curves"@en ;
+.
 PSD:PhotochemicalOzoneFormation
   rdf:type rdf:Property ;
   rdfs:label "Photochemical ozone formation"@en ;
@@ -442,6 +507,11 @@ PSD:PitchAngle
 PSD:Porosity
   rdf:type rdf:Property ;
   rdfs:label "Porosity"@en ;
+.
+PSD:PressureRating
+  rdf:type rdf:Property ;
+  rdfs:comment "Nominal pressure rating of the boiler as rated by the agency having jurisdiction."@en ;
+  rdfs:label "Pressure rating"@en ;
 .
 PSD:PropertyDef
   rdf:type owl:Class ;
@@ -597,6 +667,11 @@ PSD:ShadingCoefficient
 PSD:Shortening
   rdf:type rdf:Property ;
   rdfs:label "Shortening"@en ;
+.
+PSD:SkillLevel
+  rdf:type rdf:Property ;
+  rdfs:comment "Skill level exhibited by the actor and which indicates an extent of their capability to perform actions on the artefacts upon which they can act."@en ;
+  rdfs:label "Skill level"@en ;
 .
 PSD:Slope
   rdf:type rdf:Property ;
@@ -908,6 +983,16 @@ PSD:WaterImpermeability
   rdf:type rdf:Property ;
   rdfs:label "Water impermeability"@en ;
 .
+PSD:WaterInletTemperatureRange
+  rdf:type rdf:Property ;
+  rdfs:comment "Allowable water inlet temperature range."@en ;
+  rdfs:label "Water inlet temperature range"@en ;
+.
+PSD:WaterStorageCapacity
+  rdf:type rdf:Property ;
+  rdfs:comment "Water storage capacity."@en ;
+  rdfs:label "Water storage capacity"@en ;
+.
 PSD:WaterTightnessRating
   rdf:type rdf:Property ;
   rdfs:label "Water tightness rating"@en ;
@@ -951,9 +1036,8 @@ PSD:applicableTypeValue
   rdfs:range xsd:string ;
 .
 PSD:dataType
-  rdf:type owl:DatatypeProperty ;
+  rdf:type owl:ObjectProperty ;
   rdfs:label "Data  type"@en ;
-  rdfs:range IFC4:IfcValue ;
 .
 PSD:definedValue
   rdf:type owl:ObjectProperty ;

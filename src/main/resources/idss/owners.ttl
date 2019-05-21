@@ -3,147 +3,261 @@
 @prefix Pset_DoorWindowGlazingType: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_DoorWindowGlazingType#> .
 @prefix owl:   <http://www.w3.org/2002/07/owl#> .
 @prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
-@prefix Pset_BeamCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_BeamCommon#> .
 @prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix Pset_CurtainWallCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_CurtainWallCommon#> .
+@prefix Pset_ActionRequest: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_ActionRequest#> .
+@prefix Pset_ActorCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_ActorCommon#> .
+@prefix Pset_Asset: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_Asset#> .
+@prefix Pset_BeamCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_BeamCommon#> .
+@prefix Pset_BoilerTypeCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_BoilerTypeCommon#> .
+@prefix Pset_BuildingUse: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_BuildingUse#> .
 @prefix Basic_IDM: <http://openbimstandards.org/information-delivery-specification/Basic_IDM#> .
-@prefix Pset_PileCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_PileCommon#> .
+@prefix Pset_CurtainWallCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_CurtainWallCommon#> .
 @prefix Pset_StairCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_StairCommon#> .
+@prefix Pset_PileCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_PileCommon#> .
 @prefix Pset_CoveringCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_CoveringCommon#> .
 @prefix Pset_PrecastSlab: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_PrecastSlab#> .
-@prefix Pset_CivilElementCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_CivilElementCommon#> .
 @prefix Pset_DoorCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_DoorCommon#> .
+@prefix Pset_CivilElementCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_CivilElementCommon#> .
 @prefix Pset_MaterialCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_MaterialCommon#> .
 @prefix Pset_ZoneCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_ZoneCommon#> .
 @prefix Pset_ChimneyCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_ChimneyCommon#> .
 @prefix Pset_BuildingStoreyCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_BuildingStoreyCommon#> .
 @prefix Pset_TransportElementCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_TransportElementCommon#> .
-@prefix Pset_PrecastConcreteElementGeneral: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_PrecastConcreteElementGeneral#> .
 @prefix Pset_WindowCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_WindowCommon#> .
+@prefix Pset_PrecastConcreteElementGeneral: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_PrecastConcreteElementGeneral#> .
 @prefix Pset_BuildingElementProxyCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_BuildingElementProxyCommon#> .
-@prefix Pset_ColumnCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_ColumnCommon#> .
 @prefix Pset_TransportElementElevator: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_TransportElementElevator#> .
+@prefix Pset_ColumnCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_ColumnCommon#> .
+@prefix Pset_CompressorTypeCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_CompressorTypeCommon#> .
+@prefix Pset_CondenserTypeCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_CondenserTypeCommon#> .
+@prefix Pset_Condition: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_Condition#> .
+@prefix Pset_ControllerTypeCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_ControllerTypeCommon#> .
+@prefix Pset_ElectricApplianceTypeCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_ElectricApplianceTypeCommon#> .
+@prefix Pset_ElementComponentCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_ElementComponentCommon#> .
+@prefix Pset_EngineTypeCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_EngineTypeCommon#> .
+@prefix Pset_EvaporatorTypeCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_EvaporatorTypeCommon#> .
+@prefix Pset_FanTypeCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_FanTypeCommon#> .
+@prefix Pset_FilterTypeCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_FilterTypeCommon#> .
+@prefix Pset_FireSuppressionTerminalTypeCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_FireSuppressionTerminalTypeCommon#> .
+@prefix Pset_FlowInstrumentTypeCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_FlowInstrumentTypeCommon#> .
+@prefix Pset_FlowMeterTypeCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_FlowMeterTypeCommon#> .
+@prefix Pset_FootingCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_FootingCommon#> .
+@prefix Pset_FurnitureTypeCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_FurnitureTypeCommon#> .
+@prefix Pset_HeatExchangerTypeCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_HeatExchangerTypeCommon#> .
+@prefix Pset_HumidifierTypeCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_HumidifierTypeCommon#> .
+@prefix Pset_LampTypeCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_LampTypeCommon#> .
+@prefix Pset_MaterialEnergy: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_MaterialEnergy#> .
 @prefix Pset_WallCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_WallCommon#> .
-@prefix Pset_BuildingCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_BuildingCommon#> .
 @prefix Pset_OpeningElementCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_OpeningElementCommon#> .
+@prefix Pset_BuildingCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_BuildingCommon#> .
 @prefix users: <http://www.infrabim.nl/bimbots-psd-repository/users#> .
 @prefix Pset_SpaceCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_SpaceCommon#> .
 @prefix Pset_MaterialConcrete: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_MaterialConcrete#> .
 @prefix Pset_EnvironmentalImpactValues: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_EnvironmentalImpactValues#> .
 @prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix Pset_RoofCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_RoofCommon#> .
 @prefix Pset_SlabCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_SlabCommon#> .
-@prefix Pset_BuildingSystemCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_BuildingSystemCommon#> .
-@prefix Pset_ConcreteElementGeneral: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_ConcreteElementGeneral#> .
+@prefix Pset_RoofCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_RoofCommon#> .
 @prefix Pset_EnvironmentalImpactIndicators: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_EnvironmentalImpactIndicators#> .
+@prefix Pset_ConcreteElementGeneral: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_ConcreteElementGeneral#> .
+@prefix Pset_BuildingSystemCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_BuildingSystemCommon#> .
 @prefix Pset_MemberCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_MemberCommon#> .
 
-Pset_TransportElementCommon:Pset_TransportElementCommon
+Pset_ActionRequest:Pset_ActionRequest
+        :owner  users:IFC4 .
+		
+Pset_ActorCommon:Pset_ActorCommon
+        :owner  users:IFC4 .
+		
+Pset_Asset:Pset_Asset
+        :owner  users:IFC4 .
+		
+Pset_BeamCommon:Pset_BeamCommon
         :owner  users:IFC4 .
 
-Pset_EnvironmentalImpactValues:Pset_EnvironmentalImpactValues
-        :owner  users:IFC4 .
-
-Pset_WindowCommon:Pset_WindowCommon
-        :owner  users:IFC4 .
-
-Pset_SlabCommon:Pset_SlabCommon
-        :owner  users:IFC4 .
-
-Pset_WallCommon:Pset_WallCommon
-        :owner  users:IFC4 .
-
-Pset_MaterialConcrete:Pset_MaterialConcrete
-        :owner  users:IFC4 .
-
-Pset_EnvironmentalImpactIndicators:Pset_EnvironmentalImpactIndicators
-        :owner  users:IFC4 .
-
-Pset_SpaceCommon:Pset_SpaceCommon
-        :owner  users:IFC4 .
-
-Pset_DoorWindowGlazingType:Pset_DoorWindowGlazingType
-        :owner  users:IFC4 .
-
+Pset_BoilerTypeCommon:Pset_BoilerTypeCommon
+		:owner users:IFC4 .
+		
 Pset_BuildingStoreyCommon:Pset_BuildingStoreyCommon
         :owner  users:IFC4 .
-
-Pset_RoofCommon:Pset_RoofCommon
+		
+Pset_BuildingUse:Pset_BuildingUse
         :owner  users:IFC4 .
 
-Pset_ZoneCommon:Pset_ZoneCommon
-        :owner  users:IFC4 .
-
-Pset_MaterialCommon:Pset_MaterialCommon
-        :owner  users:IFC4 .
-
-Pset_BuildingSystemCommon:Pset_BuildingSystemCommon
-        :owner  users:IFC4 .
-
-Pset_DoorCommon:Pset_DoorCommon
-        :owner  users:IFC4 .
-
-<http://www.infrabim.nl/bimbots-psd-repository/owners>
-        a                owl:Ontology ;
-        owl:imports      <http://www.infrabim.nl/bimbots-psd-repository/ifc-psets> , <http://www.infrabim.nl/bimbots-psd-repository/users> ;
-        owl:versionInfo  "Created with TopBraid Composer" .
-
-Pset_StairCommon:Pset_StairCommon
-        :owner  users:IFC4 .
-
-Pset_ConcreteElementGeneral:Pset_ConcreteElementGeneral
-        :owner  users:IFC4 .
-
-Pset_CivilElementCommon:Pset_CivilElementCommon
-        :owner  users:IFC4 .
-
-:owner  a            owl:FunctionalProperty , owl:ObjectProperty ;
+:owner  a            owl:ObjectProperty , owl:FunctionalProperty ;
         rdfs:domain  <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD#PropertySetDef> ;
         rdfs:range   users:User .
 
-<http://openbimstandards.org/information-delivery-specification/my_ids2#my_ids2>
-        :owner  users:_82b5c1bf-da6b-4da3-b594-bf0d361f1f77 .
-
-Pset_ChimneyCommon:Pset_ChimneyCommon
-        :owner  users:IFC4 .
-
-Pset_PrecastConcreteElementGeneral:Pset_PrecastConcreteElementGeneral
-        :owner  users:IFC4 .
-
-Pset_CurtainWallCommon:Pset_CurtainWallCommon
-        :owner  users:IFC4 .
-
-Pset_PrecastSlab:Pset_PrecastSlab
-        :owner  users:IFC4 .
-
-Pset_BuildingCommon:Pset_BuildingCommon
-        :owner  users:IFC4 .
-
-Pset_OpeningElementCommon:Pset_OpeningElementCommon
-        :owner  users:IFC4 .
-
-Pset_BuildingElementProxyCommon:Pset_BuildingElementProxyCommon
-        :owner  users:IFC4 .
-
-Basic_IDM:Basic_IDM  :owner  users:_82b5c1bf-da6b-4da3-b594-bf0d361f1f77 .
-
-Pset_TransportElementElevator:Pset_TransportElementElevator
-        :owner  users:IFC4 .
-
-Pset_MemberCommon:Pset_MemberCommon
+Pset_MaterialConcrete:Pset_MaterialConcrete
         :owner  users:IFC4 .
 
 Pset_PlateCommon:Pset_PlateCommon
         :owner  users:IFC4 .
 
-Pset_BeamCommon:Pset_BeamCommon
+Pset_CurtainWallCommon:Pset_CurtainWallCommon
         :owner  users:IFC4 .
 
-Pset_ColumnCommon:Pset_ColumnCommon
+Pset_PrecastConcreteElementGeneral:Pset_PrecastConcreteElementGeneral
+        :owner  users:IFC4 .
+
+<http://example.com/test_ids_9#test_ids_9>
+        :owner  users:_82b5c1bf-da6b-4da3-b594-bf0d361f1f77 .
+
+<http://www.infrabim.nl/bimbots-psd-repository/owners>
+        a                owl:Ontology ;
+        owl:imports      <http://www.infrabim.nl/bimbots-psd-repository/users> , <http://www.infrabim.nl/bimbots-psd-repository/ifc-psets> ;
+        owl:versionInfo  "Created with TopBraid Composer" .
+
+Pset_SpaceCommon:Pset_SpaceCommon
+        :owner  users:IFC4 .
+
+Pset_WindowCommon:Pset_WindowCommon
+        :owner  users:IFC4 .
+
+Pset_MaterialCommon:Pset_MaterialCommon
+        :owner  users:IFC4 .
+
+Pset_SlabCommon:Pset_SlabCommon
+        :owner  users:IFC4 .
+
+Pset_ConcreteElementGeneral:Pset_ConcreteElementGeneral
+        :owner  users:IFC4 .
+
+Pset_EnvironmentalImpactValues:Pset_EnvironmentalImpactValues
+        :owner  users:IFC4 .
+
+Pset_BuildingCommon:Pset_BuildingCommon
+        :owner  users:IFC4 .
+
+Pset_MemberCommon:Pset_MemberCommon
+        :owner  users:IFC4 .
+
+<http://openbimstandards.org/information-delivery-specification/yet_another_ids#yet_another_ids>
+        :owner  users:_82b5c1bf-da6b-4da3-b594-bf0d361f1f77 .
+
+Pset_ChimneyCommon:Pset_ChimneyCommon
+        :owner  users:IFC4 .
+
+Pset_OpeningElementCommon:Pset_OpeningElementCommon
+        :owner  users:IFC4 .
+
+Pset_WallCommon:Pset_WallCommon
         :owner  users:IFC4 .
 
 Pset_PileCommon:Pset_PileCommon
         :owner  users:IFC4 .
 
+<http://openbimstandards.org/information-delivery-specification/test_ids_11#test_ids_11>
+        :owner  users:_82b5c1bf-da6b-4da3-b594-bf0d361f1f77 .
+
+<http://openbimstandards.org/information-delivery-specification/my_ids#my_ids>
+        :owner  users:_82b5c1bf-da6b-4da3-b594-bf0d361f1f77 .
+
+Pset_PrecastSlab:Pset_PrecastSlab
+        :owner  users:IFC4 .
+
+Pset_StairCommon:Pset_StairCommon
+        :owner  users:IFC4 .
+
+<http://openbimstandards.org/pset_repository/My_PSET#My_PSET>
+        :owner  users:_82b5c1bf-da6b-4da3-b594-bf0d361f1f77 .
+
+Pset_EnvironmentalImpactIndicators:Pset_EnvironmentalImpactIndicators
+        :owner  users:IFC4 .
+
+<http://openbimstandards.org/information-delivery-specification/test_ids_10#test_ids_10>
+        :owner  users:_82b5c1bf-da6b-4da3-b594-bf0d361f1f77 .
+
+Basic_IDM:Basic_IDM  :owner  users:_82b5c1bf-da6b-4da3-b594-bf0d361f1f77 .
+
+Pset_DoorWindowGlazingType:Pset_DoorWindowGlazingType
+        :owner  users:IFC4 .
+
+Pset_BuildingElementProxyCommon:Pset_BuildingElementProxyCommon
+        :owner  users:IFC4 .
+
+Pset_ColumnCommon:Pset_ColumnCommon
+        :owner  users:IFC4 .
+		
+Pset_CompressorTypeCommon:Pset_CompressorTypeCommon
+		:owner users:IFC4 .
+		
+Pset_CondenserTypeCommon:Pset_CondenserTypeCommon
+		:owner	users:IFC4 .
+		
+Pset_Condition:Pset_Condition
+		:owner users:IFC4 .
+
+Pset_ControllerTypeCommon:Pset_ControllerTypeCommon
+		:owner users:IFC4 .
+		
+Pset_ElectricApplianceTypeCommon:Pset_ElectricApplianceTypeCommon
+		:owner users:IFC4 .
+
+Pset_ElementComponentCommon:Pset_ElementComponentCommon
+		:owner users:IFC4 .
+		
+Pset_EngineTypeCommon:Pset_EngineTypeCommon
+		:owner users:IFC4 .
+
+Pset_EvaporatorTypeCommon:Pset_EvaporatorTypeCommon
+		:owner users:IFC4 .
+		
+Pset_FanTypeCommon:Pset_FanTypeCommon
+		:owner users:IFC4 .
+
+Pset_FilterTypeCommon:Pset_FilterTypeCommon
+		:owner users:IFC4 .
+
+Pset_FireSuppressionTerminalTypeCommon:Pset_FireSuppressionTerminalTypeCommon
+		:owner users:IFC4 .
+
+Pset_FlowInstrumentTypeCommon:Pset_FlowInstrumentTypeCommon
+		:owner users:IFC4 .
+
+Pset_FlowMeterTypeCommon:Pset_FlowMeterTypeCommon
+		:owner users:IFC4 .
+
+Pset_FootingCommon:Pset_FootingCommon
+		:owner users:IFC4 .
+
+Pset_HeatExchangerTypeCommon:Pset_HeatExchangerTypeCommon
+		:owner users:IFC4 .
+
+Pset_HumidifierTypeCommon:Pset_HumidifierTypeCommon
+		:owner users:IFC4 .
+
+Pset_CivilElementCommon:Pset_CivilElementCommon
+        :owner  users:IFC4 .
+
+Pset_FurnitureTypeCommon:Pset_FurnitureTypeCommon
+        :owner  users:IFC4 .
+
+Pset_LampTypeCommon:Pset_LampTypeCommon
+        :owner  users:IFC4 .
+
+Pset_MaterialEnergy:Pset_MaterialEnergy
+        :owner  users:IFC4 .
+
+Pset_DoorCommon:Pset_DoorCommon
+        :owner  users:IFC4 .
+
+Pset_BuildingSystemCommon:Pset_BuildingSystemCommon
+        :owner  users:IFC4 .
+
 Pset_CoveringCommon:Pset_CoveringCommon
+        :owner  users:IFC4 .
+
+Pset_ZoneCommon:Pset_ZoneCommon
+        :owner  users:IFC4 .
+
+Pset_TransportElementElevator:Pset_TransportElementElevator
+        :owner  users:IFC4 .
+
+Pset_RoofCommon:Pset_RoofCommon
+        :owner  users:IFC4 .
+
+<http://openbimstandards.org/information-delivery-specification/test_ids_7#test_ids_7>
+        :owner  users:_82b5c1bf-da6b-4da3-b594-bf0d361f1f77 .
+
+Pset_TransportElementCommon:Pset_TransportElementCommon
         :owner  users:IFC4 .

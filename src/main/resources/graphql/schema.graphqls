@@ -8,6 +8,8 @@ type PropertyType {
 	dataType: String
 	enumItems: [String]
 	reftype: String
+	definingValue: String
+	definedValue: String
 }
 
 type PropertyDefinition {
@@ -107,6 +109,8 @@ input PropertyTypeInput {
 	dataType: String
 	enumItems: [String]
 	reftype: String
+	definingValue: String
+	definedValue: String
 }
 
 input PropertyDefinitionInput {

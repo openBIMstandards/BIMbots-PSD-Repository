@@ -51,4 +51,24 @@ public class PropertyType {
 	public void setReftype(String reftype) {
 		this.reftype = reftype;
 	}
+
+	private String definingValue;
+
+	public String getDefiningValue() {
+		return this.definingValue;
+	}
+
+	public void setDefiningValue(String definingValue) {
+		this.definingValue = definingValue;
+	}
+
+	private String definedValue;
+
+	public String getDefinedValue() {
+		return this.definedValue;
+	}
+
+	public void setDefinedValue(String definedValue) {
+		this.definedValue = definedValue;
+	}
 }

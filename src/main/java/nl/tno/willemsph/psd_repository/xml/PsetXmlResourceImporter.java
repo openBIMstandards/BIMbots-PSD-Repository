@@ -41,6 +41,8 @@ public class PsetXmlResourceImporter {
 	private final static String PSD_PROP_APPLICABLE_CLASS = EmbeddedServer.IFC4_PSD + "#applicableClass";
 	private final static String PSD_PROP_APPLICABLE_TYPE_VALUE = EmbeddedServer.IFC4_PSD + "#applicableTypeValue";
 	private final static String PSD_PROP_DATA_TYPE = EmbeddedServer.IFC4_PSD + "#dataType";
+	private final static String PSD_PROP_DEFINED_VALUE = EmbeddedServer.IFC4_PSD + "#definedValue";
+	private final static String PSD_PROP_DEFINING_VALUE = EmbeddedServer.IFC4_PSD + "#definingValue";
 	private final static String PSD_PROP_DEFINITION = EmbeddedServer.IFC4_PSD + "#definition";
 	private final static String PSD_PROP_DEFINITION_ALIAS = EmbeddedServer.IFC4_PSD + "#definitionAlias";
 	private final static String PSD_PROP_ENUM_ITEM = EmbeddedServer.IFC4_PSD + "#enumItem";
@@ -198,6 +200,14 @@ public class PsetXmlResourceImporter {
 		if (pDefInput.getPropertyType().getReftype() != null) {
 			model.add(model.createStatement(propertyType, model.createProperty(PSD_PROP_REF_TYPE),
 					model.createResource(pDefInput.getPropertyType().getReftype())));
+		}
+		if (pDefInput.getPropertyType().getDefiningValue() != null) {
+			model.add(model.createStatement(propertyType, model.createProperty(PSD_PROP_DEFINING_VALUE),
+					model.createResource(pDefInput.getPropertyType().getDefiningValue())));
+		}
+		if (pDefInput.getPropertyType().getDefinedValue() != null) {
+			model.add(model.createStatement(propertyType, model.createProperty(PSD_PROP_DEFINED_VALUE),
+					model.createResource(pDefInput.getPropertyType().getDefinedValue())));
 		}
 		if (pDefInput.getPropertyType().getEnumItems() != null) {
 			for (String enumItem : pDefInput.getPropertyType().getEnumItems()) {
@@ -376,6 +386,33 @@ public class PsetXmlResourceImporter {
 							}
 						}
 						break;
+					case "TypePropertyBoundedValue":
+						List<Element> typePropertyBoundedValue = getChildElements(propertyTypeElement);
+						for (Element typeElement : typePropertyBoundedValue) {
+							switch (typeElement.getTagName()) {
+							case "DataType":
+								String typeAttribute = typeElement.getAttribute("type");
+								if (typeAttribute != null && !typeAttribute.isEmpty()) {
+									propertyType.setDataType(EmbeddedServer.IFC4 + '#' + typeAttribute);
+								}
+								break;
+							}
+						}
+						break;
+					case "TypePropertyListValue":
+						List<Element> typePropertyListValueElements = getChildElements(propertyTypeElement);
+						for (Element typeElement : typePropertyListValueElements) {
+							switch (typeElement.getTagName()) {
+							case "ListValue":
+								List<Element> listValueList = getChildElements(typeElement);
+								if (listValueList.size() == 1) {
+									propertyType.setDataType(
+											EmbeddedServer.IFC4 + '#' + listValueList.get(0).getAttribute("type"));
+								}
+								break;
+							}
+						}
+						break;
 					case "TypePropertyReferenceValue":
 						String reftype = propertyTypeElement.getAttribute("reftype");
 						if (reftype != null) {
@@ -390,6 +427,29 @@ public class PsetXmlResourceImporter {
 								String typeAttribute = typeElement.getAttribute("type");
 								if (typeAttribute != null && !typeAttribute.isEmpty()) {
 									propertyType.setDataType(EmbeddedServer.IFC4 + '#' + typeAttribute);
+								}
+								break;
+							}
+						}
+						break;
+					case "TypePropertyTableValue":
+						List<Element> typePropertyTableValue = getChildElements(propertyTypeElement);
+						for (Element typeElement : typePropertyTableValue) {
+							switch (typeElement.getTagName()) {
+							case "Expression":
+								break;
+							case "DefiningValue":
+								List<Element> definingValueList = getChildElements(typeElement);
+								if (definingValueList.size() == 1) {
+									propertyType.setDefiningValue(
+											EmbeddedServer.IFC4 + '#' + definingValueList.get(0).getAttribute("type"));
+								}
+								break;
+							case "DefinedValue":
+								List<Element> definedValueList = getChildElements(typeElement);
+								if (definedValueList.size() == 1) {
+									propertyType.setDefinedValue(
+											EmbeddedServer.IFC4 + '#' + definedValueList.get(0).getAttribute("type"));
 								}
 								break;
 							}
