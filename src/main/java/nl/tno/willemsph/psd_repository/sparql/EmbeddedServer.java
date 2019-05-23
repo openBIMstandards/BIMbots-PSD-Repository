@@ -63,10 +63,10 @@ public class EmbeddedServer {
 			"Pset_FlowInstrumentTypeCommon", "Pset_FlowMeterTypeCommon", "Pset_FootingCommon",
 			"Pset_FurnitureTypeCommon", "Pset_HeatExchangerTypeCommon", "Pset_HumidifierTypeCommon",
 			"Pset_LampTypeCommon", "Pset_MaterialCommon", "Pset_MaterialConcrete", "Pset_MaterialEnergy",
-			"Pset_MemberCommon", "Pset_OpeningElementCommon", "Pset_PileCommon", "Pset_PlateCommon",
-			"Pset_PrecastConcreteElementGeneral", "Pset_PrecastSlab", "Pset_RoofCommon", "Pset_SlabCommon",
-			"Pset_SpaceCommon", "Pset_StairCommon", "Pset_TransportElementCommon", "Pset_TransportElementElevator",
-			"Pset_WallCommon", "Pset_WindowCommon", "Pset_ZoneCommon" };
+			"Pset_MaterialSteel", "Pset_MemberCommon", "Pset_OpeningElementCommon", "Pset_OutletTypeCommon",
+			"Pset_PileCommon", "Pset_PlateCommon", "Pset_PrecastConcreteElementGeneral", "Pset_PrecastSlab",
+			"Pset_RoofCommon", "Pset_SlabCommon", "Pset_SpaceCommon", "Pset_StairCommon", "Pset_TransportElementCommon",
+			"Pset_TransportElementElevator", "Pset_WallCommon", "Pset_WindowCommon", "Pset_ZoneCommon" };
 	public static final String[] IDSS = { "Basic_IDM", "Kalkzandsteen_IDS" };
 	private static Dataset ds;
 	private ClassPathResource ifc4Resource, ifc4PsdResource;
