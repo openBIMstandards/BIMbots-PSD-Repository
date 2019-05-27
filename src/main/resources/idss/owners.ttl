@@ -47,6 +47,16 @@
 @prefix Pset_HumidifierTypeCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_HumidifierTypeCommon#> .
 @prefix Pset_LampTypeCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_LampTypeCommon#> .
 @prefix Pset_MaterialEnergy: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_MaterialEnergy#> .
+@prefix Pset_MaterialSteel: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_MaterialSteel#> .
+@prefix Pset_OutletTypeCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_OutletTypeCommon#> .
+@prefix Pset_PipeFittingTypeCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_PipeFittingTypeCommon#> .
+@prefix Pset_RailingCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_RailingCommon#> .
+@prefix Pset_RampCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_RampCommon#> .
+@prefix Pset_RampFlightCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_RampFlightCommon#> .
+@prefix Pset_SanitaryTerminalTypeCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_SanitaryTerminalTypeCommon#> .
+@prefix Pset_SensorTypeCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_SensorTypeCommon#> .
+@prefix Pset_SiteCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_SiteCommon#> .
+@prefix Pset_SolarDeviceTypeCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_SolarDeviceTypeCommon#> .
 @prefix Pset_WallCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_WallCommon#> .
 @prefix Pset_OpeningElementCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_OpeningElementCommon#> .
 @prefix Pset_BuildingCommon: <http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD/Pset_BuildingCommon#> .
@@ -238,7 +248,37 @@ Pset_LampTypeCommon:Pset_LampTypeCommon
 Pset_MaterialEnergy:Pset_MaterialEnergy
         :owner  users:IFC4 .
 
+Pset_MaterialSteel:Pset_MaterialSteel
+        :owner  users:IFC4 .
+		
+Pset_OutletTypeCommon:Pset_OutletTypeCommon
+        :owner  users:IFC4 .
+
+Pset_PipeFittingTypeCommon:Pset_PipeFittingTypeCommon
+        :owner  users:IFC4 .
+		
+Pset_RailingCommon:Pset_RailingCommon
+        :owner  users:IFC4 .
+
+Pset_RampCommon:Pset_RampCommon
+        :owner  users:IFC4 .
+
+Pset_RampFlightCommon:Pset_RampFlightCommon
+        :owner  users:IFC4 .
+
+Pset_SanitaryTerminalTypeCommon:Pset_SanitaryTerminalTypeCommon
+        :owner  users:IFC4 .
+
+Pset_SensorTypeCommon:Pset_SensorTypeCommon
+        :owner  users:IFC4 .
+
+Pset_SiteCommon:Pset_SiteCommon
+        :owner  users:IFC4 .
+
 Pset_DoorCommon:Pset_DoorCommon
+        :owner  users:IFC4 .
+		
+Pset_SolarDeviceTypeCommon:Pset_SolarDeviceTypeCommon
         :owner  users:IFC4 .
 
 Pset_BuildingSystemCommon:Pset_BuildingSystemCommon
