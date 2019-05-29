@@ -51,24 +51,26 @@ public class EmbeddedServer {
 	public static final String IDS = "http://openbimstandards.org/information-delivery-specification";
 	public static final String USERS = "http://www.infrabim.nl/bimbots-psd-repository/users";
 	public static final String OWNERS = "http://www.infrabim.nl/bimbots-psd-repository/owners";
-	public static final String[] PSETS = { "Pset_ActionRequest", "Pset_ActorCommon", "Pset_Asset", "Pset_BeamCommon",
-			"Pset_BoilerTypeCommon", "Pset_BuildingCommon", "Pset_BuildingElementProxyCommon",
-			"Pset_BuildingStoreyCommon", "Pset_BuildingSystemCommon", "Pset_BuildingUse", "Pset_ChimneyCommon",
-			"Pset_CivilElementCommon", "Pset_ColumnCommon", "Pset_CompressorTypeCommon", "Pset_ConcreteElementGeneral",
-			"Pset_CondenserTypeCommon", "Pset_Condition", "Pset_ControllerTypeCommon", "Pset_CoveringCommon",
-			"Pset_CurtainWallCommon", "Pset_DoorCommon", "Pset_DoorWindowGlazingType",
-			"Pset_ElectricApplianceTypeCommon", "Pset_ElementComponentCommon", "Pset_EngineTypeCommon",
-			"Pset_EnvironmentalImpactIndicators", "Pset_EnvironmentalImpactValues", "Pset_EvaporatorTypeCommon",
-			"Pset_FanTypeCommon", "Pset_FilterTypeCommon", "Pset_FireSuppressionTerminalTypeCommon",
-			"Pset_FlowInstrumentTypeCommon", "Pset_FlowMeterTypeCommon", "Pset_FootingCommon",
-			"Pset_FurnitureTypeCommon", "Pset_HeatExchangerTypeCommon", "Pset_HumidifierTypeCommon",
-			"Pset_LampTypeCommon", "Pset_MaterialCommon", "Pset_MaterialConcrete", "Pset_MaterialEnergy",
-			"Pset_MaterialSteel", "Pset_MemberCommon", "Pset_OpeningElementCommon", "Pset_OutletTypeCommon",
-			"Pset_PileCommon", "Pset_PipeFittingTypeCommon", "Pset_PlateCommon", "Pset_PrecastConcreteElementGeneral",
-			"Pset_PrecastSlab", "Pset_RailingCommon", "Pset_RampCommon", "Pset_RampFlightCommon", "Pset_RoofCommon",
-			"Pset_SanitaryTerminalTypeCommon", "Pset_SensorTypeCommon", "Pset_SiteCommon", "Pset_SlabCommon",
-			"Pset_SolarDeviceTypeCommon", "Pset_SpaceCommon", "Pset_StairCommon", "Pset_TransportElementCommon",
-			"Pset_TransportElementElevator", "Pset_WallCommon", "Pset_WindowCommon", "Pset_ZoneCommon" };
+	public static final String[] PSETS = { "Pset_ActionRequest", "Pset_ActorCommon", "Pset_ActuatorTypeCommon",
+			"Pset_AirTerminalTypeCommon", "Pset_Asset", "Pset_BeamCommon", "Pset_BoilerTypeCommon",
+			"Pset_BuildingCommon", "Pset_BuildingElementProxyCommon", "Pset_BuildingStoreyCommon",
+			"Pset_BuildingSystemCommon", "Pset_BuildingUse", "Pset_ChimneyCommon", "Pset_CivilElementCommon",
+			"Pset_ColumnCommon", "Pset_CompressorTypeCommon", "Pset_ConcreteElementGeneral", "Pset_CondenserTypeCommon",
+			"Pset_Condition", "Pset_ControllerTypeCommon", "Pset_CoveringCommon", "Pset_CurtainWallCommon",
+			"Pset_DoorCommon", "Pset_DoorWindowGlazingType", "Pset_ElectricApplianceTypeCommon",
+			"Pset_ElementComponentCommon", "Pset_EngineTypeCommon", "Pset_EnvironmentalImpactIndicators",
+			"Pset_EnvironmentalImpactValues", "Pset_EvaporatorTypeCommon", "Pset_FanTypeCommon",
+			"Pset_FilterTypeCommon", "Pset_FireSuppressionTerminalTypeCommon", "Pset_FlowInstrumentTypeCommon",
+			"Pset_FlowMeterTypeCommon", "Pset_FootingCommon", "Pset_FurnitureTypeCommon",
+			"Pset_HeatExchangerTypeCommon", "Pset_HumidifierTypeCommon", "Pset_LampTypeCommon", "Pset_MaterialCommon",
+			"Pset_MaterialConcrete", "Pset_MaterialEnergy", "Pset_MaterialSteel", "Pset_MemberCommon",
+			"Pset_OpeningElementCommon", "Pset_OutletTypeCommon", "Pset_PileCommon", "Pset_PipeFittingTypeCommon",
+			"Pset_PlateCommon", "Pset_PrecastConcreteElementGeneral", "Pset_PrecastSlab", "Pset_RailingCommon",
+			"Pset_RampCommon", "Pset_RampFlightCommon", "Pset_RoofCommon", "Pset_SanitaryTerminalTypeCommon",
+			"Pset_SensorTypeCommon", "Pset_SiteCommon", "Pset_SlabCommon", "Pset_SolarDeviceTypeCommon",
+			"Pset_SpaceCommon", "Pset_StairCommon", "Pset_TransportElementCommon", "Pset_TransportElementElevator",
+			"Pset_WallCommon", "Pset_WasteTerminalTypeCommon", "Pset_WindowCommon", "Pset_WorkControlCommon",
+			"Pset_ZoneCommon" };
 	public static final String[] IDSS = { "Basic_IDM", "Kalkzandsteen_IDS" };
 	private static Dataset ds;
 	private ClassPathResource ifc4Resource, ifc4PsdResource;

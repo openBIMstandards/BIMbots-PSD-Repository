@@ -2,6 +2,7 @@ package nl.tno.willemsph.psd_repository;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,9 +24,12 @@ import nl.tno.willemsph.psd_repository.common.UserRepository;
 import nl.tno.willemsph.psd_repository.information_delivery_specification.ExportFormat;
 import nl.tno.willemsph.psd_repository.information_delivery_specification.InformationDeliverySpecification;
 import nl.tno.willemsph.psd_repository.information_delivery_specification.InformationDeliverySpecificationRepository;
+import nl.tno.willemsph.psd_repository.information_delivery_specification.InformationDeliverySpecificationResolver;
+import nl.tno.willemsph.psd_repository.information_delivery_specification.RequiredPset;
 import nl.tno.willemsph.psd_repository.property_set_definition.PropertySetDefinition;
 import nl.tno.willemsph.psd_repository.property_set_definition.PropertySetDefinitionInput;
 import nl.tno.willemsph.psd_repository.property_set_definition.PropertySetDefinitionRepository;
+import nl.tno.willemsph.psd_repository.property_set_definition.PropertySetDefinitionResolver;
 import nl.tno.willemsph.psd_repository.sparql.AwsSendEmail;
 
 @Component
@@ -247,10 +251,34 @@ public class Mutation implements GraphQLMutationResolver {
 	 * @param propId Id of property definition
 	 * @return Mutated information delivery specification
 	 * @throws IOException
+	 * @throws URISyntaxException
 	 */
 	public InformationDeliverySpecification addProp2Pset2Ids(String idsId, String psetId, String propId)
-			throws IOException {
-		return informationDeliverySpecificationRepository.addProp2Pset(idsId, psetId, propId);
+			throws IOException, URISyntaxException {
+		InformationDeliverySpecification ids = informationDeliverySpecificationRepository
+				.getOneInformationDeliverySpecification(idsId);
+		InformationDeliverySpecificationResolver idsRslvr = new InformationDeliverySpecificationResolver(
+				userRepository);
+		List<RequiredPset> reqPsets = idsRslvr.getReqPsets(ids);
+		boolean reqPsetFound = false;
+		for (RequiredPset reqPset : reqPsets) {
+			PropertySetDefinition pset = propertySetDefinitionRepository
+					.getOnePropertySetDefinition(reqPset.getPropertySetName());
+			PropertySetDefinitionResolver psetRslvr = new PropertySetDefinitionResolver(userRepository);
+			String id = psetRslvr.getId(pset);
+			if (!psetId.equals(id)) {
+				continue;
+			}
+			reqPsetFound = true;
+			break;
+		}
+		if (!reqPsetFound) {
+			List<String> propIds = new ArrayList<>();
+			propIds.add(propId);
+			return informationDeliverySpecificationRepository.addPset2Ids(idsId, psetId, Optional.of(propIds));
+		} else {
+			return informationDeliverySpecificationRepository.addProp2Pset(idsId, psetId, propId);
+		}
 	}
 
 	/**
