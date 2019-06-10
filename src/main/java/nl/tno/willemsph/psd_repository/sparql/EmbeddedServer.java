@@ -10,9 +10,14 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.jena.fuseki.embedded.FusekiServer;
 import org.apache.jena.query.Dataset;
@@ -51,26 +56,6 @@ public class EmbeddedServer {
 	public static final String IDS = "http://openbimstandards.org/information-delivery-specification";
 	public static final String USERS = "http://www.infrabim.nl/bimbots-psd-repository/users";
 	public static final String OWNERS = "http://www.infrabim.nl/bimbots-psd-repository/owners";
-	public static final String[] PSETS = { "Pset_ActionRequest", "Pset_ActorCommon", "Pset_ActuatorTypeCommon",
-			"Pset_AirTerminalTypeCommon", "Pset_Asset", "Pset_AudioVisualApplianceTypeCommon", "Pset_BeamCommon",
-			"Pset_BoilerTypeCommon", "Pset_BuildingCommon", "Pset_BuildingElementProxyCommon", "Pset_BurnerTypeCommon",
-			"Pset_BuildingStoreyCommon", "Pset_BuildingSystemCommon", "Pset_BuildingUse", "Pset_ChimneyCommon",
-			"Pset_CivilElementCommon", "Pset_ColumnCommon", "Pset_CompressorTypeCommon", "Pset_ConcreteElementGeneral",
-			"Pset_CondenserTypeCommon", "Pset_Condition", "Pset_ControllerTypeCommon", "Pset_CoveringCommon",
-			"Pset_CurtainWallCommon", "Pset_DoorCommon", "Pset_DoorWindowGlazingType",
-			"Pset_ElectricApplianceTypeCommon", "Pset_ElementComponentCommon", "Pset_EngineTypeCommon",
-			"Pset_EnvironmentalImpactIndicators", "Pset_EnvironmentalImpactValues", "Pset_EvaporatorTypeCommon",
-			"Pset_FanTypeCommon", "Pset_FilterTypeCommon", "Pset_FireSuppressionTerminalTypeCommon",
-			"Pset_FlowInstrumentTypeCommon", "Pset_FlowMeterTypeCommon", "Pset_FootingCommon",
-			"Pset_FurnitureTypeCommon", "Pset_HeatExchangerTypeCommon", "Pset_HumidifierTypeCommon",
-			"Pset_LampTypeCommon", "Pset_MaterialCommon", "Pset_MaterialConcrete", "Pset_MaterialEnergy",
-			"Pset_MaterialSteel", "Pset_MemberCommon", "Pset_OpeningElementCommon", "Pset_OutletTypeCommon",
-			"Pset_PileCommon", "Pset_PipeFittingTypeCommon", "Pset_PlateCommon", "Pset_PrecastConcreteElementGeneral",
-			"Pset_PrecastSlab", "Pset_RailingCommon", "Pset_RampCommon", "Pset_RampFlightCommon", "Pset_RoofCommon",
-			"Pset_SanitaryTerminalTypeCommon", "Pset_SensorTypeCommon", "Pset_SiteCommon", "Pset_SlabCommon",
-			"Pset_SolarDeviceTypeCommon", "Pset_SpaceCommon", "Pset_StairCommon", "Pset_TransportElementCommon",
-			"Pset_TransportElementElevator", "Pset_WallCommon", "Pset_WasteTerminalTypeCommon", "Pset_WindowCommon",
-			"Pset_WorkControlCommon", "Pset_ZoneCommon" };
 	public static final String[] IDSS = { "Basic_IDM", "Kalkzandsteen_IDS" };
 	private static Dataset ds;
 	private ClassPathResource ifc4Resource, ifc4PsdResource;
@@ -89,6 +74,29 @@ public class EmbeddedServer {
 		startServer();
 	}
 
+	public static List<String> getIfc4Psets() {
+		List<String> psets = new ArrayList<>();
+		try (Stream<Path> walk = Files.walk(Paths.get("src/main/resources/static/psets/IFC4"))) {
+			psets = walk.filter(Files::isRegularFile).map(x -> x.toString()).collect(Collectors.toList());
+			psets.forEach(System.out::println);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return psets;
+	}
+
+	public Model getNamedModel(String uri) {
+		return ds.getNamedModel(uri);
+	}
+
+	public void addNamedModel(String uri, Model model) {
+		ds = ds.addNamedModel(uri, model);
+	}
+
+	public void replaceNamedModel(String uri, Model model) {
+		ds = ds.replaceNamedModel(uri, model);
+	}
+
 	public void startServer() throws IOException {
 		AwsClientIO.getInstance().awsClientDownload(BUCKET_NAME, USERS_KEY, usersResource);
 		AwsClientIO.getInstance().awsClientDownload(BUCKET_NAME, OWNERS_KEY, ownersResource);
@@ -100,8 +108,19 @@ public class EmbeddedServer {
 		ds = DatasetFactory.create(defaultModel);
 
 		// IFC pset model graphs
-		for (String pset : PSETS) {
-			ClassPathResource psetResource = new ClassPathResource("static/psets/IFC4/" + pset + ".ttl");
+//		for (String pset : PSETS) {
+//			ClassPathResource psetResource = new ClassPathResource("static/psets/IFC4/" + pset + ".ttl");
+//			Model psetModel = ModelFactory.createDefaultModel();
+//			LOGGER.info("Reading " + psetResource.getFilename());
+//			psetModel.read(psetResource.getInputStream(), null, "TURTLE");
+//			ds.addNamedModel(IFC4_PSD + "/" + pset, psetModel);
+//		}
+
+		for (String pset : getIfc4Psets()) {
+			if (pset.endsWith(".html")) {
+				continue;
+			}
+			FileSystemResource psetResource = new FileSystemResource(pset);
 			Model psetModel = ModelFactory.createDefaultModel();
 			LOGGER.info("Reading " + psetResource.getFilename());
 			psetModel.read(psetResource.getInputStream(), null, "TURTLE");

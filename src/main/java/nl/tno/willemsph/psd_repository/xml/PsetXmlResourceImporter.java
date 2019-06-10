@@ -1,6 +1,8 @@
 package nl.tno.willemsph.psd_repository.xml;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -12,6 +14,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.jena.query.DatasetFactory;
+import org.apache.jena.query.ParameterizedSparqlString;
 import org.apache.jena.rdf.model.AnonId;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
@@ -19,6 +23,8 @@ import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.vocabulary.OWL;
 import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.RDFS;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -97,14 +103,80 @@ public class PsetXmlResourceImporter {
 	 * Generate Turtle RDF file
 	 * 
 	 * @param pSetDefInput Property Set Definition input data.
+	 * @throws IOException
 	 */
-	public void generateRdfResource(PropertySetDefinitionInput pSetDefInput) {
+	public void generateRdfResource(PropertySetDefinitionInput pSetDefInput) throws IOException {
 		Model defaultModel = ModelFactory.createDefaultModel();
 
 		insertOntologyResource(defaultModel, pSetDefInput);
 		insertPSetDefRsrc(defaultModel, pSetDefInput);
 
 		defaultModel.write(System.out, "TURTLE", pSetDefInput.getId());
+		PrintWriter writer = new PrintWriter(new File(pSetDefInput.getName() + ".ttl"));
+		writer.println("# baseURI: " + pSetDefInput.getId());
+		writer.println("# imports: http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD \n");
+		defaultModel.write(writer, "TURTLE", pSetDefInput.getId());
+		updateOwnersModel(pSetDefInput);
+		updatePsetDef(pSetDefInput);
+	}
+
+	private void updatePsetDef(PropertySetDefinitionInput pSetDefInput) throws IOException {
+		FileSystemResource ifc4PsdResource = new FileSystemResource("src/main/resources/static/psets/psetdef.ttl");
+		Model ifc4PsdModel = ModelFactory.createDefaultModel();
+		ifc4PsdModel.read(ifc4PsdResource.getInputStream(), null, "TURTLE");
+		EmbeddedServer.instance.addNamedModel(EmbeddedServer.IFC4_PSD, ifc4PsdModel);
+
+		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
+		queryStr.setNsPrefix("psd", EmbeddedServer.IFC4_PSD + '#');
+		queryStr.setIri("graph", EmbeddedServer.IFC4_PSD);
+		queryStr.append("INSERT { ");
+		queryStr.append("  GRAPH ?graph { ");
+		int index = 0;
+		for (PropertyDefinitionInput propDefInp : pSetDefInput.getPropertyDefs()) {
+			index++;
+			queryStr.setIri("pd" + index, EmbeddedServer.IFC4_PSD + '#' + propDefInp.getName());
+			queryStr.append(
+					"  ?pd" + index + " rdf:type rdf:Property ; rdfs:label \"" + propDefInp.getName()
+							+ "\"@en ; rdfs:comment \"" + propDefInp.getDefinition() + "\"@en . ");
+		}
+		queryStr.append("  } ");
+		queryStr.append("} ");
+		queryStr.append("WHERE { } ");
+		
+		EmbeddedServer.instance.update(queryStr);
+
+
+		ifc4PsdModel = EmbeddedServer.instance.getNamedModel(EmbeddedServer.IFC4_PSD);
+		PrintWriter writer = new PrintWriter(new File("psetdef.ttl"));
+		writer.println("# baseURI: " + EmbeddedServer.IFC4_PSD);
+		writer.println("# imports: http://www.buildingsmart-tech.org/ifcOWL/IFC4");
+		writer.println("# prefix: PSD \n");
+		ifc4PsdModel.write(writer, "TURTLE", EmbeddedServer.IFC4_PSD);
+	}
+
+	private void updateOwnersModel(PropertySetDefinitionInput pSetDefInput) throws IOException {
+		String prefix = pSetDefInput.getId() + "#";
+		ParameterizedSparqlString queryStr = new ParameterizedSparqlString(EmbeddedServer.getPrefixMapping());
+		queryStr.setNsPrefix(pSetDefInput.getName(), prefix);
+		queryStr.setNsPrefix("owners", EmbeddedServer.OWNERS + "#");
+		queryStr.setNsPrefix("usr", EmbeddedServer.USERS + '#');
+		queryStr.setIri("graph", EmbeddedServer.OWNERS);
+		queryStr.setIri("pset", pSetDefInput.getId() + "#" + pSetDefInput.getName());
+		queryStr.append("INSERT { ");
+		queryStr.append("  GRAPH ?graph { ");
+		queryStr.append("    ?pset owners:owner usr:IFC4 . ");
+		queryStr.append("  } ");
+		queryStr.append("} ");
+		queryStr.append("WHERE { } ");
+
+		new EmbeddedServer();
+		EmbeddedServer.instance.update(queryStr);
+
+		Model ownersModel = EmbeddedServer.instance.getNamedModel(EmbeddedServer.OWNERS);
+		ownersModel.setNsPrefix(pSetDefInput.getName(), prefix);
+		EmbeddedServer.instance.replaceNamedModel(EmbeddedServer.OWNERS, ownersModel);
+
+		EmbeddedServer.instance.saveOwnersModel();
 	}
 
 	private void insertOntologyResource(Model model, PropertySetDefinitionInput pSetDefInput) {
