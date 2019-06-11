@@ -402,10 +402,13 @@ public class EmbeddedServer {
 		new Thread(upload).start();
 	}
 
+	@SuppressWarnings("resource")
 	public void saveOwnersModel() throws IOException {
 		Model ownersModel = ds.getNamedModel(OWNERS);
 		LOGGER.info("File path ownersResource: " + ownersResource.getFile().getAbsolutePath());
-		ownersModel.write(new FileOutputStream(ownersResource.getFile()), "TURTLE");
+		FileOutputStream fileOut = new FileOutputStream(ownersResource.getFile());
+		ownersModel.write(fileOut, "TURTLE");
+		fileOut.close();
 
 		Runnable upload = new Runnable() {
 
@@ -417,6 +420,7 @@ public class EmbeddedServer {
 		new Thread(upload).start();
 	}
 
+	@SuppressWarnings("resource")
 	public void savePsetModel(String psetModelGraph) throws IOException {
 		Model psetModel = ds.getNamedModel(psetModelGraph);
 		psetModel.setNsPrefixes(prefixMapping);
@@ -424,7 +428,9 @@ public class EmbeddedServer {
 		final File tempFile = File.createTempFile("PSET", "MODEL");
 		FileSystemResource fileResource = new FileSystemResource(tempFile);
 		psetModel.write(System.out, "TURTLE", psetModelGraph);
-		psetModel.write(new FileOutputStream(fileResource.getFile()), "TURTLE", psetModelGraph);
+		FileOutputStream fileOut = new FileOutputStream(fileResource.getFile());
+		psetModel.write(fileOut, "TURTLE", psetModelGraph);
+		fileOut.close();
 		String psetName = psetModelGraph.substring(psetModelGraph.lastIndexOf('/') + 1);
 		Runnable upload = new Runnable() {
 

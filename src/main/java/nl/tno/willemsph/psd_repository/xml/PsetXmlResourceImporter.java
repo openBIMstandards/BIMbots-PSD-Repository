@@ -8,13 +8,13 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.jena.query.DatasetFactory;
 import org.apache.jena.query.ParameterizedSparqlString;
 import org.apache.jena.rdf.model.AnonId;
 import org.apache.jena.rdf.model.Model;
@@ -23,7 +23,6 @@ import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.vocabulary.OWL;
 import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.RDFS;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
@@ -91,11 +90,25 @@ public class PsetXmlResourceImporter {
 	 */
 	public static void main(String[] args)
 			throws URISyntaxException, IOException, ParserConfigurationException, SAXException {
+		
+		new EmbeddedServer();
+
 		if (args.length == 1) {
 			PropertySetDefinitionInput propertySetDefinitionInput = getInstance().importPsetXmlResource(args[0]);
 			getInstance().generateRdfResource(propertySetDefinitionInput);
 		} else {
-			System.out.println("usage: PsetXmlResourceImporter <PsetXmlUri");
+			Scanner scanner = new Scanner(System.in);
+			while (true) {
+				System.out.println("Enter your pset xml url: ");
+				String psetXmlUrl = scanner.nextLine();
+				if (psetXmlUrl.equals("")) {
+					break;
+				}
+				PropertySetDefinitionInput propertySetDefinitionInput = getInstance().importPsetXmlResource(psetXmlUrl);
+				getInstance().generateRdfResource(propertySetDefinitionInput);
+				System.out.println("Your psetXmlUrl is " + psetXmlUrl);
+			}
+			scanner.close();
 		}
 	}
 
@@ -112,10 +125,13 @@ public class PsetXmlResourceImporter {
 		insertPSetDefRsrc(defaultModel, pSetDefInput);
 
 		defaultModel.write(System.out, "TURTLE", pSetDefInput.getId());
-		PrintWriter writer = new PrintWriter(new File(pSetDefInput.getName() + ".ttl"));
+		PrintWriter writer = new PrintWriter(
+				new File("src/main/resources/static/psets/IFC4/" + pSetDefInput.getName() + ".ttl"));
 		writer.println("# baseURI: " + pSetDefInput.getId());
 		writer.println("# imports: http://www.buildingsmart-tech.org/ifcOWL/IFC4-PSD \n");
 		defaultModel.write(writer, "TURTLE", pSetDefInput.getId());
+		writer.flush();
+		writer.close();
 		updateOwnersModel(pSetDefInput);
 		updatePsetDef(pSetDefInput);
 	}
@@ -135,23 +151,23 @@ public class PsetXmlResourceImporter {
 		for (PropertyDefinitionInput propDefInp : pSetDefInput.getPropertyDefs()) {
 			index++;
 			queryStr.setIri("pd" + index, EmbeddedServer.IFC4_PSD + '#' + propDefInp.getName());
-			queryStr.append(
-					"  ?pd" + index + " rdf:type rdf:Property ; rdfs:label \"" + propDefInp.getName()
-							+ "\"@en ; rdfs:comment \"" + propDefInp.getDefinition() + "\"@en . ");
+			queryStr.append("  ?pd" + index + " rdf:type rdf:Property ; rdfs:label \"" + propDefInp.getName()
+					+ "\"@en ; rdfs:comment \"" + propDefInp.getDefinition().replaceAll("\"", "'") + "\"@en . ");
 		}
 		queryStr.append("  } ");
 		queryStr.append("} ");
 		queryStr.append("WHERE { } ");
-		
+
 		EmbeddedServer.instance.update(queryStr);
 
-
 		ifc4PsdModel = EmbeddedServer.instance.getNamedModel(EmbeddedServer.IFC4_PSD);
-		PrintWriter writer = new PrintWriter(new File("psetdef.ttl"));
+		PrintWriter writer = new PrintWriter(new File("src/main/resources/static/psets/psetdef.ttl"));
 		writer.println("# baseURI: " + EmbeddedServer.IFC4_PSD);
 		writer.println("# imports: http://www.buildingsmart-tech.org/ifcOWL/IFC4");
 		writer.println("# prefix: PSD \n");
 		ifc4PsdModel.write(writer, "TURTLE", EmbeddedServer.IFC4_PSD);
+		writer.flush();
+		writer.close();
 	}
 
 	private void updateOwnersModel(PropertySetDefinitionInput pSetDefInput) throws IOException {
@@ -169,7 +185,6 @@ public class PsetXmlResourceImporter {
 		queryStr.append("} ");
 		queryStr.append("WHERE { } ");
 
-		new EmbeddedServer();
 		EmbeddedServer.instance.update(queryStr);
 
 		Model ownersModel = EmbeddedServer.instance.getNamedModel(EmbeddedServer.OWNERS);
