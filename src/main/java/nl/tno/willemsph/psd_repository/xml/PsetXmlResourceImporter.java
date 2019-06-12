@@ -90,7 +90,7 @@ public class PsetXmlResourceImporter {
 	 */
 	public static void main(String[] args)
 			throws URISyntaxException, IOException, ParserConfigurationException, SAXException {
-		
+
 		new EmbeddedServer();
 
 		if (args.length == 1) {
@@ -222,8 +222,10 @@ public class PsetXmlResourceImporter {
 					applicableTypeValue));
 		}
 		// Definition
-		model.add(model.createStatement(pSetDefResrc, model.createProperty(PSD_PROP_DEFINITION),
-				pSetDefInput.getDefinition()));
+		String definition = pSetDefInput.getDefinition();
+		if (definition != null) {
+			model.add(model.createStatement(pSetDefResrc, model.createProperty(PSD_PROP_DEFINITION), definition));
+		}
 		// Definition alias
 		List<LanguageTaggedStringInput> definitionAliases = pSetDefInput.getDefinitionAliases();
 		if (definitionAliases != null) {
